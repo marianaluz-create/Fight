@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico Econômico Financeiro | Fight Analytics</title>
+<!--
+  Diagnóstico Econômico Financeiro — Fight Analytics
+  Fonte dos dados: Planilha base "DFC_Fight.xlsx" (abas 1 a 6) + Planilha de Indicadores Econômicos.
+  Regras: somente dados da planilha base; campos vazios não são preenchidos.
+  Senha de acesso: Nome do Cliente + Ano Corrente da análise  ->  "Fight Analytics2026"
+  Este HTML é editável: use o botão "Modo de edição" para editar os textos diretamente,
+  ou edite o código-fonte deste arquivo.
+-->
+<style>
+  :root{
+    --verde:#0E7C4B;
+    --verde-2:#12A05C;
+    --verde-esc:#0A5738;
+    --preto:#111417;
+    --cinza:#5b6670;
+    --cinza-cl:#eef1ef;
+    --linha:#e2e7e3;
+    --branco:#ffffff;
+    --proj:#9aa4ac;
+    --sombra:0 1px 3px rgba(17,20,23,.08),0 8px 24px rgba(17,20,23,.06);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    background:var(--branco);
+    color:var(--preto);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* ---------- Password gate ---------- */
+  #gate{
+    position:fixed;inset:0;z-index:1000;
+    background:var(--branco);
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;
+  }
+  #gate .box{
+    width:min(420px,100%);text-align:center;
+    border:1px solid var(--linha);border-radius:var(--radius);
+    padding:40px 34px;box-shadow:var(--sombra);
+  }
+  #gate .mono{
+    width:56px;height:56px;margin:0 auto 18px;border-radius:14px;
+    background:var(--preto);color:var(--verde-2);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:24px;letter-spacing:-1px;
+  }
+  #gate h1{font-size:19px;margin:0 0 4px}
+  #gate p{color:var(--cinza);font-size:13px;margin:0 0 22px}
+  #gate input{
+    width:100%;padding:13px 14px;font-size:15px;
+    border:1px solid var(--linha);border-radius:10px;outline:none;
+    transition:border-color .15s;
+  }
+  #gate input:focus{border-color:var(--verde)}
+  #gate button{
+    margin-top:14px;width:100%;padding:13px;border:0;border-radius:10px;
+    background:var(--verde);color:#fff;font-size:15px;font-weight:600;cursor:pointer;
+    transition:background .15s;
+  }
+  #gate button:hover{background:var(--verde-esc)}
+  #gate .err{color:#c0392b;font-size:13px;margin-top:12px;min-height:18px}
+
+  /* ---------- App layout ---------- */
+  #app{display:none}
+  header.top{
+    position:sticky;top:0;z-index:50;background:var(--branco);
+    border-bottom:1px solid var(--linha);
+  }
+  .top-inner{
+    max-width:1180px;margin:0 auto;padding:14px 24px;
+    display:flex;align-items:center;gap:16px;
+  }
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand .mono{
+    width:40px;height:40px;border-radius:10px;background:var(--preto);
+    color:var(--verde-2);display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:17px;letter-spacing:-1px;
+  }
+  .brand .t1{font-weight:700;font-size:15px;line-height:1.1}
+  .brand .t2{font-size:12px;color:var(--cinza)}
+  .top-actions{margin-left:auto;display:flex;gap:10px;align-items:center}
+  .btn-ghost{
+    border:1px solid var(--linha);background:#fff;color:var(--preto);
+    padding:8px 14px;border-radius:9px;font-size:13px;cursor:pointer;font-weight:600;
+    transition:.15s;
+  }
+  .btn-ghost:hover{border-color:var(--verde);color:var(--verde)}
+  .btn-ghost.on{background:var(--verde);color:#fff;border-color:var(--verde)}
+
+  nav.tabs{
+    max-width:1180px;margin:0 auto;padding:0 12px;
+    display:flex;gap:2px;overflow-x:auto;
+  }
+  nav.tabs button{
+    border:0;background:transparent;color:var(--cinza);
+    padding:14px 16px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;
+    border-bottom:3px solid transparent;transition:.15s;
+  }
+  nav.tabs button:hover{color:var(--preto)}
+  nav.tabs button.active{color:var(--verde);border-bottom-color:var(--verde)}
+  nav.tabs button .n{
+    display:inline-flex;width:20px;height:20px;border-radius:6px;margin-right:7px;
+    background:var(--cinza-cl);color:var(--cinza);font-size:11px;font-weight:800;
+    align-items:center;justify-content:center;vertical-align:middle;
+  }
+  nav.tabs button.active .n{background:var(--verde);color:#fff}
+
+  main{max-width:1180px;margin:0 auto;padding:34px 24px 80px}
+  section.pane{display:none;animation:fade .25s ease}
+  section.pane.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  h2.section-title{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--verde);margin:0 0 6px}
+  h3.section-h{font-size:26px;margin:0 0 24px;font-weight:800;letter-spacing:-.4px}
+  .lead{color:var(--cinza);font-size:15px;max-width:760px}
+
+  .card{
+    border:1px solid var(--linha);border-radius:var(--radius);
+    background:#fff;box-shadow:var(--sombra);padding:24px;
+  }
+  .grid{display:grid;gap:18px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:820px){.g2,.g3{grid-template-columns:1fr}}
+
+  .kv{display:flex;flex-direction:column;gap:2px;padding:16px 0;border-bottom:1px solid var(--linha)}
+  .kv:last-child{border-bottom:0}
+  .kv .k{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--cinza);font-weight:700}
+  .kv .v{font-size:16px;color:var(--preto)}
+  .kv .v.empty{color:var(--proj);font-style:italic;font-size:14px}
+
+  .badge{display:inline-block;background:var(--cinza-cl);color:var(--verde-esc);
+    padding:4px 11px;border-radius:20px;font-size:12px;font-weight:700}
+
+  ul.disc{list-style:none;padding:0;margin:0;counter-reset:d}
+  ul.disc li{
+    position:relative;padding:14px 0 14px 44px;border-bottom:1px solid var(--linha);
+    color:#2b3138;font-size:14.5px;
+  }
+  ul.disc li:last-child{border-bottom:0}
+  ul.disc li::before{
+    counter-increment:d;content:counter(d);
+    position:absolute;left:0;top:14px;width:28px;height:28px;border-radius:8px;
+    background:var(--preto);color:var(--verde-2);font-size:12px;font-weight:800;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  /* Sumário list */
+  .sumario{display:grid;gap:12px;max-width:640px}
+  .sum-item{
+    display:flex;align-items:center;gap:18px;border:1px solid var(--linha);
+    border-radius:12px;padding:18px 22px;transition:.15s;
+  }
+  .sum-item:hover{border-color:var(--verde);transform:translateX(3px)}
+  .sum-item .num{font-size:22px;font-weight:800;color:var(--verde);min-width:42px}
+  .sum-item .lab{font-size:17px;font-weight:600}
+
+  /* Charts */
+  .chart-card h4{margin:0 0 2px;font-size:16px;font-weight:700}
+  .chart-card .src{font-size:11.5px;color:var(--cinza);margin:0 0 6px}
+  .chart-card .unit{font-size:12px;color:var(--verde-esc);font-weight:700;margin-bottom:8px}
+  .legend{display:flex;gap:16px;font-size:11.5px;color:var(--cinza);margin-top:6px;flex-wrap:wrap}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .legend i{width:14px;height:3px;border-radius:2px;display:inline-block}
+  .note{font-size:12.5px;color:var(--cinza);margin-top:14px}
+  svg{width:100%;height:auto;display:block}
+
+  .site-link{color:var(--verde);font-weight:700;text-decoration:none;border-bottom:1px solid var(--verde)}
+  .stat{display:flex;flex-direction:column;gap:2px}
+  .stat .big{font-size:30px;font-weight:800;color:var(--verde-esc);letter-spacing:-.5px}
+  .stat .cap{font-size:12.5px;color:var(--cinza)}
+  .pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .pill{background:var(--cinza-cl);color:var(--verde-esc);padding:6px 12px;border-radius:20px;font-size:12.5px;font-weight:600}
+  p.body{font-size:14.5px;color:#2b3138}
+  footer{max-width:1180px;margin:0 auto;padding:24px;color:var(--cinza);font-size:12px;border-top:1px solid var(--linha)}
+  [contenteditable="true"]{outline:2px dashed var(--verde-2);outline-offset:3px;border-radius:4px}
+  .edit-hint{display:none;background:#fff8e1;border:1px solid #f0e0a0;color:#7a5b00;
+    padding:8px 14px;border-radius:8px;font-size:13px;margin-bottom:20px}
+  body.editing .edit-hint{display:block}
+</style>
+</head>
+<body>
+
+<!-- ============ PASSWORD GATE ============ -->
+<div id="gate">
+  <div class="box">
+    <div class="mono">FA</div>
+    <h1>Diagnóstico Econômico Financeiro</h1>
+    <p>Documento protegido · Fight Analytics</p>
+    <input id="pw" type="password" placeholder="Digite a senha de acesso" autocomplete="off" />
+    <button id="enter">Acessar</button>
+    <div class="err" id="err"></div>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app">
+  <header class="top">
+    <div class="top-inner">
+      <div class="brand">
+        <div class="mono">FA</div>
+        <div>
+          <div class="t1">Diagnóstico Econômico Financeiro</div>
+          <div class="t2">Fight Analytics · 10 de julho de 2026</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="btn-ghost" id="editToggle">✎ Modo de edição</button>
+        <button class="btn-ghost" id="lock">Sair</button>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button data-t="capa" class="active"><span class="n">1</span>Capa</button>
+      <button data-t="sumario"><span class="n">2</span>Sumário</button>
+      <button data-t="disclaimer"><span class="n">3</span>Disclaimer</button>
+      <button data-t="fonte"><span class="n">4</span>Fonte de Dados</button>
+      <button data-t="macro"><span class="n">5</span>Cenário Macroeconômico</button>
+      <button data-t="panorama"><span class="n">6</span>Panorama do Segmento</button>
+    </nav>
+  </header>
+
+  <main>
+    <div class="edit-hint">✎ Modo de edição ativo — clique nos textos para editá-los. Os gráficos e dados quantitativos não são editáveis por aqui (edite a planilha base).</div>
+
+    <!-- ===== 1. CAPA ===== -->
+    <section class="pane active" id="capa">
+      <div class="card" style="text-align:center;padding:80px 28px;border:0;box-shadow:none">
+        <div style="width:72px;height:72px;border-radius:18px;background:var(--preto);color:var(--verde-2);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:30px;margin:0 auto 30px;letter-spacing:-1.5px">FA</div>
+        <div style="width:60px;height:4px;background:var(--verde);margin:0 auto 26px;border-radius:2px"></div>
+        <h2 class="section-title" style="margin-bottom:14px">Diagnóstico Econômico Financeiro</h2>
+        <h3 style="font-size:44px;font-weight:800;margin:0 0 18px;letter-spacing:-1px">Fight Analytics</h3>
+        <p style="font-size:16px;color:var(--cinza);margin:0">Data da Apresentação · 10 de julho de 2026</p>
+      </div>
+    </section>
+
+    <!-- ===== 2. SUMÁRIO ===== -->
+    <section class="pane" id="sumario">
+      <h2 class="section-title">Documento</h2>
+      <h3 class="section-h">Sumário</h3>
+      <div class="sumario">
+        <div class="sum-item"><span class="num">01</span><span class="lab">Cenário Macroeconômico</span></div>
+        <div class="sum-item"><span class="num">02</span><span class="lab">Análise Financeira</span></div>
+        <div class="sum-item"><span class="num">03</span><span class="lab">Análise Patrimonial</span></div>
+        <div class="sum-item"><span class="num">04</span><span class="lab">Oportunidades e Melhorias</span></div>
+      </div>
+    </section>
+
+    <!-- ===== 3. DISCLAIMER ===== -->
+    <section class="pane" id="disclaimer">
+      <h2 class="section-title">Aviso Legal</h2>
+      <h3 class="section-h">Disclaimer</h3>
+      <div class="card">
+        <ul class="disc">
+          <li>A presente análise é realizada a partir dos documentos e informações gerenciais fornecidos pela Empresa com a finalidade de realização do trabalho de Diagnóstico Estratégico, não se constituindo em auditoria;</li>
+          <li>Esta apresentação contém análises e projeções desenvolvidas, em grande parte, com base nos relatórios gerenciais fornecidos pela empresa. Vale destacar que, apesar da confiabilidade das fontes utilizadas, as projeções refletem estimativas que podem sofrer alterações em função de condições internas e externas à empresa;</li>
+          <li>As informações contidas nos documentos e gerenciais que serviram de base à presente análise são de inteira responsabilidade da empresa;</li>
+          <li>O trabalho realizado se restringe a interpretação, análise e projeção das informações fornecidas. A O2 Inc. não se responsabiliza pela veracidade das informações, sendo elas de inteira responsabilidade do cliente;</li>
+          <li>As informações foram construídas com base nos dados disponibilizados pelo cliente, conforme solicitado.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== 4. FONTE DE DADOS ===== -->
+    <section class="pane" id="fonte">
+      <h2 class="section-title">Bases do Trabalho</h2>
+      <h3 class="section-h">Fonte de Dados · Premissas · Metodologia</h3>
+      <div class="grid g2">
+        <div class="card">
+          <div class="kv">
+            <span class="k">Fonte de Dados</span>
+            <span class="v">Contas a receber e contas a pagar gerado pelo cliente</span>
+          </div>
+          <div class="kv">
+            <span class="k">Regime da Análise</span>
+            <span class="v"><span class="badge">Caixa</span></span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="kv">
+            <span class="k">Premissas</span>
+            <span class="v empty">Não informado na planilha base.</span>
+          </div>
+          <div class="kv">
+            <span class="k">Metodologia</span>
+            <span class="v empty">Não informado na planilha base.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 5. CENÁRIO MACROECONÔMICO ===== -->
+    <section class="pane" id="macro">
+      <h2 class="section-title">Contexto Externo</h2>
+      <h3 class="section-h">Cenário Macroeconômico</h3>
+      <p class="lead" style="margin-bottom:8px">Indicadores realizados (2023–2025) e projeção de mercado para 2026.</p>
+      <p class="src" style="color:var(--cinza);font-size:12.5px;margin:0 0 24px">Fontes: Banco Central (BCB / Copom / Focus / PTAX) · IBGE · FGV-IBRE · Última atualização: 06 de Julho/2026</p>
+      <div class="grid g2" id="charts"></div>
+    </section>
+
+    <!-- ===== 6. PANORAMA DO SEGMENTO ===== -->
+    <section class="pane" id="panorama">
+      <h2 class="section-title">Mercado do Cliente</h2>
+      <h3 class="section-h">Panorama do Segmento</h3>
+
+      <div class="card" style="margin-bottom:18px">
+        <span class="badge" style="margin-bottom:10px">Site do cliente</span>
+        <p class="body" style="margin:8px 0 0">
+          <a class="site-link" href="https://www.fightanalytics.cc/pt" target="_blank" rel="noopener">www.fightanalytics.cc</a>
+        </p>
+        <p class="body" style="margin-top:14px">
+          A <strong>Fight Analytics</strong> atua no setor de <strong>dados e analytics para esportes de combate</strong>
+          (MMA, boxe e kickboxing). A empresa fornece estatísticas históricas e em tempo real, com cobertura de
+          <strong>16 ligas de combate</strong> e presença em <strong>mais de 190 países</strong>, sustentando-se em uma
+          metodologia proprietária de scouting. Como provedora independente, posiciona-se para identificar sinais de
+          manipulação de resultados, agregando transparência ao mercado de <em>media</em> e <em>sports betting</em>.
+        </p>
+      </div>
+
+      <div class="grid g3" style="margin-bottom:18px">
+        <div class="card stat"><span class="big">16</span><span class="cap">Ligas de combate cobertas (MMA, boxe e kickboxing)</span></div>
+        <div class="card stat"><span class="big">+190</span><span class="cap">Países atendidos</span></div>
+        <div class="card stat"><span class="big">13</span><span class="cap">Pontos de dados processados por lutador, em tempo real</span></div>
+      </div>
+
+      <div class="card">
+        <h4 style="margin:0 0 4px;font-size:16px">O setor: Sports Analytics</h4>
+        <p class="body">
+          O mercado global de <strong>sports analytics</strong> — no qual a Fight Analytics se insere — está em forte
+          expansão, impulsionado pela demanda por dados em tempo real para <em>media</em>, apostas esportivas e
+          performance. As estimativas de mercado convergem para forte crescimento na próxima década:
+        </p>
+        <div class="grid g3" style="margin-top:8px">
+          <div class="stat"><span class="big">US$ 5,7 bi</span><span class="cap">Tamanho estimado do mercado global em 2025</span></div>
+          <div class="stat"><span class="big">US$ 23–32 bi</span><span class="cap">Projeção para o início da década de 2030</span></div>
+          <div class="stat"><span class="big">~18–24%</span><span class="cap">CAGR estimado do setor (a.a.)</span></div>
+        </div>
+        <div class="pill-row">
+          <span class="pill">Dados em tempo real</span>
+          <span class="pill">Sports betting / iGaming</span>
+          <span class="pill">Media &amp; broadcasting</span>
+          <span class="pill">Scouting proprietário</span>
+          <span class="pill">Provedor independente</span>
+        </div>
+        <p class="note">
+          Fontes de mercado: Grand View Research, Fortune Business Insights, SkyQuest, MarketsandMarkets (2025–2026).
+          Perfil da empresa: site oficial e materiais públicos da Fight Analytics.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Diagnóstico Econômico Financeiro · Fight Analytics · Documento gerado a partir da planilha base (abas 1 a 6).
+    Dados exclusivamente extraídos das fontes indicadas — nenhum valor foi estimado fora das fontes citadas.
+  </footer>
+</div>
+
+<script>
+/* ================= PASSWORD ================= */
+/* Regra: senha = Nome do Cliente + Ano Corrente da análise */
+var SENHA = "Fight Analytics2026";
+var gate = document.getElementById('gate');
+var app  = document.getElementById('app');
+function tryEnter(){
+  var v = document.getElementById('pw').value.trim();
+  if(v === SENHA){
+    gate.style.display='none';
+    app.style.display='block';
+  } else {
+    document.getElementById('err').textContent = 'Senha incorreta. Tente novamente.';
+  }
+}
+document.getElementById('enter').addEventListener('click', tryEnter);
+document.getElementById('pw').addEventListener('keydown', function(e){ if(e.key==='Enter') tryEnter(); });
+document.getElementById('lock').addEventListener('click', function(){
+  app.style.display='none'; gate.style.display='flex';
+  document.getElementById('pw').value=''; document.getElementById('err').textContent='';
+});
+
+/* ================= TABS ================= */
+var tabs = document.getElementById('tabs');
+tabs.addEventListener('click', function(e){
+  var b = e.target.closest('button'); if(!b) return;
+  [].forEach.call(tabs.querySelectorAll('button'), x=>x.classList.remove('active'));
+  b.classList.add('active');
+  var id = b.getAttribute('data-t');
+  [].forEach.call(document.querySelectorAll('.pane'), p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+/* ================= EDIT MODE ================= */
+var editing=false;
+var editToggle=document.getElementById('editToggle');
+editToggle.addEventListener('click', function(){
+  editing=!editing;
+  document.body.classList.toggle('editing', editing);
+  editToggle.classList.toggle('on', editing);
+  editToggle.textContent = editing ? '✓ Editando (clique p/ concluir)' : '✎ Modo de edição';
+  // Torna editáveis os textos (não os gráficos)
+  var sel = '#app p, #app li, #app .v, #app h3, #app h4, #app .lab, #app .cap, #app .big, #app .kv .k';
+  [].forEach.call(document.querySelectorAll(sel), function(el){
+    el.setAttribute('contenteditable', editing ? 'true':'false');
+  });
+});
+
+/* ================= CHARTS (Cenário Macroeconômico) ================= */
+/* Dados extraídos da Planilha de Indicadores Econômicos (aba do base "5. Cenário Macroeconômico").
+   Anos 2023–2025 = realizado; 2026 = projeção de mercado (Focus). */
+var YEARS = ['2023','2024','2025','2026*'];
+var INDICATORS = [
+  {t:'Taxa de Juros (Selic)', unit:'% a.a.', src:'BCB / Copom (realizado) · BCB Focus (2026 proj.)',
+   vals:[11.75,12.25,15.00,14.00], fmt:v=>v.toFixed(2).replace('.',',')+'%'},
+  {t:'Inflação (IPCA)', unit:'% a.a.', src:'IBGE (realizado) · BCB Focus (2026 proj.)',
+   vals:[4.62,4.83,4.26,5.30], fmt:v=>v.toFixed(2).replace('.',',')+'%'},
+  {t:'PIB', unit:'% a.a.', src:'IBGE (realizado) · BCB Focus (2026 proj.)',
+   vals:[3.20,3.40,2.30,1.99], fmt:v=>v.toFixed(2).replace('.',',')+'%'},
+  {t:'Taxa de Câmbio (USD/BRL)', unit:'R$ / USD', src:'BCB PTAX (realizado) · BCB Focus (2026 proj.)',
+   vals:[4.85,6.19,5.50,5.20], fmt:v=>'R$ '+v.toFixed(2).replace('.',',')},
+  {t:'Taxa de Desemprego', unit:'%', src:'IBGE – PNAD Contínua',
+   vals:[7.80,6.60,5.60,5.60], fmt:v=>v.toFixed(2).replace('.',',')+'%'},
+  {t:'ICC – Índice de Confiança do Consumidor', unit:'pts', src:'FGV – IBRE',
+   vals:[91.3,91.3,89.1,88.7], fmt:v=>v.toFixed(1).replace('.',',')+' pts'}
+];
+
+function buildChart(ind){
+  var W=520,H=280, ml=58,mr=58,mt=40,mb=34;
+  var iw=W-ml-mr, ih=H-mt-mb;
+  var vals=ind.vals, min=Math.min.apply(null,vals), max=Math.max.apply(null,vals);
+  var pad=(max-min)*0.25 || Math.abs(max)*0.15 || 1;
+  var lo=min-pad, hi=max+pad;
+  function x(i){ return ml + (vals.length===1?iw/2:iw*i/(vals.length-1)); }
+  function y(v){ return mt + ih*(1-(v-lo)/(hi-lo)); }
+
+  var g='';
+  // baseline grid (light)
+  for(var k=0;k<=3;k++){
+    var gy=mt+ih*k/3;
+    g+='<line x1="'+ml+'" y1="'+gy+'" x2="'+(W-mr)+'" y2="'+gy+'" stroke="#eef1ef" stroke-width="1"/>';
+  }
+  // realizado segment (2023->2025), projeção segment (2025->2026 dashed)
+  var solid='', dash='';
+  for(var i=0;i<vals.length-1;i++){
+    var seg='M'+x(i).toFixed(1)+','+y(vals[i]).toFixed(1)+' L'+x(i+1).toFixed(1)+','+y(vals[i+1]).toFixed(1);
+    if(i<vals.length-2) solid+=seg+' '; else dash+=seg;
+  }
+  g+='<path d="'+solid+'" fill="none" stroke="#0E7C4B" stroke-width="3" stroke-linecap="round"/>';
+  g+='<path d="'+dash+'" fill="none" stroke="#9aa4ac" stroke-width="3" stroke-dasharray="6 5" stroke-linecap="round"/>';
+  // points + labels
+  for(var j=0;j<vals.length;j++){
+    var proj=(j===vals.length-1);
+    var col=proj?'#5b6670':'#0E7C4B';
+    g+='<circle cx="'+x(j).toFixed(1)+'" cy="'+y(vals[j]).toFixed(1)+'" r="5" fill="#fff" stroke="'+col+'" stroke-width="3"/>';
+    var ly=y(vals[j])-14;
+    if(ly<mt+8) ly=y(vals[j])+22;
+    g+='<text x="'+x(j).toFixed(1)+'" y="'+ly.toFixed(1)+'" text-anchor="middle" font-size="14" font-weight="800" fill="'+ (proj?'#5b6670':'#0A5738') +'">'+ind.fmt(vals[j])+'</text>';
+    g+='<text x="'+x(j).toFixed(1)+'" y="'+(H-12)+'" text-anchor="middle" font-size="12.5" font-weight="600" fill="#5b6670">'+YEARS[j]+'</text>';
+  }
+  return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+ind.t+'">'+g+'</svg>';
+}
+
+var host=document.getElementById('charts');
+INDICATORS.forEach(function(ind){
+  var el=document.createElement('div');
+  el.className='card chart-card';
+  el.innerHTML='<h4>'+ind.t+'</h4><div class="unit">'+ind.unit+'</div><p class="src">'+ind.src+'</p>'+
+    buildChart(ind)+
+    '<div class="legend"><span><i style="background:#0E7C4B"></i>Realizado (2023–2025)</span>'+
+    '<span><i style="background:#9aa4ac"></i>Projeção 2026 (Focus)</span></div>';
+  host.appendChild(el);
+});
+</script>
+</body>
+</html>
