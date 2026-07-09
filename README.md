@@ -29,7 +29,7 @@ Fight Analytics2026
 | 7 | DRE Gerencial | aba `7.1 DRE Gerencial` — tabela do DRE + Revisão Analítica (ao lado) |
 | 8 | DFC | aba `7.2 DFC` — somente a tabela do fluxo de caixa |
 | 9 | Ciclo Operacional | aba `7.4 Ciclo Operacional` — tabelas + Análise Executiva + Plano de Ação (Recomendações) + demais textos da aba |
-| 10 | Projeção de Caixa, 13 Semanas | aba `7.4.1 Projeção 13 Semanas` — simulador rolante: parâmetros, capital de giro mínimo (2 metodologias), grade semanal e alertas do horizonte |
+| 10 | Projeção de Caixa, 13 Semanas | aba `7.4.1 Projeção 13 Semanas` — **simulador interativo de verdade**: os campos em azul são caixas editáveis (data de início, saldo de caixa, janela histórica, multiplicador, dias de cobertura, pesos, e cada recebimento/pagamento semanal); tudo recalcula ao vivo no navegador, com botão "↺ Restaurar valores originais" |
 | 11 | Endividamento | aba `7.5 Endividamento` — tabelas + Observações/Riscos/Recomendações (ao lado) |
 | 12 | Cronograma da Dívida | aba `7.5.1 Cronograma da Dívida` — parâmetros por operação + cronograma SAC consolidado (12 meses) + nota metodológica |
 | 13 | Indicadores | aba `7.6 Indicadores` — indicadores por grupo (Rentabilidade, Custos, Ponto de Equilíbrio, Caixa, Endividamento, Distribuição) |
@@ -45,6 +45,17 @@ Fight Analytics2026
 
 - **No próprio HTML:** botão **"✎ Modo de edição"** torna textos, bullets e células das tabelas editáveis diretamente na página. Uma barra inferior permite **grifar em verde** e aplicar **negrito** na seleção.
 - **No código-fonte:** os dados dos gráficos ficam no bloco `<script>` (`INDICATORS`); as tabelas das abas 7 a 15 são HTML estático, fáceis de ajustar.
+
+## Simulador de Caixa (aba 10)
+
+A aba **Projeção de Caixa, 13 Semanas** funciona de verdade, sem precisar do "Modo de edição":
+
+- Os campos com fundo azul claro são **caixas de entrada reais** (`<input>`), assim como as células azuis da planilha original.
+- Ao editar qualquer campo, todos os valores dependentes recalculam automaticamente: médias sugeridas, reserva mínima (2 metodologias), a grade das 13 semanas e os alertas do horizonte.
+- Cada semana de "Recebimentos previstos" / "Pagamentos previstos" pode ser sobrescrita individualmente — as demais continuam ligadas à média sugerida (igual à planilha: célula editada quebra o vínculo com a fórmula, só para aquela semana).
+- A linha "Gap vs. Reserva" fica destacada em vermelho semana a semana quando o saldo projetado fica abaixo da reserva mínima.
+- Botão **"↺ Restaurar valores originais"** limpa tudo e volta aos valores-padrão da planilha.
+- As médias sugeridas usam os mesmos totais semanais de recebimentos/pagamentos da base (agregados por semana, sem expor lançamento a lançamento), reproduzindo a fórmula original (`SUMIFS`/`SUMPRODUCT`) para qualquer janela histórica escolhida (1 a 52 semanas).
 
 ## Regras aplicadas
 
