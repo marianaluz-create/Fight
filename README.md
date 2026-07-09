@@ -40,8 +40,8 @@ Fight Analytics2026
 
 ## Edição
 
-- **No próprio HTML:** botão **"✎ Modo de edição"** torna os textos e as células das tabelas editáveis diretamente na página.
-- **No código-fonte:** os dados dos gráficos ficam no bloco `<script>` (`INDICATORS`); as tabelas das abas 7 a 12 são HTML estático, fáceis de ajustar.
+- **No próprio HTML:** botão **"✎ Modo de edição"** torna textos, bullets e células das tabelas editáveis diretamente na página. Uma barra inferior permite **grifar em verde** e aplicar **negrito** na seleção.
+- **No código-fonte:** os dados dos gráficos ficam no bloco `<script>` (`INDICATORS`); as tabelas das abas 7 a 13 são HTML estático, fáceis de ajustar.
 
 ## Regras aplicadas
 
