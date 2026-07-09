@@ -29,19 +29,22 @@ Fight Analytics2026
 | 7 | DRE Gerencial | aba `7.1 DRE Gerencial` — tabela do DRE + Revisão Analítica (ao lado) |
 | 8 | DFC | aba `7.2 DFC` — somente a tabela do fluxo de caixa |
 | 9 | Ciclo Operacional | aba `7.4 Ciclo Operacional` — tabelas + Análise Executiva + Plano de Ação (Recomendações) + demais textos da aba |
-| 10 | Endividamento | aba `7.5 Endividamento` — tabelas + Observações/Riscos/Recomendações (ao lado) |
-| 11 | Indicadores | aba `7.6 Indicadores` — indicadores por grupo (Rentabilidade, Custos, Ponto de Equilíbrio, Caixa, Endividamento, Distribuição) |
-| 12 | Benchmark | aba `7.7 Benchmark` — comparativo de mercado + recomendações |
-| 13 | Ponto de Atenção | aba `7.8 Ponto de Atenção` — Pontos de Atenção + Pontos de Validação (callouts) |
+| 10 | Projeção de Caixa, 13 Semanas | aba `7.4.1 Projeção 13 Semanas` — simulador rolante: parâmetros, capital de giro mínimo (2 metodologias), grade semanal e alertas do horizonte |
+| 11 | Endividamento | aba `7.5 Endividamento` — tabelas + Observações/Riscos/Recomendações (ao lado) |
+| 12 | Cronograma da Dívida | aba `7.5.1 Cronograma da Dívida` — parâmetros por operação + cronograma SAC consolidado (12 meses) + nota metodológica |
+| 13 | Indicadores | aba `7.6 Indicadores` — indicadores por grupo (Rentabilidade, Custos, Ponto de Equilíbrio, Caixa, Endividamento, Distribuição) |
+| 14 | Benchmark | aba `7.7 Benchmark` — comparativo de mercado + recomendações |
+| 15 | Ponto de Atenção | aba `7.8 Ponto de Atenção` — Pontos de Atenção + Pontos de Validação (callouts) |
 
-> As abas 7 a 12 foram extraídas da planilha `DFC_Fight (Cópia).xlsx`. Números e textos foram
-> reproduzidos exatamente como na base (inclusive a formatação de células — R$, %, x — e as
-> referências internas do tipo "4.1", "4.2", "4.6" que constam nas próprias abas de origem).
+> As abas 7 a 15 foram extraídas da planilha base de modelagem (`DFC_Fight`, versão mais recente
+> enviada pelo cliente). Números e textos foram reproduzidos exatamente como na base (inclusive a
+> formatação de células — R$, %, x — e as referências internas do tipo "4.1", "4.2", "4.6" que
+> constam nas próprias abas de origem).
 
 ## Edição
 
 - **No próprio HTML:** botão **"✎ Modo de edição"** torna textos, bullets e células das tabelas editáveis diretamente na página. Uma barra inferior permite **grifar em verde** e aplicar **negrito** na seleção.
-- **No código-fonte:** os dados dos gráficos ficam no bloco `<script>` (`INDICATORS`); as tabelas das abas 7 a 13 são HTML estático, fáceis de ajustar.
+- **No código-fonte:** os dados dos gráficos ficam no bloco `<script>` (`INDICATORS`); as tabelas das abas 7 a 15 são HTML estático, fáceis de ajustar.
 
 ## Regras aplicadas
 
