@@ -32,6 +32,7 @@ Fight Analytics2026
 | 10 | Endividamento | aba `7.5 Endividamento` — tabelas + Observações/Riscos/Recomendações (ao lado) |
 | 11 | Indicadores | aba `7.6 Indicadores` — indicadores por grupo (Rentabilidade, Custos, Ponto de Equilíbrio, Caixa, Endividamento, Distribuição) |
 | 12 | Benchmark | aba `7.7 Benchmark` — comparativo de mercado + recomendações |
+| 13 | Ponto de Atenção | aba `7.8 Ponto de Atenção` — Pontos de Atenção + Pontos de Validação (callouts) |
 
 > As abas 7 a 12 foram extraídas da planilha `DFC_Fight (Cópia).xlsx`. Números e textos foram
 > reproduzidos exatamente como na base (inclusive a formatação de células — R$, %, x — e as

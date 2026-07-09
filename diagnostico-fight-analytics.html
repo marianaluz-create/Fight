@@ -72,7 +72,7 @@
     border-bottom:1px solid var(--linha);
   }
   .top-inner{
-    max-width:1180px;margin:0 auto;padding:14px 24px;
+    max-width:1320px;margin:0 auto;padding:14px 24px;
     display:flex;align-items:center;gap:16px;
   }
   .brand{display:flex;align-items:center;gap:14px}
@@ -90,7 +90,7 @@
   .btn-ghost.on{background:var(--verde);color:#22401d;border-color:var(--verde)}
 
   nav.tabs{
-    max-width:1180px;margin:0 auto;padding:0 12px;
+    max-width:1320px;margin:0 auto;padding:0 12px;
     display:flex;gap:2px;overflow-x:auto;
   }
   nav.tabs button{
@@ -107,7 +107,7 @@
   }
   nav.tabs button.active .n{background:var(--verde);color:#2f4a2c}
 
-  main{max-width:1180px;margin:0 auto;padding:34px 24px 80px}
+  main{max-width:1320px;margin:0 auto;padding:34px 24px 80px}
   section.pane{display:none;animation:fade .25s ease}
   section.pane.active{display:block}
   @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -179,7 +179,7 @@
   .pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
   .pill{background:var(--cinza-cl);color:var(--verde-esc);padding:6px 12px;border-radius:20px;font-size:12.5px;font-weight:600}
   p.body{font-size:14.5px;color:#2b3138}
-  footer{max-width:1180px;margin:0 auto;padding:24px;color:var(--cinza);font-size:12px;border-top:1px solid var(--linha)}
+  footer{max-width:1320px;margin:0 auto;padding:22px 24px;color:var(--cinza);font-size:11px;letter-spacing:.14em;text-transform:uppercase;border-top:1px solid var(--linha)}
   [contenteditable="true"]{outline:2px dashed var(--verde-2);outline-offset:3px;border-radius:4px}
   .edit-hint{display:none;background:#fff8e1;border:1px solid #f0e0a0;color:#7a5b00;
     padding:8px 14px;border-radius:8px;font-size:13px;margin-bottom:20px}
@@ -213,6 +213,17 @@
   ul.plain{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px}
   ul.plain li{position:relative;padding-left:18px;font-size:13.5px;color:#3a3f43;line-height:1.5}
   ul.plain li::before{content:"";position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:2px;background:var(--verde)}
+
+  /* ---------- Ponto de Atenção (callouts) ---------- */
+  .block-h{font-size:14px;font-weight:800;color:var(--preto);margin:28px 0 14px;text-transform:uppercase;letter-spacing:.05em}
+  .callout{border:1px solid var(--linha);border-radius:14px;padding:20px 22px;box-shadow:var(--sombra)}
+  .callout .co-h{display:flex;align-items:center;gap:12px;font-weight:800;font-size:15px;color:var(--preto);margin-bottom:9px}
+  .callout .co-n{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex:none}
+  .callout p{margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55}
+  .callout.warn{background:#fef6f0;border-color:#f2d7c2}
+  .callout.warn .co-n{background:#e0863f;color:#fff}
+  .callout.ok{background:#f2fbef;border-color:#cfead0}
+  .callout.ok .co-n{background:var(--verde);color:#22401d}
 </style>
 </head>
 <body>
@@ -259,6 +270,7 @@
       <button data-t="endivid"><span class="n">10</span>Endividamento</button>
       <button data-t="indic"><span class="n">11</span>Indicadores</button>
       <button data-t="bench"><span class="n">12</span>Benchmark</button>
+      <button data-t="ponto"><span class="n">13</span>Ponto de Atenção</button>
     </nav>
   </header>
 
@@ -463,12 +475,18 @@
       </div>
       <p class="note">Fonte do segmento: site institucional fightanalytics.cc/pt (acesso 2026). As faixas de mercado são referências indicativas do setor de SaaS/dados (DaaS), não auditadas. Indicadores da Fight Analytics vinculados por fórmula às abas 4.1, 4.2 e 4.6.</p>
     </section>
+
+    <section class="pane" id="ponto">
+      <h2 class="section-title">Riscos</h2>
+      <h3 class="section-h">Ponto de Atenção</h3>
+      <h4 class="block-h">PONTOS DE ATENÇÃO</h4>
+      <div class="grid g2"><div class="callout warn"><div class="co-h"><span class="co-n">1</span>Concentração de clientes</div><p>A empresa apresenta concentração relevante de clientes, com aproximadamente 6 a 9 clientes ativos e teto próximo de 15 clientes no mercado global. Esse cenário aumenta o risco de dependência comercial, uma vez que a perda de um único cliente pode gerar impacto material sobre a receita.</p></div><div class="callout warn"><div class="co-h"><span class="co-n">2</span>Receita volátil e exposição cambial</div><p>A receita apresenta volatilidade relevante e possui concentração em dólar, sem hedge cambial identificado. Essa condição aumenta a exposição à variação cambial e dificulta a previsibilidade dos recebimentos e do fluxo de caixa.</p></div><div class="callout warn"><div class="co-h"><span class="co-n">3</span>Redução da alíquota efetiva de deduções sobre vendas</div><p>Observa-se que as deduções e impostos sobre vendas apresentaram redução proporcionalmente superior à queda da Receita Bruta no 2º semestre de 2025. Enquanto a Receita Bruta reduziu aproximadamente 20%, as deduções caíram cerca de 49%, fazendo com que a representatividade sobre a receita passasse de aproximadamente 4,9% no 1º semestre para 3,2% no 2º semestre. Como a análise foi elaborada pelo regime de caixa, recomenda-se validar se essa variação decorre apenas do menor volume de recebimentos no período ou se há efeitos relacionados ao momento de pagamento dos tributos, compensações, reclassificações ou mudança no mix de receitas. Adicionalmente, é importante que a contabilidade efetue a abertura analítica da conta, segregando impostos, devoluções, descontos, abatimentos e eventuais cancelamentos, garantindo maior consistência para a leitura gerencial.</p></div><div class="callout warn"><div class="co-h"><span class="co-n">4</span>Dependência do fundador na geração comercial</div><p>A geração de vendas apresenta dependência relevante do fundador, especialmente por meio de inbound, indicações e precificação por relacionamento/tato comercial. Esse cenário pode limitar a escalabilidade comercial e aumentar o risco de continuidade da receita em caso de ausência ou menor atuação direta do fundador.</p></div></div>
+      <h4 class="block-h">PONTOS DE VALIDAÇÃO</h4>
+      <div class="grid g2"><div class="callout ok"><div class="co-h"><span class="co-n">1</span>IRPJ/CSLL no Simples Nacional</div><p>Considerando que a empresa é optante pelo Simples Nacional, a ausência de IRPJ/CSLL adicional ao Simples tende a estar adequada, uma vez que esses tributos compõem o recolhimento unificado via DAS. Recomenda-se apenas validar com a contabilidade se os pagamentos do DAS foram corretamente apropriados no grupo de deduções/impostos sobre vendas, conforme o regime de caixa utilizado na análise.</p></div><div class="callout ok"><div class="co-h"><span class="co-n">2</span>Dívidas com operação cara e saldo devedor elevado</div><p>Recomenda-se validar as condições dos contratos de dívida, principalmente a operação junto ao BB Capital de Giro Digital, com taxa aproximada de 62,5% a.a., e o contrato do Pronampe, cujo saldo devedor aparenta ser superior ao principal originalmente contratado. É importante confirmar com o banco a composição de juros, amortizações, encargos e eventuais condições atípicas.</p></div><div class="callout ok"><div class="co-h"><span class="co-n">3</span>Mistura de contas PF/PJ</div><p>Foram identificadas movimentações com possível uso de cartões pessoais lançados na empresa, o que pode gerar risco de governança, fiscal e distorção do resultado gerencial. Recomenda-se validar a natureza dessas movimentações e segregar corretamente despesas empresariais, reembolsos e gastos pessoais.</p></div><div class="callout ok"><div class="co-h"><span class="co-n">4</span>Resultado por regime de caixa</div><p>Como a análise foi realizada pelo regime de caixa, os resultados reflete o momento dos recebimentos e pagamentos, e não necessariamente a competência econômica do período. Recomenda-se validar as principais conclusões com a contabilidade antes de decisões estruturais, principalmente em relação a receita, impostos, custos, despesas e resultado líquido.</p></div></div>
+    </section>
   </main>
 
-  <footer>
-    Diagnóstico Econômico Financeiro · Fight Analytics · Documento gerado a partir da planilha base (abas 1 a 6).
-    Dados exclusivamente extraídos das fontes indicadas — nenhum valor foi estimado fora das fontes citadas.
-  </footer>
+  <footer>O2 · Documento Confidencial · Fight Analytics</footer>
 </div>
 
 <script>
@@ -514,7 +532,7 @@ editToggle.addEventListener('click', function(){
   editToggle.classList.toggle('on', editing);
   editToggle.textContent = editing ? '✓ Editando (clique p/ concluir)' : '✎ Modo de edição';
   // Torna editáveis os textos (não os gráficos)
-  var sel = '#app p, #app li, #app td, #app .v, #app h3, #app h4, #app .lab, #app .cap, #app .big, #app .kv .k, #app .rev-h, #app .rev-body, #app .panel-title';
+  var sel = '#app p, #app li, #app td, #app .v, #app h3, #app h4, #app .lab, #app .cap, #app .big, #app .kv .k, #app .rev-h, #app .rev-body, #app .panel-title, #app .block-h, #app .callout .co-h';
   [].forEach.call(document.querySelectorAll(sel), function(el){
     el.setAttribute('contenteditable', editing ? 'true':'false');
   });
