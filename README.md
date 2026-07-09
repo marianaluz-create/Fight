@@ -23,14 +23,24 @@ Fight Analytics2026
 | 1 | Capa | Nome do cliente e Data da Apresentação (aba `1. Capa`) |
 | 2 | Sumário | Modelo de Sumário |
 | 3 | Disclaimer | Modelo de Disclaimer |
-| 4 | Fonte de Dados · Premissas · Metodologia | aba `4. Fonte de Dados` (somente campos preenchidos) |
+| 4 | Fonte de Dados | aba `4. Fonte de Dados` (somente campos preenchidos) |
 | 5 | Cenário Macroeconômico | Planilha de Indicadores Econômicos (Selic, IPCA, PIB, Câmbio, Desemprego, ICC) |
 | 6 | Panorama do Segmento | Site do cliente + pesquisa do setor (Sports Analytics) |
+| 7 | DRE Gerencial | aba `7.1 DRE Gerencial` — tabela do DRE + Revisão Analítica (ao lado) |
+| 8 | DFC | aba `7.2 DFC` — somente a tabela do fluxo de caixa |
+| 9 | Ciclo Operacional | aba `7.4 Ciclo Operacional` — tabelas + Análise Executiva + Plano de Ação (Recomendações) + demais textos da aba |
+| 10 | Endividamento | aba `7.5 Endividamento` — tabelas + Observações/Riscos/Recomendações (ao lado) |
+| 11 | Indicadores | aba `7.6 Indicadores` — indicadores por grupo (Rentabilidade, Custos, Ponto de Equilíbrio, Caixa, Endividamento, Distribuição) |
+| 12 | Benchmark | aba `7.7 Benchmark` — comparativo de mercado + recomendações |
+
+> As abas 7 a 12 foram extraídas da planilha `DFC_Fight (Cópia).xlsx`. Números e textos foram
+> reproduzidos exatamente como na base (inclusive a formatação de células — R$, %, x — e as
+> referências internas do tipo "4.1", "4.2", "4.6" que constam nas próprias abas de origem).
 
 ## Edição
 
-- **No próprio HTML:** botão **"✎ Modo de edição"** torna os textos editáveis diretamente na página.
-- **No código-fonte:** os dados dos gráficos ficam no bloco `<script>` (`INDICATORS`), fáceis de ajustar.
+- **No próprio HTML:** botão **"✎ Modo de edição"** torna os textos e as células das tabelas editáveis diretamente na página.
+- **No código-fonte:** os dados dos gráficos ficam no bloco `<script>` (`INDICATORS`); as tabelas das abas 7 a 12 são HTML estático, fáceis de ajustar.
 
 ## Regras aplicadas
 
