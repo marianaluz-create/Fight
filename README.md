@@ -36,4 +36,4 @@ Fight Analytics2026
 
 - Somente dados presentes na planilha base — nada inventado.
 - Campos vazios na base (Premissas e Metodologia) são exibidos como *"Não informado na planilha base."*
-- Paleta: fundo branco, verde e preto.
+- Identidade visual O2 Inc.: logo O2 e paleta **vivid green `#6CF269`** (Pantone 802 C) + **intense gray `#494949`** (Pantone 438 C) sobre fundo branco.
