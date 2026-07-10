@@ -48,7 +48,12 @@ Fight Analytics2026
 
 ## Simulador de Caixa (aba 10)
 
-A aba **Projeção de Caixa, 13 Semanas** funciona de verdade, sem precisar do "Modo de edição":
+A aba **Projeção de Caixa, 13 Semanas** funciona de verdade, sem precisar do "Modo de edição", e reproduz
+o **layout exato da planilha**: barras de título escuras (`#494949`), cabeçalhos em verde-claro, a linha
+"Reserva Ponderada" e a célula "Necessidade adicional de caixa" destacadas em verde (`#6CF269`, cor de marca
+da O2 já usada no arquivo original), e o "Saldo mínimo projetado" em vermelho quando negativo — igual às
+cores condicionais da planilha original. O resumo final ("Alertas e Resumo do Horizonte") é uma tabela,
+não mais uma lista, também igual à planilha.
 
 - Os campos com fundo azul claro são **caixas de entrada reais** (`<input>`), assim como as células azuis da planilha original.
 - Ao editar qualquer campo, todos os valores dependentes recalculam automaticamente: médias sugeridas, reserva mínima (2 metodologias), a grade das 13 semanas e os alertas do horizonte.

@@ -214,6 +214,19 @@
   }
   input.sim-in:focus{outline:none;border-color:#1d3fae;background:#eaf0ff}
   input[type="date"].sim-in{text-align:left;font-weight:600}
+  /* ---------- Layout "planilha" (barras escuras + destaques) — aba Projeção de Caixa ---------- */
+  .card.sheet{padding:0;overflow:hidden}
+  .card.sheet .bar-title{background:var(--preto);color:#fff;font-weight:800;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;padding:12px 20px;margin:0}
+  .card.sheet .bar-body{padding:20px}
+  table.fin.sheet thead th{background:#e8fde8}
+  table.fin.sheet tbody tr:nth-child(even){background:#fafcf9}
+  table.fin.sheet.combo td{border-bottom:none;padding-top:10px;padding-bottom:10px}
+  tr.bar-row .bar-title-cell{background:var(--preto);color:#fff;font-weight:800;text-align:left;white-space:normal}
+  td.cell-green,tr.bar-row td.cell-green{background:var(--verde);color:var(--preto);font-weight:800;text-align:right}
+  .cell-green-txt{color:#176a2a;font-weight:700}
+  td.cell-red,#alert-saldo-val.cell-red{color:#990000;font-weight:800}
+  td.cell-note,.cell-note{color:#83868a;font-style:italic}
+  #alert-saldo-val,#alert-semana-val,#alert-count-val{font-weight:700}
   .callout ul.plain{margin-top:2px}
   table.fin th:first-child,table.fin td:first-child{text-align:left;white-space:normal;min-width:130px}
   table.fin thead th{background:#f3f7f1;color:var(--preto);font-weight:700;font-size:10.5px;letter-spacing:.01em}
@@ -514,32 +527,30 @@
       <p class="lead" style="margin-bottom:2px">PROJEÇÃO DE CAIXA, 13 SEMANAS &amp; CAPITAL DE GIRO MÍNIMO</p>
       <p class="src" style="color:var(--cinza);font-size:12.5px;margin:0 0 6px">Fight Analytics  |  Simulador Rolante  |  Atualize os campos em azul  |  Valores em R$</p>
       <p class="src" style="color:var(--verde-esc);font-size:12px;font-weight:700;margin:0 0 22px">✎ Simulador interativo — preencha os campos em azul; os demais valores recalculam automaticamente.</p>
-      <div class="card" style="margin-bottom:18px"><h4 class="panel-title">COMO USAR ESTE SIMULADOR</h4><ul class="plain"><li>Este simulador é ROLANTE: a Semana 1 se ajusta automaticamente para a semana atual (campo C13), então a projeção sempre representa &quot;as próximas 13 semanas a partir de hoje&quot;, não importa se você abrir esta planilha em janeiro ou em julho.</li><li>Passo 1: confira/ajuste os parâmetros em azul na seção abaixo (data de início, saldo de caixa atual, janela histórica e margem de segurança da reserva).</li><li>Passo 2: nas linhas &quot;Recebimentos previstos&quot; e &quot;Pagamentos previstos&quot; da grade semanal, o sistema sugere a média histórica automaticamente, sobrescreva qualquer semana em azul com valores reais conhecidos (ex.: um contrato específico a receber).</li><li>Passo 3: acompanhe o &quot;Gap vs. Reserva&quot;, semanas em vermelho indicam saldo projetado abaixo do capital de giro mínimo recomendado.</li></ul></div>
-      <div class="grid g2" style="margin-bottom:18px">
-        <div class="card"><h4 class="panel-title">PARÂMETROS DO SIMULADOR (INPUTS DO CLIENTE)</h4><div class="tbl-wrap"><table class="fin"><thead><tr><th class="txt">Parâmetro</th><th>Valor</th><th class="txt">Observação</th></tr></thead><tbody>
+      <div class="card sheet" style="margin-bottom:18px"><div class="bar-title">COMO USAR ESTE SIMULADOR</div><div class="bar-body"><ul class="plain"><li>Este simulador é ROLANTE: a Semana 1 se ajusta automaticamente para a semana atual (campo C13), então a projeção sempre representa &quot;as próximas 13 semanas a partir de hoje&quot;, não importa se você abrir esta planilha em janeiro ou em julho.</li><li>Passo 1: confira/ajuste os parâmetros em azul na seção abaixo (data de início, saldo de caixa atual, janela histórica e margem de segurança da reserva).</li><li>Passo 2: nas linhas &quot;Recebimentos previstos&quot; e &quot;Pagamentos previstos&quot; da grade semanal, o sistema sugere a média histórica automaticamente, sobrescreva qualquer semana em azul com valores reais conhecidos (ex.: um contrato específico a receber).</li><li>Passo 3: acompanhe o &quot;Gap vs. Reserva&quot;, semanas em vermelho indicam saldo projetado abaixo do capital de giro mínimo recomendado.</li></ul></div></div>
+      <div class="grid g2" style="margin-bottom:18px;align-items:start">
+        <div class="card sheet"><div class="bar-title">PARÂMETROS DO SIMULADOR (INPUTS DO CLIENTE)</div><div class="bar-body" style="padding:0"><div class="tbl-wrap"><table class="fin sheet"><thead><tr><th class="txt">Parâmetro</th><th>Valor</th><th class="txt">Observação</th></tr></thead><tbody>
 <tr><td class="txt">Data de início da Semana 1</td><td><input type="date" class="sim-in" id="sim-d12"></td><td class="txt">Auto = segunda-feira da semana atual (torna o simulador rolante)</td></tr>
 <tr><td class="txt">Saldo de caixa nesta data (R$)</td><td><input type="number" class="sim-in" id="sim-d13" step="1"></td><td class="txt">Sugestão inicial = saldo final DFC 2025; substitua pelo saldo bancário real</td></tr>
 <tr><td class="txt">Janela histórica p/ médias (nº de semanas)</td><td><input type="number" class="sim-in" id="sim-d14" step="1" min="1" max="52"></td><td class="txt">Semanas anteriores usadas para sugerir a média de receb./pag.</td></tr>
 <tr><td class="txt">Multiplicador de segurança (método Pior Mês)</td><td><input type="number" class="sim-in" id="sim-d15" step="0.1" min="0"></td><td class="txt">1,0x = cobre exatamente o pior mês histórico observado</td></tr>
 <tr><td class="txt">Dias de cobertura desejados (método Dias de Pagamento)</td><td><input type="number" class="sim-in" id="sim-d16" step="1" min="0"></td><td class="txt">Dias de pagamento médio diário a cobrir com a reserva</td></tr>
 <tr><td class="txt">Última data com dados reais na aba Base</td><td>30/12/2025</td><td class="txt">Usada como âncora das médias históricas (linha 18), independente da data de início da projeção</td></tr>
-<tr><td class="txt">Recebimentos, média semanal histórica sugerida (R$)</td><td><span id="sim-d18"></span></td><td class="txt"></td></tr>
-<tr><td class="txt">Pagamentos, média semanal histórica sugerida (R$)</td><td><span id="sim-h18"></span></td><td class="txt"></td></tr>
-</tbody></table></div></div>
-        <div class="card"><h4 class="panel-title">CAPITAL DE GIRO MÍNIMO (RESERVA), DUAS METODOLOGIAS</h4><div class="tbl-wrap"><table class="fin"><thead><tr><th class="txt">Indicador</th><th>Método 1: Pior Mês Histórico (2025)</th><th>Método 2: Dias de Pagamento</th><th class="txt">Nota</th></tr></thead><tbody>
+</tbody></table></div>
+<div class="tbl-wrap"><table class="fin sheet combo"><tbody>
+<tr><td class="txt">Recebimentos, média semanal histórica sugerida (R$)</td><td class="cell-green-txt"><span id="sim-d18"></span></td><td class="txt">Pagamentos, média semanal histórica sugerida (R$)</td><td class="cell-green-txt"><span id="sim-h18"></span></td></tr>
+</tbody></table></div></div></div>
+        <div class="card sheet"><div class="bar-title">CAPITAL DE GIRO MÍNIMO (RESERVA), DUAS METODOLOGIAS</div><div class="bar-body" style="padding:0"><div class="tbl-wrap"><table class="fin sheet"><thead><tr><th class="txt">Indicador</th><th>Método 1: Pior Mês Histórico (2025)</th><th>Método 2: Dias de Pagamento</th><th class="txt">Nota</th></tr></thead><tbody>
 <tr><td class="txt">Referência histórica (R$)</td><td>45.170</td><td>2.041</td><td class="txt"></td></tr>
 <tr><td class="txt">Mês / período de referência</td><td>jul/25</td><td class="txt">Média diária de pagamentos (365 dias, 2025)</td><td class="txt"></td></tr>
 <tr><td class="txt">Parâmetro aplicado</td><td><span id="sim-d23"></span></td><td><span id="sim-f23"></span></td><td class="txt"></td></tr>
 <tr><td class="txt">Peso na ponderação (%)</td><td><input type="number" class="sim-in" id="sim-d24" step="5" min="0" max="100"> %</td><td><span id="sim-f24"></span> %</td><td class="txt">Soma dos pesos: 100%</td></tr>
-<tr class="subtotal"><td class="txt">Reserva sugerida (R$)</td><td><span id="sim-d25"></span></td><td><span id="sim-f25"></span></td><td class="txt"></td></tr>
-</tbody></table></div>
-          <div class="grid g2" style="margin-top:14px">
-            <div class="stat"><span class="big" id="sim-d26"></span><span class="cap">RESERVA PONDERADA (média ponderada pelos pesos) (R$)</span></div>
-            <div class="stat"><span class="big" style="color:var(--verde-esc)" id="sim-d28"></span><span class="cap">Referência: maior das duas metodologias (mais conservador) (R$)</span></div>
-          </div>
-        </div>
+<tr><td class="txt">Reserva sugerida (R$)</td><td><span id="sim-d25"></span></td><td><span id="sim-f25"></span></td><td class="txt"></td></tr>
+<tr class="bar-row"><td class="bar-title-cell" colspan="2">RESERVA PONDERADA (média ponderada pelos pesos) (R$)</td><td class="cell-green" colspan="2"><span id="sim-d26"></span></td></tr>
+<tr><td class="txt cell-note" colspan="2">Referência: maior das duas metodologias (mais conservador) (R$)</td><td class="cell-note" colspan="2"><span id="sim-d28"></span></td></tr>
+</tbody></table></div></div></div>
       </div>
-      <div class="card" style="margin-bottom:18px"><h4 class="panel-title">PROJEÇÃO SEMANAL DE CAIXA (13 SEMANAS)</h4><div class="tbl-wrap"><table class="fin wide2"><thead><tr><th class="txt">Semana</th><th>Semana 1</th><th>Semana 2</th><th>Semana 3</th><th>Semana 4</th><th>Semana 5</th><th>Semana 6</th><th>Semana 7</th><th>Semana 8</th><th>Semana 9</th><th>Semana 10</th><th>Semana 11</th><th>Semana 12</th><th>Semana 13</th></tr></thead><tbody>
+      <div class="card sheet" style="margin-bottom:18px"><div class="bar-title">PROJEÇÃO SEMANAL DE CAIXA (13 SEMANAS)</div><div class="bar-body" style="padding:0"><div class="tbl-wrap"><table class="fin sheet wide2"><thead><tr><th class="txt">Semana</th><th>Semana 1</th><th>Semana 2</th><th>Semana 3</th><th>Semana 4</th><th>Semana 5</th><th>Semana 6</th><th>Semana 7</th><th>Semana 8</th><th>Semana 9</th><th>Semana 10</th><th>Semana 11</th><th>Semana 12</th><th>Semana 13</th></tr></thead><tbody>
 <tr><td class="txt">Início da semana (segunda)</td><td><span id="wk-start-0"></span></td><td><span id="wk-start-1"></span></td><td><span id="wk-start-2"></span></td><td><span id="wk-start-3"></span></td><td><span id="wk-start-4"></span></td><td><span id="wk-start-5"></span></td><td><span id="wk-start-6"></span></td><td><span id="wk-start-7"></span></td><td><span id="wk-start-8"></span></td><td><span id="wk-start-9"></span></td><td><span id="wk-start-10"></span></td><td><span id="wk-start-11"></span></td><td><span id="wk-start-12"></span></td></tr>
 <tr><td class="txt">Fim da semana (domingo)</td><td><span id="wk-end-0"></span></td><td><span id="wk-end-1"></span></td><td><span id="wk-end-2"></span></td><td><span id="wk-end-3"></span></td><td><span id="wk-end-4"></span></td><td><span id="wk-end-5"></span></td><td><span id="wk-end-6"></span></td><td><span id="wk-end-7"></span></td><td><span id="wk-end-8"></span></td><td><span id="wk-end-9"></span></td><td><span id="wk-end-10"></span></td><td><span id="wk-end-11"></span></td><td><span id="wk-end-12"></span></td></tr>
 <tr><td class="txt">Recebimentos previstos (R$), editável</td><td><input type="number" class="sim-in sim-wk" id="wk-recv-0" step="1"></td><td><input type="number" class="sim-in sim-wk" id="wk-recv-1" step="1"></td><td><input type="number" class="sim-in sim-wk" id="wk-recv-2" step="1"></td><td><input type="number" class="sim-in sim-wk" id="wk-recv-3" step="1"></td><td><input type="number" class="sim-in sim-wk" id="wk-recv-4" step="1"></td><td><input type="number" class="sim-in sim-wk" id="wk-recv-5" step="1"></td><td><input type="number" class="sim-in sim-wk" id="wk-recv-6" step="1"></td><td><input type="number" class="sim-in sim-wk" id="wk-recv-7" step="1"></td><td><input type="number" class="sim-in sim-wk" id="wk-recv-8" step="1"></td><td><input type="number" class="sim-in sim-wk" id="wk-recv-9" step="1"></td><td><input type="number" class="sim-in sim-wk" id="wk-recv-10" step="1"></td><td><input type="number" class="sim-in sim-wk" id="wk-recv-11" step="1"></td><td><input type="number" class="sim-in sim-wk" id="wk-recv-12" step="1"></td></tr>
@@ -548,14 +559,13 @@
 <tr class="subtotal"><td class="txt">(=) Saldo final da semana (R$)</td><td><span id="wk-sfin-0"></span></td><td><span id="wk-sfin-1"></span></td><td><span id="wk-sfin-2"></span></td><td><span id="wk-sfin-3"></span></td><td><span id="wk-sfin-4"></span></td><td><span id="wk-sfin-5"></span></td><td><span id="wk-sfin-6"></span></td><td><span id="wk-sfin-7"></span></td><td><span id="wk-sfin-8"></span></td><td><span id="wk-sfin-9"></span></td><td><span id="wk-sfin-10"></span></td><td><span id="wk-sfin-11"></span></td><td><span id="wk-sfin-12"></span></td></tr>
 <tr><td class="txt">Reserva mínima recomendada (R$)</td><td><span id="wk-reserve-0"></span></td><td><span id="wk-reserve-1"></span></td><td><span id="wk-reserve-2"></span></td><td><span id="wk-reserve-3"></span></td><td><span id="wk-reserve-4"></span></td><td><span id="wk-reserve-5"></span></td><td><span id="wk-reserve-6"></span></td><td><span id="wk-reserve-7"></span></td><td><span id="wk-reserve-8"></span></td><td><span id="wk-reserve-9"></span></td><td><span id="wk-reserve-10"></span></td><td><span id="wk-reserve-11"></span></td><td><span id="wk-reserve-12"></span></td></tr>
 <tr><td class="txt">Gap vs. Reserva (R$)</td><td id="wk-gap-td-0"><span id="wk-gap-0"></span></td><td id="wk-gap-td-1"><span id="wk-gap-1"></span></td><td id="wk-gap-td-2"><span id="wk-gap-2"></span></td><td id="wk-gap-td-3"><span id="wk-gap-3"></span></td><td id="wk-gap-td-4"><span id="wk-gap-4"></span></td><td id="wk-gap-td-5"><span id="wk-gap-5"></span></td><td id="wk-gap-td-6"><span id="wk-gap-6"></span></td><td id="wk-gap-td-7"><span id="wk-gap-7"></span></td><td id="wk-gap-td-8"><span id="wk-gap-8"></span></td><td id="wk-gap-td-9"><span id="wk-gap-9"></span></td><td id="wk-gap-td-10"><span id="wk-gap-10"></span></td><td id="wk-gap-td-11"><span id="wk-gap-11"></span></td><td id="wk-gap-td-12"><span id="wk-gap-12"></span></td></tr>
-</tbody></table></div></div>
-      <div class="callout warn"><div class="co-h">ALERTAS E RESUMO DO HORIZONTE</div>
-        <ul class="plain">
-          <li id="sim-alert-1"></li>
-          <li id="sim-alert-2"></li>
-          <li id="sim-alert-3"></li>
-        </ul>
-      </div>
+</tbody></table></div></div></div>
+      <div class="card sheet"><div class="bar-title">ALERTAS E RESUMO DO HORIZONTE</div><div class="bar-body" style="padding:0"><div class="tbl-wrap"><table class="fin sheet"><tbody>
+<tr><td class="txt">Saldo mínimo projetado no horizonte (R$)</td><td id="alert-saldo-val"></td><td class="txt cell-note">Se negativo, a empresa fica sem caixa dentro das 13 semanas nas premissas atuais</td></tr>
+<tr><td class="txt">Semana do saldo mínimo</td><td id="alert-semana-val"></td><td class="txt"></td></tr>
+<tr><td class="txt">Nº de semanas com saldo abaixo da reserva mínima</td><td id="alert-count-val"></td><td class="txt cell-note">de 13 semanas projetadas</td></tr>
+<tr><td class="txt" style="font-weight:800">Necessidade adicional de caixa no pior momento (R$)</td><td class="cell-green" id="alert-need-val"></td><td class="txt cell-note">Quanto falta captar/reter para nunca ficar abaixo da reserva mínima no horizonte</td></tr>
+</tbody></table></div></div></div>
     </section>
 
     <section class="pane" id="endivid">
@@ -744,6 +754,7 @@ INDICATORS.forEach(function(ind){
   host.appendChild(el);
 });
 
+
 /* ================= SIMULADOR — Projeção de Caixa (13 Semanas) ================= */
 (function(){
   var CUM_RECV = [0, 12903.4, 12903.4, 40017.77, 95871.35, 101859.65, 101859.65, 101859.65, 155437.5, 155437.5, 159279.73, 165101.96, 175122.87, 175122.87, 175122.87, 177621.65, 239954.9, 247997.66, 247997.66, 302079.14, 302079.14, 362323.0, 390747.16, 390747.16, 390747.16, 423461.99, 423461.99, 423461.99, 423461.99, 447678.05, 455573.77, 455573.77, 455573.77, 482172.79, 620268.35, 620268.35, 620268.35, 635413.13, 688437.26, 746048.4, 746048.4, 746048.4, 818803.22, 818803.22, 818803.22, 818803.22, 825269.21, 905196.27, 905196.27, 905196.27, 905196.27, 950726.22];
@@ -829,9 +840,12 @@ INDICATORS.forEach(function(ind){
       saldo=sfin;
     }
 
-    setText('sim-alert-1','Saldo mínimo projetado no horizonte: '+brInt(minFinal)+' (Semana '+(minWeekIdx+1)+'); se negativo, a empresa fica sem caixa dentro das 13 semanas nas premissas atuais.');
-    setText('sim-alert-2', belowCount+' de 13 semanas projetadas ficam com saldo abaixo da reserva mínima recomendada.');
-    setText('sim-alert-3','Necessidade adicional de caixa no pior momento: '+brInt(maxNeed)+'; quanto falta captar/reter para nunca ficar abaixo da reserva mínima no horizonte.');
+    setText('alert-saldo-val', brInt(minFinal));
+    var saldoEl=document.getElementById('alert-saldo-val');
+    if(saldoEl) saldoEl.classList.toggle('cell-red', minFinal<0);
+    setText('alert-semana-val', 'Semana '+(minWeekIdx+1));
+    setText('alert-count-val', belowCount);
+    setText('alert-need-val', brInt(maxNeed));
   }
 
   function resetDefaults(){
