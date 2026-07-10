@@ -538,7 +538,7 @@
 <tr><td class="txt">Última data com dados reais na aba Base</td><td>30/12/2025</td><td class="txt">Usada como âncora das médias históricas (linha 18), independente da data de início da projeção</td></tr>
 </tbody></table></div>
 <div class="tbl-wrap"><table class="fin sheet combo"><tbody>
-<tr><td class="txt">Recebimentos, média semanal histórica sugerida (R$)</td><td class="cell-green-txt"><span id="sim-d18"></span></td><td class="txt">Pagamentos, média semanal histórica sugerida (R$)</td><td class="cell-green-txt"><span id="sim-h18"></span></td></tr>
+<tr><td class="txt">Recebimentos, média semanal histórica sugerida (R$)</td><td><input type="number" class="sim-in sim-derived" id="sim-d18" step="1"></td><td class="txt">Pagamentos, média semanal histórica sugerida (R$)</td><td><input type="number" class="sim-in sim-derived" id="sim-h18" step="1"></td></tr>
 </tbody></table></div></div></div>
         <div class="card sheet"><div class="bar-title">CAPITAL DE GIRO MÍNIMO (RESERVA), DUAS METODOLOGIAS</div><div class="bar-body" style="padding:0"><div class="tbl-wrap"><table class="fin sheet"><thead><tr><th class="txt">Indicador</th><th>Método 1: Pior Mês Histórico (2025)</th><th>Método 2: Dias de Pagamento</th><th class="txt">Nota</th></tr></thead><tbody>
 <tr><td class="txt">Referência histórica (R$)</td><td>45.170</td><td>2.041</td><td class="txt"></td></tr>
@@ -755,6 +755,7 @@ INDICATORS.forEach(function(ind){
 });
 
 
+
 /* ================= SIMULADOR — Projeção de Caixa (13 Semanas) ================= */
 (function(){
   var CUM_RECV = [0, 12903.4, 12903.4, 40017.77, 95871.35, 101859.65, 101859.65, 101859.65, 155437.5, 155437.5, 159279.73, 165101.96, 175122.87, 175122.87, 175122.87, 177621.65, 239954.9, 247997.66, 247997.66, 302079.14, 302079.14, 362323.0, 390747.16, 390747.16, 390747.16, 423461.99, 423461.99, 423461.99, 423461.99, 447678.05, 455573.77, 455573.77, 455573.77, 482172.79, 620268.35, 620268.35, 620268.35, 635413.13, 688437.26, 746048.4, 746048.4, 746048.4, 818803.22, 818803.22, 818803.22, 818803.22, 825269.21, 905196.27, 905196.27, 905196.27, 905196.27, 950726.22];
@@ -763,6 +764,7 @@ INDICATORS.forEach(function(ind){
   var F21 = 2041.1930136986298;       /* referência histórica, método Dias de Pagamento (fixo, histórico 2025) */
   var MESJS=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
   var wkRecvTouched=new Array(13).fill(false), wkPagTouched=new Array(13).fill(false);
+  var d18Touched=false, h18Touched=false;
 
   function brInt(v){
     if(!isFinite(v)) return '–';
@@ -794,10 +796,13 @@ INDICATORS.forEach(function(ind){
     var d24=num('sim-d24',50); if(d24<0)d24=0; if(d24>100)d24=100;
     var f24=100-d24;
 
-    var d18=CUM_RECV[d14-1]/d14;
-    var h18=CUM_PAY[d14-1]/d14;
-    setText('sim-d18', brInt(d18));
-    setText('sim-h18', brInt(h18));
+    var d18Def=CUM_RECV[d14-1]/d14;
+    var h18Def=CUM_PAY[d14-1]/d14;
+    var d18El=document.getElementById('sim-d18'), h18El=document.getElementById('sim-h18');
+    if(d18El && !d18Touched) d18El.value=Math.round(d18Def);
+    if(h18El && !h18Touched) h18El.value=Math.round(h18Def);
+    var d18=d18El?(parseFloat(d18El.value)||0):d18Def;
+    var h18=h18El?(parseFloat(h18El.value)||0):h18Def;
 
     var d23=d15, f23=d16;
     setText('sim-d23', brX1(d23));
@@ -854,13 +859,14 @@ INDICATORS.forEach(function(ind){
     set('sim-d13',660); set('sim-d14',8); set('sim-d15',1); set('sim-d16',30); set('sim-d24',50);
     wkRecvTouched=new Array(13).fill(false);
     wkPagTouched=new Array(13).fill(false);
+    d18Touched=false; h18Touched=false;
     recalc();
   }
 
   document.addEventListener('DOMContentLoaded', function(){
     var proj=document.getElementById('projecao');
     if(!proj) return;
-    [].forEach.call(proj.querySelectorAll('.sim-in:not(.sim-wk)'), function(el){
+    [].forEach.call(proj.querySelectorAll('.sim-in:not(.sim-wk):not(.sim-derived)'), function(el){
       el.addEventListener('input', recalc);
     });
     [].forEach.call(proj.querySelectorAll('.sim-wk'), function(el){
@@ -871,6 +877,10 @@ INDICATORS.forEach(function(ind){
         recalc();
       });
     });
+    var d18El=document.getElementById('sim-d18');
+    if(d18El) d18El.addEventListener('input', function(){ d18Touched=true; recalc(); });
+    var h18El=document.getElementById('sim-h18');
+    if(h18El) h18El.addEventListener('input', function(){ h18Touched=true; recalc(); });
     var btn=document.getElementById('simReset');
     if(btn) btn.addEventListener('click', resetDefaults);
     resetDefaults();
