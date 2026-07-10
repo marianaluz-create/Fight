@@ -64,6 +64,12 @@ não mais uma lista, também igual à planilha.
 - Botão **"↺ Restaurar valores originais"** limpa tudo e volta aos valores-padrão da planilha.
 - As médias sugeridas usam os mesmos totais semanais de recebimentos/pagamentos da base (agregados por semana, sem expor lançamento a lançamento), reproduzindo a fórmula original (`SUMIFS`/`SUMPRODUCT`) para qualquer janela histórica escolhida (1 a 52 semanas).
 
+## Modelo reaproveitável para outros clientes
+
+A pasta [`template/`](template/) contém o motor genérico (biblioteca Python +
+casca HTML/CSS/JS + Playbook) para montar este mesmo tipo de diagnóstico para
+qualquer outro cliente da O2. Comece por [`template/PLAYBOOK.md`](template/PLAYBOOK.md).
+
 ## Regras aplicadas
 
 - Somente dados presentes na planilha base — nada inventado.
