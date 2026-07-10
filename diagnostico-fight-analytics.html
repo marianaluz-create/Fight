@@ -81,6 +81,7 @@
   .brand .t1{font-weight:700;font-size:15px;line-height:1.1}
   .brand .t2{font-size:12px;color:var(--cinza)}
   .top-actions{margin-left:auto;display:flex;gap:10px;align-items:center}
+  #autosaveStatus{font-size:12px;white-space:nowrap}
   .btn-ghost{
     border:1px solid var(--linha);background:#fff;color:var(--preto);
     padding:8px 14px;border-radius:9px;font-size:13px;cursor:pointer;font-weight:600;
@@ -300,7 +301,9 @@
         </div>
       </div>
       <div class="top-actions">
+        <span id="autosaveStatus" class="t2" style="color:var(--verde-esc);font-weight:600"></span>
         <button class="btn-ghost" id="editToggle">✎ Modo de edição</button>
+        <button class="btn-ghost" id="exportBtn" title="Baixa uma cópia deste HTML com todas as edições e o estado atual do simulador">⬇ Baixar HTML editado</button>
         <button class="btn-ghost" id="lock">Sair</button>
       </div>
     </div>
@@ -324,7 +327,7 @@
   </header>
 
   <main>
-    <div class="edit-hint">✎ Modo de edição ativo: clique nos textos para editá-los. Use a barra inferior para grifar em verde ou aplicar negrito. Os gráficos e dados quantitativos não são editáveis por aqui (edite a planilha base).</div>
+    <div class="edit-hint">✎ Modo de edição ativo: clique nos textos para editá-los. Use a barra inferior para grifar em verde ou aplicar negrito. Suas edições de texto ficam salvas automaticamente neste navegador; use "⬇ Baixar HTML editado" para gerar um arquivo com todas as edições (texto e simulador) para guardar ou enviar. Os gráficos e dados quantitativos não são editáveis por aqui (edite a planilha base).</div>
 
     <!-- ===== 1. CAPA ===== -->
     <section class="pane active" id="capa">
@@ -623,6 +626,7 @@
 
   <footer>O2 · Documento Confidencial · Fight Analytics</footer>
 </div>
+<script type="application/json" id="sim-state-blob">{}</script>
 
 <script>
 /* ================= PASSWORD ================= */
@@ -688,6 +692,88 @@ document.getElementById('fmtClear').addEventListener('click', fmtCmd(function(){
   document.execCommand('removeFormat');
 }));
 
+/* ================= AUTOSAVE (edições de texto) + EXPORTAR HTML ================= */
+(function(){
+  var LS_KEY = 'fight-analytics-diag-edits-v1';
+  var EDITABLE_SEL = '#app p, #app li, #app td, #app .v, #app h3, #app h4, #app .lab, #app .cap, #app .big, #app .kv .k, #app .rev-h, #app .rev-body, #app .panel-title, #app .block-h, #app .callout .co-h';
+  var editableEls = [];
+  [].forEach.call(document.querySelectorAll(EDITABLE_SEL), function(el, idx){
+    if(el.closest('#projecao')) return; // simulador tem seu próprio estado (sim-state-blob)
+    el.setAttribute('data-ed-id', 'e'+idx);
+    editableEls.push(el);
+  });
+
+  function loadSaved(){
+    try{
+      var raw = localStorage.getItem(LS_KEY);
+      return raw ? JSON.parse(raw) : null;
+    }catch(e){ return null; }
+  }
+  function restoreSaved(){
+    var saved = loadSaved();
+    if(!saved) return;
+    editableEls.forEach(function(el){
+      var id = el.getAttribute('data-ed-id');
+      if(saved[id]!==undefined) el.innerHTML = saved[id];
+    });
+  }
+  var saveTimer=null, statusTimer=null;
+  function scheduleSave(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){
+      var map = {};
+      editableEls.forEach(function(el){ map[el.getAttribute('data-ed-id')] = el.innerHTML; });
+      try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+      var st=document.getElementById('autosaveStatus');
+      if(st){
+        var now=new Date();
+        st.textContent = '💾 salvo neste navegador às '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+        clearTimeout(statusTimer);
+        statusTimer = setTimeout(function(){ st.textContent=''; }, 5000);
+      }
+    }, 500);
+  }
+  document.addEventListener('input', function(e){
+    var t=e.target;
+    if(t && t.closest && t.closest('#app') && t.getAttribute && t.getAttribute('contenteditable')==='true'){
+      scheduleSave();
+    }
+  });
+  restoreSaved();
+
+  /* ---- Exportar HTML (edições de texto + estado do simulador) ---- */
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function exportHTML(){
+    if(window.__simGetState){
+      var blob=document.getElementById('sim-state-blob');
+      if(blob) blob.textContent = JSON.stringify(window.__simGetState());
+    }
+    var clone = document.documentElement.cloneNode(true);
+    var gateC = clone.querySelector('#gate'); if(gateC) gateC.style.display='';
+    var appC = clone.querySelector('#app'); if(appC) appC.style.display='none';
+    var bodyC = clone.querySelector('body'); if(bodyC) bodyC.classList.remove('editing');
+    var pwC = clone.querySelector('#pw'); if(pwC) pwC.removeAttribute('value');
+    [].forEach.call(clone.querySelectorAll('[contenteditable]'), function(el){ el.removeAttribute('contenteditable'); });
+    var etC = clone.querySelector('#editToggle');
+    if(etC){ etC.classList.remove('on'); etC.textContent='✎ Modo de edição'; }
+    var stC = clone.querySelector('#autosaveStatus'); if(stC) stC.textContent='';
+    var chartsC = clone.querySelector('#charts'); if(chartsC) chartsC.innerHTML='';
+
+    var html = '<!DOCTYPE html>\n' + clone.outerHTML;
+    var b = new Blob([html], {type:'text/html;charset=utf-8'});
+    var url = URL.createObjectURL(b);
+    var a = document.createElement('a');
+    var d = new Date();
+    a.href = url;
+    a.download = 'diagnostico-fight-analytics-editado-'+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'-'+pad(d.getHours())+pad(d.getMinutes())+'.html';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+  }
+  var exportBtn = document.getElementById('exportBtn');
+  if(exportBtn) exportBtn.addEventListener('click', exportHTML);
+})();
+
+
 /* ================= CHARTS (Cenário Macroeconômico) ================= */
 /* Dados extraídos da Planilha de Indicadores Econômicos (aba do base "5. Cenário Macroeconômico").
    Anos 2023–2025 = realizado; 2026 = projeção de mercado (Focus). */
@@ -744,6 +830,7 @@ function buildChart(ind){
 }
 
 var host=document.getElementById('charts');
+host.innerHTML='';
 INDICATORS.forEach(function(ind){
   var el=document.createElement('div');
   el.className='card chart-card';
@@ -863,6 +950,34 @@ INDICATORS.forEach(function(ind){
     recalc();
   }
 
+  function currentState(){
+    function v(id){ var e=document.getElementById(id); return e?e.value:''; }
+    var wkRecvVal=[], wkPagVal=[];
+    for(var i=0;i<13;i++){ wkRecvVal.push(v('wk-recv-'+i)); wkPagVal.push(v('wk-pag-'+i)); }
+    return {
+      d12:v('sim-d12'), d13:v('sim-d13'), d14:v('sim-d14'), d15:v('sim-d15'), d16:v('sim-d16'), d24:v('sim-d24'),
+      d18:v('sim-d18'), d18Touched:d18Touched, h18:v('sim-h18'), h18Touched:h18Touched,
+      wkRecvVal:wkRecvVal, wkRecvTouched:wkRecvTouched.slice(),
+      wkPagVal:wkPagVal, wkPagTouched:wkPagTouched.slice()
+    };
+  }
+  window.__simGetState = currentState;
+
+  function applyState(st){
+    var set=function(id,v){ var e=document.getElementById(id); if(e && v!==undefined && v!=='') e.value=v; };
+    set('sim-d12', st.d12); set('sim-d13', st.d13); set('sim-d14', st.d14);
+    set('sim-d15', st.d15); set('sim-d16', st.d16); set('sim-d24', st.d24);
+    d18Touched = !!st.d18Touched; if(d18Touched) set('sim-d18', st.d18);
+    h18Touched = !!st.h18Touched; if(h18Touched) set('sim-h18', st.h18);
+    wkRecvTouched = (st.wkRecvTouched||new Array(13).fill(false)).slice();
+    wkPagTouched = (st.wkPagTouched||new Array(13).fill(false)).slice();
+    for(var i=0;i<13;i++){
+      if(wkRecvTouched[i]) set('wk-recv-'+i, st.wkRecvVal && st.wkRecvVal[i]);
+      if(wkPagTouched[i]) set('wk-pag-'+i, st.wkPagVal && st.wkPagVal[i]);
+    }
+    recalc();
+  }
+
   document.addEventListener('DOMContentLoaded', function(){
     var proj=document.getElementById('projecao');
     if(!proj) return;
@@ -883,7 +998,16 @@ INDICATORS.forEach(function(ind){
     if(h18El) h18El.addEventListener('input', function(){ h18Touched=true; recalc(); });
     var btn=document.getElementById('simReset');
     if(btn) btn.addEventListener('click', resetDefaults);
-    resetDefaults();
+
+    var initial=null;
+    try{
+      var blobEl=document.getElementById('sim-state-blob');
+      if(blobEl && blobEl.textContent.trim().length>2){
+        var parsed=JSON.parse(blobEl.textContent);
+        if(parsed && parsed.d12) initial=parsed;
+      }
+    }catch(e){}
+    if(initial) applyState(initial); else resetDefaults();
   });
 })();
 

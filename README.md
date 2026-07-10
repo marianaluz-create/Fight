@@ -44,6 +44,8 @@ Fight Analytics2026
 ## Edição
 
 - **No próprio HTML:** botão **"✎ Modo de edição"** torna textos, bullets e células das tabelas editáveis diretamente na página. Uma barra inferior permite **grifar em verde** e aplicar **negrito** na seleção.
+- **Autosave:** toda edição de texto é salva automaticamente no `localStorage` do navegador (indicador "💾 salvo às HH:MM" no cabeçalho). Se você fechar a aba e reabrir o mesmo arquivo no mesmo navegador, as edições voltam sozinhas — não precisa refazer nada.
+- **Baixar HTML editado:** botão no cabeçalho gera um novo arquivo `.html` com todas as edições de texto **e** o estado atual do simulador (aba 10) já embutidos como padrão. O arquivo baixado continua protegido pela mesma senha. Esse é o arquivo que você deve me enviar de volta caso queira que eu continue o trabalho a partir das suas edições — eu comparo automaticamente com a última versão e sigo dali, sem precisar que você descreva o que mudou.
 - **No código-fonte:** os dados dos gráficos ficam no bloco `<script>` (`INDICATORS`); as tabelas das abas 7 a 15 são HTML estático, fáceis de ajustar.
 
 ## Simulador de Caixa (aba 10)
