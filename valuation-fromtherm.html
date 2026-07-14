@@ -10,10 +10,10 @@
   Sumário/Disclaimer (Google Slides do cliente) + Cenário Macroeconômico (planilha de indicadores O2).
   Regras: somente dados da planilha base; campos vazios não são preenchidos.
   Senha de acesso: Nome do Cliente + Ano Corrente da análise -> "Fromtherm2026"
-  Relatório em construção por etapas — nesta primeira leva: Capa, Sumário, Disclaimer,
-  Fonte de Dados, Cenário Macroeconômico, Fluxo de Caixa Descontado FCDF e FCDF (OpCo).
-  As demais seções do sumário (Sumário executivo, Visão geral da Companhia, Análise de Setor,
-  Resultados obtidos, Anexos) aparecem no menu como "em construção".
+  Todas as 8 seções do sumário têm conteúdo. Sumário executivo, Visão geral da Companhia,
+  Análise de Setor, Resultados obtidos e Anexos usam apenas o cenário Base (único congelado
+  na aba "Fluxo de Caixa Descontado FCDF" desta planilha); os cenários Otimista/Pessimista
+  existem no seletor do modelo mas não foram recalculados nesta leva.
 -->
 <style>
   :root{
@@ -74,9 +74,6 @@
   nav.tabs button.active{color:var(--preto);border-bottom-color:var(--verde)}
   nav.tabs button .n{display:inline-flex;width:20px;height:20px;border-radius:6px;margin-right:7px;background:#eef0ee;color:var(--cinza);font-size:11px;font-weight:800;align-items:center;justify-content:center;vertical-align:middle}
   nav.tabs button.active .n{background:var(--verde);color:#2f4a2c}
-  nav.tabs button.pending{color:#b7bab8}
-  nav.tabs button.pending .n{background:#f3f4f3}
-  nav.tabs button.pending::after{content:"em construção";font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#b7bab8;display:block;margin-top:1px}
   nav.tabs button.home{margin-right:6px;font-weight:800;color:var(--preto)}
 
   .subtabs{display:flex;gap:8px;margin:-6px 0 22px;flex-wrap:wrap}
@@ -117,6 +114,10 @@
   ul.disc li:last-child{border-bottom:0}
   ul.disc li::before{counter-increment:d;content:counter(d);position:absolute;left:0;top:14px;width:28px;height:28px;border-radius:8px;background:var(--preto);color:var(--verde);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center}
 
+  ul.biblist{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+  ul.biblist li{position:relative;padding-left:16px;font-size:13.5px;color:#3a3f43;line-height:1.55}
+  ul.biblist li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--verde)}
+
   .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
   table.fin{width:100%;border-collapse:collapse;font-size:13px}
   table.fin th,table.fin td{padding:10px 12px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--linha)}
@@ -147,13 +148,10 @@
   .sum-item .sub{font-size:12.5px;color:var(--cinza);margin-top:2px}
 
   .note{font-size:12.5px;color:var(--cinza);margin-top:14px}
+  .site-link{color:var(--preto);font-weight:700;text-decoration:none;border-bottom:2px solid var(--verde)}
   .stat{display:flex;flex-direction:column;gap:2px}
   .stat .big{font-size:30px;font-weight:800;color:var(--verde-esc);letter-spacing:-.5px}
   .stat .cap{font-size:12.5px;color:var(--cinza)}
-
-  .placeholder{border:1px dashed var(--linha);border-radius:var(--radius);padding:60px 30px;text-align:center;color:var(--cinza)}
-  .placeholder .pico{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--verde-esc);font-weight:800;margin-bottom:10px}
-  .placeholder p{max-width:460px;margin:0 auto;font-size:14px}
 
   footer{max-width:1320px;margin:0 auto;padding:22px 24px;color:var(--cinza);font-size:11px;letter-spacing:.14em;text-transform:uppercase;border-top:1px solid var(--linha)}
   [contenteditable="true"]{outline:2px dashed var(--verde);outline-offset:3px;border-radius:4px}
@@ -208,8 +206,8 @@
       </div>
       <div class="top-actions">
         <div class="progress-badge" title="Seções do sumário com conteúdo publicado nesta etapa">
-          <span>3 de 8 seções <b>· 38% concluído</b></span>
-          <span class="bar"><i style="width:38%"></i></span>
+          <span>8 de 8 seções <b>· 100% concluído</b></span>
+          <span class="bar"><i style="width:100%"></i></span>
         </div>
         <span id="autosaveStatus" class="t2" style="color:var(--verde-esc);font-weight:600"></span>
         <button class="btn-ghost" id="editToggle">✎ Modo de edição</button>
@@ -219,14 +217,14 @@
     </div>
     <nav class="tabs" id="tabs">
       <button class="home active" data-t="home">Home</button>
-      <button class="pending" data-t="executivo"><span class="n">1</span>Sumário executivo</button>
+      <button data-t="executivo"><span class="n">1</span>Sumário executivo</button>
       <button data-t="info"><span class="n">2</span>Informação do avaliador</button>
-      <button class="pending" data-t="visaogeral"><span class="n">3</span>Visão geral da Companhia</button>
+      <button data-t="visaogeral"><span class="n">3</span>Visão geral da Companhia</button>
       <button data-t="macro"><span class="n">4</span>Análise macroeconômica</button>
-      <button class="pending" data-t="setor"><span class="n">5</span>Análise de Setor</button>
+      <button data-t="setor"><span class="n">5</span>Análise de Setor</button>
       <button data-t="avaliacao"><span class="n">6</span>Avaliação</button>
-      <button class="pending" data-t="resultados"><span class="n">7</span>Resultados obtidos</button>
-      <button class="pending" data-t="anexos"><span class="n">8</span>Anexos</button>
+      <button data-t="resultados"><span class="n">7</span>Resultados obtidos</button>
+      <button data-t="anexos"><span class="n">8</span>Anexos</button>
     </nav>
   </header>
 
@@ -249,23 +247,40 @@
 
       <h2 class="section-title" style="margin-top:40px">Sumário</h2>
       <h3 class="section-h">Conteúdo do relatório</h3>
-      <p class="lead" style="margin-top:-14px;margin-bottom:6px">Clique em um bloco para ir direto à seção. Blocos ainda não publicados aparecem no menu superior marcados como "em construção".</p>
+      <p class="lead" style="margin-top:-14px;margin-bottom:6px">Clique em um bloco para ir direto à seção.</p>
       <div class="sumario">
-        <button class="sum-item" data-goto="info"><span class="num">01</span><span><span class="lab">Metodologia e Premissas</span><span class="sub" style="display:block">Informação do avaliador · disclaimer e fonte de dados</span></span></button>
-        <button class="sum-item" data-goto="macro"><span class="num">02</span><span><span class="lab">Análise Macroeconômica</span><span class="sub" style="display:block">Selic, IPCA, PIB, câmbio, desemprego e ICC</span></span></button>
+        <button class="sum-item" data-goto="info"><span class="num">01</span><span><span class="lab">Metodologia e Premissas</span><span class="sub" style="display:block">Sumário executivo · informação do avaliador · visão geral da Companhia</span></span></button>
+        <button class="sum-item" data-goto="macro"><span class="num">02</span><span><span class="lab">Análise Macroeconômica</span><span class="sub" style="display:block">Selic, IPCA, PIB, câmbio, desemprego, ICC e Análise de Setor</span></span></button>
         <button class="sum-item" data-goto="avaliacao"><span class="num">03</span><span><span class="lab">Avaliação</span><span class="sub" style="display:block">Fluxo de Caixa Descontado (FCDF) e FCDF (OpCo)</span></span></button>
-        <button class="sum-item" data-goto="resultados"><span class="num">04</span><span><span class="lab">Resultados Obtidos</span><span class="sub" style="display:block">Em construção</span></span></button>
+        <button class="sum-item" data-goto="resultados"><span class="num">04</span><span><span class="lab">Resultados Obtidos</span><span class="sub" style="display:block">Faixa de valor (cenário Base) e anexos</span></span></button>
       </div>
     </section>
 
-    <!-- ===== 1. SUMÁRIO EXECUTIVO (placeholder) ===== -->
+    <!-- ===== 1. SUMÁRIO EXECUTIVO ===== -->
     <section class="pane" id="executivo">
       <h2 class="section-title">1 · Sumário executivo</h2>
       <h3 class="section-h">Sumário executivo</h3>
-      <div class="placeholder">
-        <div class="pico">Em construção</div>
-        <p>Esta seção reunirá a conclusão executiva do valuation (faixa de valor, principais drivers e recomendação) assim que o Bloco 6 · Avaliação estiver completo. Será adicionada em uma próxima etapa.</p>
+      <p class="lead">Metodologia de Fluxo de Caixa Descontado (FCDF), cenário Base. A faixa completa (Otimista/Base/Pessimista) ainda não está disponível — ver nota ao final desta seção.</p>
+      <div class="grid g3" style="margin:18px 0 20px">
+        <div class="card accent"><div class="stat"><span class="cap">Enterprise Value · com imóveis</span><span class="big">R$ 34,1 MM</span><span class="cap">Fluxo de Caixa Descontado FCDF</span></div></div>
+        <div class="card accent"><div class="stat"><span class="cap">Equity Value · com imóveis</span><span class="big">R$ 22,3 MM</span><span class="cap">EV − Dívida Líquida</span></div></div>
+        <div class="card"><div class="stat"><span class="cap">Equity Value · OpCo (sem imóveis)</span><span class="big">R$ 20,6 MM</span><span class="cap">carve-out PropCo</span></div></div>
       </div>
+      <div class="grid g3">
+        <div class="card">
+          <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Por que esse valor</h4>
+          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">DCF (FCFF) a WACC 23,61% e g 5,57%, horizonte 2026F–2031F + perpetuidade. Fonte: aba "Fluxo de Caixa Descontado FCDF" da planilha base.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Principal driver</h4>
+          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">Recuperação de margem: a receita cresceu (R$ 25,0 mi → 33,7 mi → 37,9 mi em 2023-2025), mas a margem EBIT caiu de 24,7% para 9,6% com a virada para revenda de produtos importados. A nova fábrica é a aposta para produzir internamente e recuperar margem — projeção Base já assume essa recuperação parcial (margem EBIT volta a ~16% em 2026F).</p>
+        </div>
+        <div class="card">
+          <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Principal risco</h4>
+          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">Empresa alavancada (Dívida Líquida R$ 11,78 mi em 2025) — o Equity Value é sensível a essa dívida. Conforme nota da planilha base, o 1º trimestre de 2026 fechou em prejuízo (~R$ 318 mil): a recuperação de margem projetada ainda não apareceu nos números realizados.</p>
+        </div>
+      </div>
+      <p class="note">Este sumário reflete apenas o cenário Base — o único com FCFF, WACC e EV recalculados ao vivo na aba "Fluxo de Caixa Descontado FCDF" desta planilha (Fromtherm_valuation_v9.xlsx). Os cenários Otimista e Pessimista existem no seletor do modelo (célula C7), mas não foram recongelados nesta versão do arquivo — por isso a faixa completa de valor (ver PDF de referência, Bloco 4 · Resumo Executivo) não é apresentada aqui.</p>
     </section>
 
     <!-- ===== 2. INFORMAÇÃO DO AVALIADOR (Disclaimer + Fonte de Dados) ===== -->
@@ -301,13 +316,38 @@
       </div>
     </section>
 
-    <!-- ===== 3. VISÃO GERAL DA COMPANHIA (placeholder) ===== -->
+    <!-- ===== 3. VISÃO GERAL DA COMPANHIA ===== -->
     <section class="pane" id="visaogeral">
       <h2 class="section-title">3 · Visão geral da Companhia</h2>
       <h3 class="section-h">Visão geral da Companhia</h3>
-      <div class="placeholder">
-        <div class="pico">Em construção</div>
-        <p>Descrição institucional da Fromtherm (histórico, operação, mercado de atuação). Será adicionada em uma próxima etapa.</p>
+      <p class="lead">Fabricante brasileira de trocadores de calor e bombas de calor elétricas, sediada em Santa Catarina.</p>
+      <div class="grid g2" style="margin-top:18px">
+        <div class="card">
+          <div class="kv"><span class="k">Nome</span><span class="v">Fromtherm Sistemas Térmicos</span></div>
+          <div class="kv"><span class="k">Setor</span><span class="v">Trocadores de calor e bombas de calor elétricas (aquecimento/resfriamento de piscinas e sistemas de aquecimento central)</span></div>
+          <div class="kv"><span class="k">Sede</span><span class="v">Santa Catarina — atende todo o território nacional</span></div>
+          <div class="kv"><span class="k">Tempo de mercado</span><span class="v">Mais de 20 anos</span></div>
+          <div class="kv"><span class="k">Regime tributário</span><span class="v">Lucro Presumido</span></div>
+        </div>
+        <div class="card">
+          <div class="kv"><span class="k">Produtos</span><span class="v">Linha FT de bombas de calor/trocadores de calor — opera em temperaturas negativas, aquece até 40°C e resfria até 10°C, com até 75% de economia de energia frente a sistemas convencionais</span></div>
+          <div class="kv"><span class="k">Estrutura de capital (2025)</span><span class="v">Dívida Bruta R$ 12,86 mi · Caixa R$ 1,09 mi · Dívida Líquida R$ 11,78 mi</span></div>
+        </div>
+      </div>
+      <h2 class="section-title" style="margin-top:34px">Momento atual</h2>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr><th class="txt">Valores em R$ mil</th><th>2023A</th><th>2024A</th><th>2025A</th></tr></thead>
+            <tbody>
+              <tr><td class="txt">Receita Bruta</td><td>24.986</td><td>33.699</td><td>37.913</td></tr>
+              <tr><td class="txt">EBIT</td><td>6.172</td><td>7.198</td><td>3.632</td></tr>
+              <tr><td class="txt">Margem EBIT</td><td>24,7%</td><td>21,4%</td><td>9,6%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin:18px 0 0;font-size:13.5px;color:#3a3f43;line-height:1.55">A receita cresceu de forma consistente, mas a margem caiu com a virada para revenda de produtos importados (o custo da mercadoria vendida, próximo de zero em 2023, passou a representar parcela relevante do custo em 2025). A companhia está investindo em uma nova fábrica para produzir internamente e recuperar margem — essa recuperação já está parcialmente refletida na projeção Base (ver Sumário Executivo e Avaliação).</p>
+        <p class="note">Fonte: Balancetes Fromtherm 2023–2025 (aba "Fluxo de Caixa Descontado FCDF" e notas da planilha base) e site institucional <a class="site-link" href="https://fromtherm.com.br/" target="_blank" rel="noopener">fromtherm.com.br</a>.</p>
       </div>
     </section>
 
@@ -337,13 +377,32 @@
       </div>
     </section>
 
-    <!-- ===== 5. ANÁLISE DE SETOR (placeholder) ===== -->
+    <!-- ===== 5. ANÁLISE DE SETOR ===== -->
     <section class="pane" id="setor">
       <h2 class="section-title">5 · Análise de Setor</h2>
-      <h3 class="section-h">Análise de Setor</h3>
-      <div class="placeholder">
-        <div class="pico">Em construção</div>
-        <p>Panorama do setor de atuação da Fromtherm (tamanho de mercado, crescimento, concorrência). Será adicionada em uma próxima etapa.</p>
+      <h3 class="section-h">Setor de trocadores de calor no Brasil</h3>
+      <p class="lead">Mercado de trocadores de calor (heat exchangers), segmentado por tecnologia — referência de crescimento setorial usada como contraponto ao crescimento de receita projetado da Fromtherm.</p>
+      <div class="card" style="margin-top:18px">
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr><th class="txt">Indicador</th><th>Valor</th><th>Horizonte</th><th class="txt">Fonte</th></tr></thead>
+            <tbody>
+              <tr><td class="txt">Trocadores de calor Shell &amp; Tube — Brasil</td><td>+6,0% a.a.</td><td>CAGR 2026–2031</td><td class="txt">Grand View Research</td></tr>
+              <tr><td class="txt">Trocadores de calor Plate &amp; Frame — Brasil</td><td>+6,5% a.a.</td><td>CAGR 2026–2031</td><td class="txt">Grand View Research</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Fontes: <a class="site-link" href="https://www.grandviewresearch.com/horizon/outlook/shell-and-tube-heat-exchanger-market/brazil" target="_blank" rel="noopener">Grand View Research — Shell &amp; Tube Heat Exchanger Market, Brazil</a> · <a class="site-link" href="https://www.grandviewresearch.com/horizon/outlook/plate-frame-heat-exchangers-market/brazil" target="_blank" rel="noopener">Grand View Research — Plate &amp; Frame Heat Exchangers Market, Brazil</a>.</p>
+      </div>
+      <div class="grid g2" style="margin-top:18px">
+        <div class="card">
+          <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Crescimento de receita da Fromtherm vs. mercado</h4>
+          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">No cenário Base, a receita da Fromtherm cresce 10,4% em 2026F, desacelerando para 8,3% (2027), 6,2% (2028), 4,1% (2029) e 2,0% a.a. no fim do horizonte — acima do crescimento setorial de 6,0–6,5% a.a. nos primeiros anos, convergindo depois. Fonte: aba "Fluxo de Caixa Descontado FCDF" da planilha base.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Perfil de risco setorial (beta)</h4>
+          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">Beta desalavancado de 1,473 — média dos setores Machinery (1,496) e Electrical Equipment (1,450) de mercados emergentes, usados como proxy para trocadores de calor. Fonte: Damodaran (jan/2026), aba "Ke_&_g" da planilha base.</p>
+        </div>
       </div>
     </section>
 
@@ -451,23 +510,74 @@
       </div>
     </section>
 
-    <!-- ===== 7. RESULTADOS OBTIDOS (placeholder) ===== -->
+    <!-- ===== 7. RESULTADOS OBTIDOS ===== -->
     <section class="pane" id="resultados">
       <h2 class="section-title">7 · Resultados obtidos</h2>
-      <h3 class="section-h">Resultados obtidos</h3>
-      <div class="placeholder">
-        <div class="pico">Em construção</div>
-        <p>Faixa de valor consolidada e recomendação final. Será adicionada em uma próxima etapa, após o fechamento do Bloco 6 · Avaliação.</p>
+      <h3 class="section-h">Valor da Fromtherm — cenário Base</h3>
+      <p class="lead">Duas visões, mesma metodologia (FCDF a WACC ≈ 23,6–23,7% e g 5,57%): mantendo os imóveis na operação, ou segregando-os para venda separada (carve-out PropCo).</p>
+      <div class="card" style="margin-top:18px">
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr><th class="txt">Cenário Base (R$ mil)</th><th>Fluxo de Caixa Descontado FCDF</th><th>FCDF (OpCo)</th></tr></thead>
+            <tbody>
+              <tr><td class="txt">WACC</td><td>23,61%</td><td>23,71%</td></tr>
+              <tr><td class="txt">g (perpetuidade)</td><td>5,57%</td><td>5,57%</td></tr>
+              <tr class="subtotal"><td class="txt">Enterprise Value</td><td>34.083</td><td>31.254</td></tr>
+              <tr><td class="txt">Dívida Líquida</td><td>11.777</td><td>10.677</td></tr>
+              <tr class="keyrow"><td class="txt">Equity Value (Valor p/ Acionista)</td><td>22.306</td><td>20.577</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="grid g2" style="margin-top:18px">
+        <div class="card">
+          <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Como ler</h4>
+          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">As duas colunas não são cenários econômicos diferentes — são a mesma operação sob duas premissas de estrutura patrimonial: manter os imóveis (FCDF) ou vendê-los separadamente à PropCo, com a operação (OpCo) pagando aluguel de mercado. A diferença de Equity Value (R$ 22,3 mi vs. R$ 20,6 mi) reflete o valor retido pelos imóveis fora da operação.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Limitações desta faixa</h4>
+          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">Estes números refletem apenas o cenário Base. Os cenários Otimista e Pessimista existem no seletor do modelo, mas não foram recalculados/congelados nesta versão da planilha (Fromtherm_valuation_v9.xlsx) — não há, portanto, uma faixa Otimista–Pessimista para apresentar nesta etapa.</p>
+        </div>
       </div>
     </section>
 
-    <!-- ===== 8. ANEXOS (placeholder) ===== -->
+    <!-- ===== 8. ANEXOS ===== -->
     <section class="pane" id="anexos">
       <h2 class="section-title">8 · Anexos</h2>
-      <h3 class="section-h">Anexos</h3>
-      <div class="placeholder">
-        <div class="pico">Em construção</div>
-        <p>Bibliografia, fontes e documentos de apoio (memória de cálculo do WACC e da perpetuidade, tabelas de sensibilidade). Será adicionada em uma próxima etapa.</p>
+      <h3 class="section-h">Bibliografia e fontes</h3>
+      <div class="grid g2" style="margin-top:18px">
+        <div class="card">
+          <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Metodologia e custo de capital</h4>
+          <ul class="biblist">
+            <li>Assaf Neto, A. — <i>Finanças Corporativas e Valor</i> (metodologia do Ke).</li>
+            <li>Damodaran, A. — beta setorial desalavancado (Machinery/Electrical, mercados emergentes): <a class="site-link" href="https://pages.stern.nyu.edu/~adamodar/pc/datasets/betaemerg.xls" target="_blank" rel="noopener">pages.stern.nyu.edu/~adamodar</a></li>
+            <li>Damodaran — Country Risk Premium (Brasil): <a class="site-link" href="https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/ctryprem.html" target="_blank" rel="noopener">pages.stern.nyu.edu/~adamodar</a></li>
+            <li>Kroll — Cost of Capital / Equity Risk Premium: <a class="site-link" href="https://www.kroll.com/en/insights/cost-of-capital" target="_blank" rel="noopener">kroll.com</a></li>
+            <li>U.S. Department of the Treasury — T-bonds 10 anos (taxa livre de risco): <a class="site-link" href="https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value=2026" target="_blank" rel="noopener">home.treasury.gov</a></li>
+            <li>FRED (St. Louis Fed) — T10YIE, inflação implícita EUA: <a class="site-link" href="https://fred.stlouisfed.org/series/T10YIE" target="_blank" rel="noopener">fred.stlouisfed.org</a></li>
+            <li>Valuation Handbook 2023 (CFA Institute) — prêmio de tamanho: <a class="site-link" href="https://rpc.cfainstitute.org/research/foundation/2024/valuation-handbook-2023" target="_blank" rel="noopener">rpc.cfainstitute.org</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Dados de mercado e setor</h4>
+          <ul class="biblist">
+            <li>Banco Central do Brasil — Boletim Focus (Selic, IPCA, PIB, câmbio).</li>
+            <li>IBGE — Contas Nacionais Trimestrais (PIB) e PNAD Contínua (desemprego).</li>
+            <li>FGV–IBRE — Índice de Confiança do Consumidor (ICC).</li>
+            <li>Grand View Research — Shell &amp; Tube Heat Exchanger Market, Brazil: <a class="site-link" href="https://www.grandviewresearch.com/horizon/outlook/shell-and-tube-heat-exchanger-market/brazil" target="_blank" rel="noopener">grandviewresearch.com</a></li>
+            <li>Grand View Research — Plate &amp; Frame Heat Exchangers Market, Brazil: <a class="site-link" href="https://www.grandviewresearch.com/horizon/outlook/plate-frame-heat-exchangers-market/brazil" target="_blank" rel="noopener">grandviewresearch.com</a></li>
+            <li>Fromtherm — site institucional: <a class="site-link" href="https://fromtherm.com.br/" target="_blank" rel="noopener">fromtherm.com.br</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="card" style="margin-top:18px">
+        <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Documentos de apoio</h4>
+        <ul class="biblist">
+          <li>Modelo de valuation: Fromtherm_valuation_v9.xlsx (abas: Inputs, Modelo, CAPEX&amp;Dep., Dist. de lucros, Ke_&amp;_g, mercado, ERP, US_T-bonds, T10YIE, beta).</li>
+          <li>Demonstrações contábeis utilizadas: Balancetes 2023, 2024, 2025 e 1º trimestre de 2026.</li>
+          <li>Memória de cálculo do WACC (Ke) e da taxa de crescimento perpétuo (g) — aba "Ke_&amp;_g" da planilha base.</li>
+        </ul>
+        <p class="note">As tabelas de sensibilidade WACC × g e as memórias de cálculo detalhadas ficam na planilha base — não foram reproduzidas nesta primeira leva do relatório.</p>
       </div>
     </section>
   </main>
