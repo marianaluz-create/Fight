@@ -311,7 +311,7 @@
         <div class="divider"></div>
         <div>
           <div class="t1">Valuation</div>
-          <div class="t2">Fromtherm · 14 de julho de 2026</div>
+          <div class="t2">Fromtherm · 14 de julho de 2026 · v1</div>
         </div>
       </div>
       <div class="top-actions">
@@ -352,7 +352,7 @@
         <div style="width:60px;height:4px;background:var(--verde);margin:0 auto 26px;border-radius:2px"></div>
         <h2 class="section-title" style="margin-bottom:14px">Valuation</h2>
         <h3 style="font-size:44px;font-weight:800;margin:0 0 18px;letter-spacing:-1px">Fromtherm</h3>
-        <p style="font-size:16px;color:var(--cinza);margin:0">Data da Apresentação · 14 de julho de 2026</p>
+        <p style="font-size:16px;color:var(--cinza);margin:0">Data da Apresentação · 14 de julho de 2026 · v1</p>
       </div>
     </section>
 
@@ -398,11 +398,15 @@
       <div class="card" style="max-width:620px">
         <div class="kv">
           <span class="k">Fonte de Dados</span>
-          <span class="v">Balanço Patrimonial 2024 e 2025</span>
+          <span class="v">Balanço Patrimonial e Demonstrativo dos Resultados dos anos de 2023, 2024, 2025 e 1º Trimestre de 2026</span>
         </div>
         <div class="kv">
           <span class="k">Regime da Análise</span>
           <span class="v"><span class="badge">Competência</span></span>
+        </div>
+        <div class="kv">
+          <span class="k">Endividamento</span>
+          <span class="v"><span class="badge">Dezembro/2025</span></span>
         </div>
       </div>
     </section>
@@ -411,8 +415,8 @@
     <section class="pane" id="macro">
       <h2 class="section-title">Contexto Externo</h2>
       <h3 class="section-h">Cenário Macroeconômico</h3>
-      <p class="lead" style="margin-bottom:8px">Indicadores realizados (2023–2025) e projeção de mercado para 2026.</p>
-      <p class="src" style="color:var(--cinza);font-size:12.5px;margin:0 0 24px">Fontes: Banco Central (BCB / Copom / Focus / PTAX) · IBGE · FGV-IBRE · Última atualização: 06 de Julho/2026</p>
+      <p class="lead" style="margin-bottom:8px">Indicadores realizados (2023–2025) e projeções de mercado até 2031 (Selic, IPCA, PIB, IGP-M e câmbio — mesmas premissas usadas no FCDF). Desemprego e ICC não têm projeção no Focus, mostrados só até o último dado disponível (2026).</p>
+      <p class="src" style="color:var(--cinza);font-size:12.5px;margin:0 0 24px">Fontes: Banco Central (BCB / Copom / Focus 03/07/2026 / PTAX) · IBGE · FGV-IBRE · planilha de valuation (abas "inputs" / "Modelo (Critérios O2)")</p>
       <div class="grid g2" id="charts"></div>
     </section>
 
@@ -449,6 +453,29 @@
         <p style="margin:18px 0 0;font-size:13.5px;color:#3a3f43;line-height:1.55">A receita cresceu de forma consistente, mas a margem caiu com a virada para revenda de produtos importados (o custo da mercadoria vendida, próximo de zero em 2023, passou a representar parcela relevante do custo em 2025). A companhia está investindo em uma nova fábrica para produzir internamente e recuperar margem — essa recuperação já está parcialmente refletida na projeção Base (ver Sumário Executivo e Avaliação).</p>
         <p class="note">Fonte: Balancetes Fromtherm 2023–2025 (aba "Fluxo de Caixa Descontado FCDF" e notas da planilha base) e site institucional <a class="site-link" href="https://fromtherm.com.br/" target="_blank" rel="noopener">fromtherm.com.br</a>.</p>
       </div>
+
+      <h2 class="section-title" style="margin-top:34px">Balanços (resumido)</h2>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr><th>Valores em R$ mil</th><th>2023A</th><th>2024A</th><th>2025A</th></tr></thead>
+            <tbody>
+              <tr class="group"><td colspan="4">Ativo Circulante</td></tr>
+              <tr><td>Clientes (contas a receber)</td><td>5.315</td><td>7.475</td><td>8.050</td></tr>
+              <tr><td>(-) Adiantamentos de Clientes</td><td>−2.792</td><td>−1.705</td><td>−2.058</td></tr>
+              <tr><td>Estoques</td><td>1.989</td><td>6.953</td><td>7.700</td></tr>
+              <tr><td>Caixa e Equivalentes</td><td>1.544</td><td>3.203</td><td>1.086</td></tr>
+              <tr class="group"><td colspan="4">Ativo Não Circulante</td></tr>
+              <tr><td>Imobilizado Líquido (total)</td><td>5.855</td><td>9.669</td><td>10.535</td></tr>
+              <tr class="group"><td colspan="4">Passivo Circulante</td></tr>
+              <tr><td>Fornecedores</td><td>1.258</td><td>1.107</td><td>1.024</td></tr>
+              <tr class="group"><td colspan="4">Passivo Não Circulante</td></tr>
+              <tr><td>Empréstimos e Financiamentos (Dívida Bruta)</td><td>–</td><td>12.421</td><td>12.863</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Balanço resumido com as contas disponibilizadas na planilha base (aba "Balancetes"). Demais contas (patrimônio líquido, outros itens do circulante/não circulante) não constam da base de dados — "Não informado na planilha base." Empréstimos e Financiamentos de 2023 também não informado.</p>
+      </div>
     </section>
 
     <!-- ===== 7. ANÁLISE DE SETOR ===== -->
@@ -478,6 +505,61 @@
           <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">Beta desalavancado de 1,473 — média dos setores Machinery (1,496) e Electrical Equipment (1,450) de mercados emergentes, usados como proxy para trocadores de calor. Fonte: Damodaran (jan/2026), aba "Ke_&_g" da planilha base.</p>
         </div>
       </div>
+
+      <h2 class="section-title" style="margin-top:34px">Quadro de Concorrentes</h2>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr><th>Marca / Empresa</th><th>Origem</th><th>Observação</th></tr></thead>
+            <tbody>
+              <tr><td>Nautilus</td><td>Nacional</td><td>Linha full inverter/Wi-Fi para piscinas residenciais e comerciais</td></tr>
+              <tr><td>Sodramar</td><td>Nacional</td><td>Linha full inverter/Wi-Fi para piscinas residenciais e comerciais</td></tr>
+              <tr><td>Komeco</td><td>Nacional</td><td>Também atua em bomba de calor para aquecimento central, além de piscinas</td></tr>
+              <tr><td>Industek</td><td>Nacional</td><td>Posiciona-se como pioneira em inovação e sustentabilidade</td></tr>
+              <tr><td>Tholz</td><td>Nacional</td><td>Concorrente citado no mercado de trocadores de calor para piscina</td></tr>
+              <tr><td>Maxtemp</td><td>Nacional</td><td>Foco em custo-benefício</td></tr>
+              <tr><td>Light Tech</td><td>Nacional</td><td>Linha de bomba/trocador de calor para piscina</td></tr>
+              <tr><td>Heliotek (Grupo Bosch)</td><td>Nacional (grupo internacional)</td><td>Maior fabricante de aquecedor solar do Brasil; também com linha de bomba de calor</td></tr>
+              <tr><td>AstralPool (Fluidra)</td><td>Internacional (Espanha), com operação no Brasil</td><td>Apontada como líder mundial em climatização de piscinas</td></tr>
+              <tr><td>Midea</td><td>Internacional (China), fábrica local em MG</td><td>Concorrente adjacente em climatização geral — pode expandir para o segmento de piscinas</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Fontes: <a class="site-link" href="https://blog.globaltechbrasil.com/aquecedores/melhores-marcas-de-trocador-de-calor-full-inverter/" target="_blank" rel="noopener">Globaltech Brasil</a> · <a class="site-link" href="https://www.rilcomercial.com.br/aquecimento-para-piscina1/trocador-de-calor/" target="_blank" rel="noopener">Ril Comercial</a> · <a class="site-link" href="https://www.komeco.com.br/bomba-de-calor-para-aquecimento-central/" target="_blank" rel="noopener">Komeco</a> · <a class="site-link" href="https://industek.com.br/produtos/bomba-de-calor-piscina/" target="_blank" rel="noopener">Industek</a> · <a class="site-link" href="https://www.heliotek.com.br/para-casa/bombas-de-calor" target="_blank" rel="noopener">Heliotek</a> · <a class="site-link" href="https://solaresol.com.br/trocador-de-calor/" target="_blank" rel="noopener">Solaresol</a> · <a class="site-link" href="https://www.embrar.com.br/sistemas-de-climatizacao/bomba-de-calor/midea" target="_blank" rel="noopener">Embrar/Midea</a>. Levantamento não exaustivo — concorrentes identificados via busca em sites de fabricantes e revendedores, não em base setorial fechada.</p>
+      </div>
+
+      <h2 class="section-title" style="margin-top:34px">Associação Setorial</h2>
+      <div class="card">
+        <p style="margin:0 0 14px;font-size:13.5px;color:#3a3f43;line-height:1.55">A <b>ABRAVA</b> (Associação Brasileira de Refrigeração, Ar Condicionado, Ventilação e Aquecimento) é a entidade oficial do setor de HVAC-R no Brasil, no qual bombas de calor se inserem.</p>
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr><th>Indicador (setor HVAC-R agregado)</th><th>2025</th><th>Projeção 2026</th></tr></thead>
+            <tbody>
+              <tr><td>Faturamento do setor (ventilação, ar-condicionado e refrigeração)</td><td>R$ 50,15 bilhões (+10,4% vs. 2024)</td><td>R$ 55,62 bilhões</td></tr>
+              <tr><td>Segmento de instalação e manutenção</td><td>+20,7%</td><td>+19,8% (projeção)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Fonte: <a class="site-link" href="https://abrava.com.br/setor-de-ventilacao-ar-condicionado-e-refrigeracao-no-brasil-teve-faturamento-da-ordem-de-r-5015-bilhoes-em-2025/" target="_blank" rel="noopener">ABRAVA</a> · <a class="site-link" href="https://www.febrava.com.br/pt-br/blog/refrigeracao/setor-de-climatizacao-fatura-50-bi-em-2025.html" target="_blank" rel="noopener">Febrava</a>. A ABRAVA não publica um recorte específico para bombas de calor de piscina — os números acima são do setor HVAC-R agregado, usados como referência de contexto, não como tamanho do mercado da Fromtherm.</p>
+      </div>
+
+      <h2 class="section-title" style="margin-top:34px">Tendências de Mercado e Tecnologia</h2>
+      <div class="card">
+        <ul class="disc">
+          <li>Etiquetagem energética obrigatória do INMETRO (Portaria 269/2021) desde janeiro/2023, com prazo de adequação do varejo até junho/2024 e multas de R$ 100 mil a R$ 1,5 milhão por descumprimento — pressiona o mercado por eficiência energética.</li>
+          <li>A ABRAVA destaca avanços de fabricantes (ex.: Daikin) na nova classificação do Programa Brasileiro de Etiquetagem, reforçando a eficiência energética como diferencial competitivo.</li>
+          <li>Tecnologia full inverter surge como padrão emergente no segmento, com ganhos de até 50% de economia energética frente a sistemas convencionais — a própria linha FT da Fromtherm já se posiciona nessa faixa de eficiência.</li>
+          <li>Aquecimento solar residencial (26,7 milhões de m² instalados no Brasil) segue crescendo e avança sobre o chuveiro elétrico — mercado adjacente/substituto ao aquecimento por bomba de calor em algumas aplicações.</li>
+        </ul>
+        <p class="note">Fontes: <a class="site-link" href="https://blogclimatiza.com.br/selo-procel-ar-condicionado-guia-2025/" target="_blank" rel="noopener">Blog Climatiza</a> · <a class="site-link" href="https://abrava.com.br/daikin-ultrapassa-nivel-de-eficiencia-energetica-na-nova-classificacao-do-programa-brasileiro-de-etiquetagem/" target="_blank" rel="noopener">ABRAVA</a> · <a class="site-link" href="https://blog.globaltechbrasil.com/aquecedores/melhores-marcas-de-trocador-de-calor-full-inverter/" target="_blank" rel="noopener">Globaltech Brasil</a> · <a class="site-link" href="https://en.clickpetroleoegas.com.br/solar-heater-advances-to-267-million-m-in-brazil-and-threatens-electric-showers-in-homes-in-the-south-and-southeast-davila/" target="_blank" rel="noopener">Click Petróleo e Gás</a>. Adoção de refrigerante R32 é tendência de mercado amplamente reportada no setor, mas não foi encontrada fonte nacional específica que confirme sua adoção no segmento de bombas de calor para piscina no Brasil.</p>
+      </div>
+
+      <h2 class="section-title" style="margin-top:34px">Ameaça Competitiva — Novos Entrantes e Importação Chinesa</h2>
+      <div class="callout warn">
+        <div class="co-h"><span class="co-n">!</span>Risco de entrada e de venda direta da China</div>
+        <p>Marcas chinesas já respondem por cerca de <b>20% dos eletrônicos vendidos no Brasil</b> (ante 16,5% em 2019), disputando espaço com marcas estabelecidas. Fabricantes como <b>Midea, TCL e Hisense</b> já têm fábricas no Brasil (Minas Gerais, Manaus) — ou seja, a entrada já é estruturada via produção local, não apenas importação avulsa. No Mercado Livre já circulam bombas/trocadores de calor de piscina de marcas pouco tradicionais (ex.: GDA BC-300) vendidas diretamente ao consumidor, ao lado das marcas nacionais estabelecidas.</p>
+      </div>
+      <p class="note">Por outro lado, a importação avulsa de menor escala enfrenta barreira tributária relevante: Imposto de Importação de 0–60% conforme o NCM do produto, mais ICMS estadual (7–18%+) e taxas do Siscomex. Não foi encontrada evidência de venda massiva direta ao consumidor brasileiro via Shopee/AliExpress especificamente para bombas de calor de piscina — esse padrão de venda direta é mais forte em eletrônicos de consumo geral do que neste nicho. Fontes: <a class="site-link" href="https://www.infomoney.com.br/consumo/ar-condicionado-pela-metade-do-preco-gera-entusiasmo-por-marcas-chinesas-no-brasil/" target="_blank" rel="noopener">InfoMoney</a> · <a class="site-link" href="https://www.mercadolivre.com.br/gda-bc-300-trocador-bomba-de-calor-aquecedor-para-piscinas-30000l/p/MLB37923523" target="_blank" rel="noopener">Mercado Livre</a> · <a class="site-link" href="https://primem.com.br/blog/impostos-importacao-china/" target="_blank" rel="noopener">Primem</a>.</p>
     </section>
 
     <!-- ===== 8. FLUXO DE CAIXA DESCONTADO FCDF ===== -->
@@ -498,8 +580,11 @@
             </tr></thead>
             <tbody>
               <tr><td>EBIT</td><td>6.396</td><td>7.220</td><td>7.840</td><td>8.269</td><td>8.435</td><td>8.308</td></tr>
+              <tr class="margin"><td>% da Receita Bruta</td><td>16,42%</td><td>16,79%</td><td>16,83%</td><td>16,72%</td><td>16,38%</td><td>15,82%</td></tr>
               <tr><td>(-) IRPJ/CSLL</td><td>−1.176</td><td>−1.300</td><td>−1.410</td><td>−1.499</td><td>−1.562</td><td>−1.593</td></tr>
+              <tr class="margin"><td>% da Receita Bruta</td><td>−3,02%</td><td>−3,02%</td><td>−3,03%</td><td>−3,03%</td><td>−3,03%</td><td>−3,03%</td></tr>
               <tr class="subtotal"><td>NOPAT</td><td>5.221</td><td>5.919</td><td>6.429</td><td>6.770</td><td>6.873</td><td>6.715</td></tr>
+              <tr class="margin"><td>% da Receita Bruta</td><td>13,40%</td><td>13,77%</td><td>13,81%</td><td>13,69%</td><td>13,35%</td><td>12,79%</td></tr>
               <tr><td>(+) Depreciação</td><td>464</td><td>464</td><td>464</td><td>464</td><td>464</td><td>464</td></tr>
               <tr><td>(-) NCG</td><td>−378</td><td>−1.379</td><td>−1.306</td><td>−1.079</td><td>−797</td><td>−463</td></tr>
               <tr><td>(-) CAPEX/Investimentos</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
@@ -510,6 +595,7 @@
             </tbody>
           </table>
         </div>
+        <p class="note">% da Receita Bruta = linha ÷ Receita Bruta do respectivo ano (aba "Fluxo de Caixa Descontado FCDF" da planilha base).</p>
       </div>
       <div class="grid g2" style="margin-top:18px">
         <div class="card">
@@ -519,7 +605,7 @@
           <div class="kv"><span class="k">Enterprise Value (Valor da Empresa)</span><span class="v">R$ 34.083 mil</span></div>
         </div>
         <div class="card">
-          <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Ponte para Equity Value</h4>
+          <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Ponte para Equity Value (2025)</h4>
           <div class="kv"><span class="k">Dívida Bruta (2025)</span><span class="v">R$ 12.863 mil</span></div>
           <div class="kv"><span class="k">(-) Caixa e Aplicações (2025)</span><span class="v">−R$ 1.086 mil</span></div>
           <div class="kv"><span class="k">Dívida Líquida</span><span class="v">R$ 11.777 mil</span></div>
@@ -576,6 +662,26 @@
         </div>
       </div>
       <p class="note">Premissas do ajuste OpCo/PropCo (aba "FCDF (OpCo)" da planilha base): depreciação de prédios excluída da operação (R$ 294 mil/ano); aluguel de mercado de R$ 240 mil/ano pelos imóveis (reajustado pelo IGP-M a partir de 2027); dívida imobiliária de R$ 1.100 mil transferida à PropCo e excluída da dívida líquida da OpCo. Cenário Base (célula C7).</p>
+
+      <h2 class="section-title" style="margin-top:34px">Diferenças entre Página 8 (FCDF) e Página 9 (FCDF OpCo)</h2>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr><th>Premissa</th><th>Página 8 · Fluxo de Caixa Descontado FCDF</th><th>Página 9 · FCDF (OpCo)</th></tr></thead>
+            <tbody>
+              <tr><td>Estrutura patrimonial</td><td>Imóveis (terrenos e prédios) permanecem na empresa</td><td>Imóveis segregados para venda separada à PropCo</td></tr>
+              <tr><td>Aluguel de mercado</td><td>Não há — a empresa é dona do imóvel</td><td>R$ 240 mil/ano, reajustado pelo IGP-M a partir de 2027</td></tr>
+              <tr><td>Depreciação de prédios</td><td>Incluída (R$ 294 mil/ano a mais que a OpCo)</td><td>Excluída da operação</td></tr>
+              <tr><td>Dívida Líquida</td><td>R$ 11.777 mil (inclui dívida imobiliária)</td><td>R$ 10.677 mil (exclui R$ 1.100 mil de dívida imobiliária, transferida à PropCo)</td></tr>
+              <tr><td>WACC</td><td>23,61%</td><td>23,71%</td></tr>
+              <tr class="subtotal"><td>Enterprise Value</td><td>R$ 34.083 mil</td><td>R$ 31.254 mil</td></tr>
+              <tr class="keyrow"><td>Equity Value</td><td>R$ 22.306 mil</td><td>R$ 20.577 mil</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin:18px 0 0;font-size:13.5px;color:#3a3f43;line-height:1.55">A diferença de <b>R$ 1.729 mil no Equity Value</b> (R$ 22.306 mil vs. R$ 20.577 mil) reflete o valor que os imóveis representam quando ficam fora da operação: a OpCo deixa de ter a despesa de depreciação predial mas passa a pagar aluguel de mercado, e sua dívida líquida cai R$ 1.100 mil (a dívida imobiliária vai para a PropCo). A soma desses efeitos — descontada a valor presente pelo WACC de cada estrutura — explica o Enterprise Value R$ 2.829 mil menor da OpCo.</p>
+        <p class="note">Os imóveis (e a dívida/valor da PropCo) não são avaliados nesta análise — o valor da Página 9 representa só a operação (OpCo), não o valor combinado OpCo + PropCo.</p>
+      </div>
     </section>
 
     <!-- ===== 10. SUMÁRIO EXECUTIVO ===== -->
@@ -841,28 +947,48 @@ document.getElementById('fmtClear').addEventListener('click', fmtCmd(function(){
 
 /* ================= CHARTS (Cenário Macroeconômico) ================= */
 /* Dados extraídos da Planilha de Indicadores Econômicos (mesma fonte nacional usada em todos os
-   clientes O2 — aba "5. Cenário Macroeconômico" da planilha base). Anos 2023–2025 = realizado;
-   2026 = projeção de mercado (Focus). */
-var YEARS = ['2023','2024','2025','2026*'];
+   clientes O2 — aba "5. Cenário Macroeconômico" da planilha base) + abas "inputs"/"Modelo (Critérios O2)"
+   da planilha de valuation (mesmas premissas de IPCA, IGP-M e câmbio usadas no FCDF). Selic e PIB
+   2029-2031 e IGP-M/IPCA 2030-2031 repetem o último ano com projeção oficial disponível (mesma
+   convenção adotada no modelo). Desemprego e ICC não têm projeção no relatório Focus do BCB — o
+   gráfico mostra só o realizado + o último dado disponível (2026).
+*/
+var YEARS_LONG = ['2023','2024','2025','2026F','2027F','2028F','2029F','2030F','2031F'];
+var YEARS_SHORT = ['2023','2024','2025','2026*'];
 var INDICATORS = [
-  {t:'Taxa de Juros (Selic)', unit:'% a.a.', src:'BCB / Copom (realizado) · BCB Focus (2026 proj.)',
-   vals:[11.75,12.25,15.00,14.00], fmt:v=>v.toFixed(2).replace('.',',')+'%'},
-  {t:'Inflação (IPCA)', unit:'% a.a.', src:'IBGE (realizado) · BCB Focus (2026 proj.)',
-   vals:[4.62,4.83,4.26,5.30], fmt:v=>v.toFixed(2).replace('.',',')+'%'},
-  {t:'PIB', unit:'% a.a.', src:'IBGE (realizado) · BCB Focus (2026 proj.)',
-   vals:[3.20,3.40,2.30,1.99], fmt:v=>v.toFixed(2).replace('.',',')+'%'},
-  {t:'Taxa de Câmbio (USD/BRL)', unit:'R$ / USD', src:'BCB PTAX (realizado) · BCB Focus (2026 proj.)',
-   vals:[4.85,6.19,5.50,5.20], fmt:v=>'R$ '+v.toFixed(2).replace('.',',')},
-  {t:'Taxa de Desemprego', unit:'%', src:'IBGE – PNAD Contínua',
-   vals:[7.80,6.60,5.60,5.60], fmt:v=>v.toFixed(2).replace('.',',')+'%'},
-  {t:'ICC – Índice de Confiança do Consumidor', unit:'pts', src:'FGV – IBRE',
-   vals:[91.3,91.3,89.1,88.7], fmt:v=>v.toFixed(1).replace('.',',')+' pts'}
+  {t:'Taxa de Juros (Selic)', unit:'% a.a.', years:YEARS_LONG, realized:3,
+   src:'BCB / Copom (realizado) · BCB Focus 03/07/2026 (2026-28) · 2029-31 repete 2028',
+   vals:[11.75,12.25,15.00,14.00,12.00,10.50,10.50,10.50,10.50], fmt:v=>v.toFixed(2).replace('.',',')+'%',
+   legendProj:'Projeção 2026–2031 (Focus BCB · 2029-31 repete 2028)'},
+  {t:'Inflação (IPCA)', unit:'% a.a.', years:YEARS_LONG, realized:3,
+   src:'IBGE (realizado) · BCB Focus 03/07/2026 (2026-29) · 2030-31 repete 2029',
+   vals:[4.62,4.83,4.26,5.30,4.18,3.70,3.50,3.50,3.50], fmt:v=>v.toFixed(2).replace('.',',')+'%',
+   legendProj:'Projeção 2026–2031 (Focus BCB, mesma premissa do FCDF)'},
+  {t:'PIB', unit:'% a.a.', years:YEARS_LONG, realized:3,
+   src:'IBGE (realizado) · BCB Focus 03/07/2026 (2026-29) · 2030-31 = PIB de longo prazo do modelo (2,00%)',
+   vals:[3.20,3.40,2.30,1.99,1.69,2.00,2.00,2.00,2.00], fmt:v=>v.toFixed(2).replace('.',',')+'%',
+   legendProj:'Projeção 2026–2031 (Focus BCB · 2030-31 = PIB LP do modelo)'},
+  {t:'IGP-M', unit:'% a.a.', years:YEARS_LONG, realized:3,
+   src:'FGV-IBRE (realizado) · BCB Focus 03/07/2026 (2026-29) · 2030-31 repete 2029',
+   vals:[-3.18,6.54,-1.05,5.68,4.00,3.82,3.70,3.70,3.70], fmt:v=>v.toFixed(2).replace('.',',')+'%',
+   legendProj:'Projeção 2026–2031 (Focus BCB, mesma premissa do FCDF OpCo)'},
+  {t:'Taxa de Câmbio (USD/BRL)', unit:'R$ / USD', years:YEARS_LONG, realized:3,
+   src:'BCB PTAX (realizado) · BCB Focus 03/07/2026 (2026-27) · 2028-31 estimado, mesma premissa do FCDF',
+   vals:[4.85,6.19,5.50,5.20,5.28,5.35,5.40,5.45,5.50], fmt:v=>'R$ '+v.toFixed(2).replace('.',','),
+   legendProj:'Projeção 2026–2031 (Focus BCB / estimativa do modelo)'},
+  {t:'Taxa de Desemprego', unit:'%', years:YEARS_SHORT, realized:3, src:'IBGE – PNAD Contínua (sem projeção no relatório Focus do BCB)',
+   vals:[7.80,6.60,5.60,5.60], fmt:v=>v.toFixed(2).replace('.',',')+'%',
+   legendProj:'Último dado disponível (2026) — sem projeção Focus'},
+  {t:'ICC – Índice de Confiança do Consumidor', unit:'pts', years:YEARS_SHORT, realized:3, src:'FGV – IBRE (sem projeção no relatório Focus do BCB)',
+   vals:[91.3,91.3,89.1,88.7], fmt:v=>v.toFixed(1).replace('.',',')+' pts',
+   legendProj:'Último dado disponível (2026) — sem projeção Focus'}
 ];
 
 function buildChart(ind){
   var W=520,H=280, ml=58,mr=58,mt=40,mb=34;
   var iw=W-ml-mr, ih=H-mt-mb;
-  var vals=ind.vals, min=Math.min.apply(null,vals), max=Math.max.apply(null,vals);
+  var vals=ind.vals, years=ind.years, realized=ind.realized;
+  var min=Math.min.apply(null,vals), max=Math.max.apply(null,vals);
   var pad=(max-min)*0.25 || Math.abs(max)*0.15 || 1;
   var lo=min-pad, hi=max+pad;
   function x(i){ return ml + (vals.length===1?iw/2:iw*i/(vals.length-1)); }
@@ -876,18 +1002,19 @@ function buildChart(ind){
   var solid='', dash='';
   for(var i=0;i<vals.length-1;i++){
     var seg='M'+x(i).toFixed(1)+','+y(vals[i]).toFixed(1)+' L'+x(i+1).toFixed(1)+','+y(vals[i+1]).toFixed(1);
-    if(i<vals.length-2) solid+=seg+' '; else dash+=seg;
+    if(i+1<realized) solid+=seg+' '; else dash+=seg+' ';
   }
   g+='<path d="'+solid+'" fill="none" stroke="#6CF269" stroke-width="3.5" stroke-linecap="round"/>';
   g+='<path d="'+dash+'" fill="none" stroke="#9aa0a3" stroke-width="3" stroke-dasharray="6 5" stroke-linecap="round"/>';
+  var fsize = vals.length>6 ? 11.5 : 14;
   for(var j=0;j<vals.length;j++){
-    var proj=(j===vals.length-1);
+    var proj=(j>=realized);
     var col=proj?'#9aa0a3':'#6CF269';
-    g+='<circle cx="'+x(j).toFixed(1)+'" cy="'+y(vals[j]).toFixed(1)+'" r="5" fill="#fff" stroke="'+col+'" stroke-width="3.5"/>';
-    var ly=y(vals[j])-14;
+    g+='<circle cx="'+x(j).toFixed(1)+'" cy="'+y(vals[j]).toFixed(1)+'" r="4.5" fill="#fff" stroke="'+col+'" stroke-width="3"/>';
+    var ly=y(vals[j])-13;
     if(ly<mt+8) ly=y(vals[j])+22;
-    g+='<text x="'+x(j).toFixed(1)+'" y="'+ly.toFixed(1)+'" text-anchor="middle" font-size="14" font-weight="800" fill="'+ (proj?'#83868a':'#494949') +'">'+ind.fmt(vals[j])+'</text>';
-    g+='<text x="'+x(j).toFixed(1)+'" y="'+(H-12)+'" text-anchor="middle" font-size="12.5" font-weight="600" fill="#83868a">'+YEARS[j]+'</text>';
+    g+='<text x="'+x(j).toFixed(1)+'" y="'+ly.toFixed(1)+'" text-anchor="middle" font-size="'+fsize+'" font-weight="800" fill="'+ (proj?'#83868a':'#494949') +'">'+ind.fmt(vals[j])+'</text>';
+    g+='<text x="'+x(j).toFixed(1)+'" y="'+(H-12)+'" text-anchor="middle" font-size="11.5" font-weight="600" fill="#83868a">'+years[j]+'</text>';
   }
   return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+ind.t+'">'+g+'</svg>';
 }
@@ -900,7 +1027,7 @@ INDICATORS.forEach(function(ind){
   el.innerHTML='<h4>'+ind.t+'</h4><div class="unit">'+ind.unit+'</div><p class="src">'+ind.src+'</p>'+
     buildChart(ind)+
     '<div class="legend"><span><i style="background:#6CF269"></i>Realizado (2023–2025)</span>'+
-    '<span><i style="background:#9aa0a3"></i>Projeção 2026 (Focus)</span></div>';
+    '<span><i style="background:#9aa0a3"></i>'+ind.legendProj+'</span></div>';
   host.appendChild(el);
 });
 
