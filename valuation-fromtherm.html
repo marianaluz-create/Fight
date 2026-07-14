@@ -315,9 +315,9 @@
         </div>
       </div>
       <div class="top-actions">
-        <div class="progress-badge" title="Seções do sumário com conteúdo publicado nesta etapa">
-          <span>13 de 13 seções <b>· 100% concluído</b></span>
-          <span class="bar"><i style="width:100%"></i></span>
+        <div class="progress-badge" title="Sua posição no documento — avança conforme você navega pelas abas">
+          <span id="progressText">Seção 1 de 13 <b>· 8% concluído</b></span>
+          <span class="bar"><i id="progressBar" style="width:8%"></i></span>
         </div>
         <span id="autosaveStatus" class="t2" style="color:var(--verde-esc);font-weight:600"></span>
         <button class="btn-ghost" id="editToggle">✎ Modo de edição</button>
@@ -718,15 +718,30 @@ document.getElementById('lock').addEventListener('click', function(){
 
 /* ================= TABS ================= */
 var tabs = document.getElementById('tabs');
+var tabButtons = [].slice.call(tabs.querySelectorAll('button'));
+
+function updateProgress(activeBtn){
+  var idx = tabButtons.indexOf(activeBtn) + 1;
+  var total = tabButtons.length;
+  var pct = Math.round((idx / total) * 100);
+  var txt = document.getElementById('progressText');
+  var bar = document.getElementById('progressBar');
+  if(txt) txt.innerHTML = 'Seção ' + idx + ' de ' + total + ' <b>· ' + pct + '% concluído</b>';
+  if(bar) bar.style.width = pct + '%';
+}
+
 tabs.addEventListener('click', function(e){
   var b = e.target.closest('button'); if(!b) return;
-  [].forEach.call(tabs.querySelectorAll('button'), x=>x.classList.remove('active'));
+  tabButtons.forEach(x=>x.classList.remove('active'));
   b.classList.add('active');
   var id = b.getAttribute('data-t');
   [].forEach.call(document.querySelectorAll('.pane'), p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
+  updateProgress(b);
 });
+
+updateProgress(tabButtons[0]);
 
 /* ================= EDIT MODE ================= */
 var editing=false;
