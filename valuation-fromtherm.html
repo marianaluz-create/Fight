@@ -7,8 +7,11 @@
 <!--
   Valuation — Fromtherm
   Fonte dos dados: planilha base "Fromtherm_valuation_v9.xlsx" (abas coloridas 1 a 5, Fluxo de Caixa
-  Descontado FCDF, FCDF (OpCo)) + Sumário/Disclaimer (Google Slides do cliente) + Cenário
+  Descontado FCDF) + Sumário/Disclaimer (Google Slides do cliente) + Cenário
   Macroeconômico (planilha de indicadores O2, mesma fonte nacional usada em todos os clientes).
+  A partir de 14/07/2026, os cálculos da aba FCDF (OpCo) foram atualizados para a planilha
+  "Fromtherm_valuation_v10.xlsx" (aluguel de mercado revisado para R$ 64,5 mil/mês); as demais
+  abas (FCDF sem carve-out, macro, setor etc.) permanecem na v9.
   Regras: somente dados da planilha base; campos vazios não são preenchidos.
   Senha de acesso: Nome do Cliente + Ano Corrente da análise -> "Fromtherm2026"
   Modelo de referência: diagnostico-fight-analytics.html (abas 1-5 seguem exatamente o mesmo
@@ -688,10 +691,10 @@
     <section class="pane" id="opco">
       <h2 class="section-title">Avaliação</h2>
       <h3 class="section-h">FCDF (OpCo)</h3>
-      <p class="lead">Ajuste OpCo/PropCo: os terrenos e prédios são segregados para venda separada (PropCo); a operação (OpCo) passa a pagar aluguel de mercado pelo uso dos imóveis. Instrução do cliente, 13/07/2026.</p>
+      <p class="lead">Ajuste OpCo/PropCo: os terrenos e prédios são segregados para venda separada (PropCo); a operação (OpCo) passa a pagar aluguel de mercado pelo uso dos imóveis. Instrução do cliente, 13/07/2026 — aluguel atualizado em 14/07/2026 para R$ 64,5 mil/mês (ver nota abaixo).</p>
       <div class="grid g3" style="margin:18px 0 20px">
-        <div class="card accent"><div class="stat"><span class="cap">Enterprise Value (OpCo)</span><span class="big">R$ 31,3 MM</span><span class="cap">R$ 31.254 mil</span></div></div>
-        <div class="card accent"><div class="stat"><span class="cap">Equity Value (OpCo)</span><span class="big">R$ 20,6 MM</span><span class="cap">R$ 20.577 mil</span></div></div>
+        <div class="card accent"><div class="stat"><span class="cap">Enterprise Value (OpCo)</span><span class="big">R$ 27,8 MM</span><span class="cap">R$ 27.801 mil</span></div></div>
+        <div class="card accent"><div class="stat"><span class="cap">Equity Value (OpCo)</span><span class="big">R$ 17,1 MM</span><span class="cap">R$ 17.124 mil</span></div></div>
         <div class="card"><div class="stat"><span class="cap">WACC · g (perpetuidade)</span><span class="big">23,71% · 5,57%</span><span class="cap">cenário Base</span></div></div>
       </div>
       <div class="card">
@@ -701,16 +704,16 @@
               <th>Valores em R$ mil</th><th>2026F</th><th>2027F</th><th>2028F</th><th>2029F</th><th>2030F</th><th>2031F</th>
             </tr></thead>
             <tbody>
-              <tr><td>EBIT</td><td>6.156</td><td>6.970</td><td>7.581</td><td>8.001</td><td>8.156</td><td>8.019</td></tr>
+              <tr><td>EBIT</td><td>5.622</td><td>6.415</td><td>7.004</td><td>7.403</td><td>7.536</td><td>7.376</td></tr>
               <tr><td>(-) IRPJ/CSLL</td><td>−1.176</td><td>−1.300</td><td>−1.410</td><td>−1.499</td><td>−1.562</td><td>−1.593</td></tr>
-              <tr class="subtotal"><td>NOPAT</td><td>4.981</td><td>5.670</td><td>6.170</td><td>6.501</td><td>6.594</td><td>6.426</td></tr>
+              <tr class="subtotal"><td>NOPAT</td><td>4.447</td><td>5.114</td><td>5.594</td><td>5.903</td><td>5.974</td><td>5.783</td></tr>
               <tr><td>(+) Depreciação</td><td>170</td><td>170</td><td>170</td><td>170</td><td>170</td><td>170</td></tr>
               <tr><td>(-) NCG</td><td>−378</td><td>−1.379</td><td>−1.306</td><td>−1.079</td><td>−797</td><td>−463</td></tr>
               <tr><td>(-) CAPEX/Investimentos</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
-              <tr class="keyrow"><td>Fluxo de Caixa Livre para a Empresa (FCFF)</td><td>4.772</td><td>4.460</td><td>5.034</td><td>5.592</td><td>5.966</td><td>6.132</td></tr>
-              <tr><td>(+) Perpetuidade</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>34.693</td></tr>
-              <tr><td>FCFF + Perpetuidade</td><td>4.772</td><td>4.460</td><td>5.034</td><td>5.592</td><td>5.966</td><td>40.825</td></tr>
-              <tr class="keyrow"><td>Fluxo de Caixa Descontado (VP)</td><td>4.772</td><td>3.605</td><td>3.289</td><td>2.953</td><td>2.547</td><td>14.088</td></tr>
+              <tr class="keyrow"><td>Fluxo de Caixa Livre para a Empresa (FCFF)</td><td>4.238</td><td>3.905</td><td>4.457</td><td>4.994</td><td>5.346</td><td>5.489</td></tr>
+              <tr><td>(+) Perpetuidade</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>30.952</td></tr>
+              <tr><td>FCFF + Perpetuidade</td><td>4.238</td><td>3.905</td><td>4.457</td><td>4.994</td><td>5.346</td><td>36.440</td></tr>
+              <tr class="keyrow"><td>Fluxo de Caixa Descontado (VP)</td><td>4.238</td><td>3.156</td><td>2.912</td><td>2.638</td><td>2.282</td><td>12.575</td></tr>
             </tbody>
           </table>
         </div>
@@ -720,17 +723,18 @@
           <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Premissas de desconto</h4>
           <div class="kv"><span class="k">WACC</span><span class="v">23,71%</span></div>
           <div class="kv"><span class="k">g — crescimento na perpetuidade</span><span class="v">5,57%</span></div>
-          <div class="kv"><span class="k">Enterprise Value (Valor da Empresa)</span><span class="v">R$ 31.254 mil</span></div>
+          <div class="kv"><span class="k">Enterprise Value (Valor da Empresa)</span><span class="v">R$ 27.801 mil</span></div>
         </div>
         <div class="card">
           <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Ponte para Equity Value</h4>
           <div class="kv"><span class="k">Dívida Bruta (2025)</span><span class="v">R$ 12.863 mil</span></div>
           <div class="kv"><span class="k">(-) Caixa e Aplicações (2025)</span><span class="v">−R$ 1.086 mil</span></div>
           <div class="kv"><span class="k">Dívida Líquida (exclui dívida imobiliária)</span><span class="v">R$ 10.677 mil</span></div>
-          <div class="kv"><span class="k">Equity Value (Valor p/ Acionista) = EV − Dívida Líquida</span><span class="v"><b>R$ 20.577 mil</b></span></div>
+          <div class="kv"><span class="k">Equity Value (Valor p/ Acionista) = EV − Dívida Líquida</span><span class="v"><b>R$ 17.124 mil</b></span></div>
         </div>
       </div>
-      <p class="note">Premissas do ajuste OpCo/PropCo (aba "FCDF (OpCo)" da planilha base): depreciação de prédios excluída da operação (R$ 294 mil/ano); aluguel de mercado de R$ 240 mil/ano pelos imóveis (reajustado pelo IGP-M a partir de 2027); dívida imobiliária de R$ 1.100 mil transferida à PropCo e excluída da dívida líquida da OpCo. Cenário Base (célula C7).</p>
+      <p class="note">Premissas do ajuste OpCo/PropCo (aba "FCDF (OpCo)" da planilha base): depreciação de prédios excluída da operação (R$ 294 mil/ano); aluguel de mercado de R$ 774 mil/ano — R$ 64,5 mil/mês (reajustado pelo IGP-M a partir de 2027); dívida imobiliária de R$ 1.100 mil transferida à PropCo e excluída da dívida líquida da OpCo. Cenário Base (célula C7).</p>
+      <p class="note">Aluguel de mercado atualizado em 14/07/2026 (aba "BaseApoioALuguel" da planilha v10): R$ 21,50/m² × ~3.000 m² de área construída = R$ 64.500/mês (R$ 774 mil/ano) — valor médio de m² para a região, conforme apurado pelo cliente. Substitui a estimativa anterior de R$ 20 mil/mês.</p>
 
       <h2 class="section-title" style="margin-top:34px">Sensibilidade — Enterprise Value (WACC × g)</h2>
       <div class="card">
@@ -740,11 +744,11 @@
               <th>WACC \ g</th><th>3,57%</th><th>4,57%</th><th class="keycell">5,57%</th><th>6,57%</th><th>7,57%</th>
             </tr></thead>
             <tbody>
-              <tr><td>16,3%</td><td>44.706</td><td>46.872</td><td class="keycell">49.441</td><td>52.535</td><td>56.336</td></tr>
-              <tr><td>18,8%</td><td>38.065</td><td>39.437</td><td class="keycell">41.016</td><td>42.853</td><td>45.016</td></tr>
-              <tr><td>21,3%</td><td>33.295</td><td>34.218</td><td class="keycell">35.258</td><td>36.440</td><td>37.793</td></tr>
-              <tr><td>23,8%</td><td>29.704</td><td>30.353</td><td class="keycell">31.073</td><td>31.877</td><td>32.779</td></tr>
-              <tr><td>26,3%</td><td>26.903</td><td>27.375</td><td class="keycell">27.893</td><td>28.463</td><td>29.094</td></tr>
+              <tr><td>16,3%</td><td>39.801</td><td>41.734</td><td class="keycell">44.025</td><td>46.786</td><td>50.177</td></tr>
+              <tr><td>18,8%</td><td>33.877</td><td>35.101</td><td class="keycell">36.510</td><td>38.148</td><td>40.078</td></tr>
+              <tr><td>21,3%</td><td>29.621</td><td>30.445</td><td class="keycell">31.373</td><td>32.427</td><td>33.634</td></tr>
+              <tr><td>23,8%</td><td>26.418</td><td>26.997</td><td class="keycell">27.640</td><td>28.357</td><td>29.162</td></tr>
+              <tr><td>26,3%</td><td>23.920</td><td>24.341</td><td class="keycell">24.803</td><td>25.312</td><td>25.874</td></tr>
             </tbody>
           </table>
         </div>
@@ -760,20 +764,21 @@
             <thead><tr><th>Premissa</th><th>Fluxo de Caixa Descontado FCDF</th><th>FCDF (OpCo)</th></tr></thead>
             <tbody>
               <tr><td>Estrutura patrimonial</td><td>Imóveis (terrenos e prédios) permanecem na empresa</td><td>Imóveis segregados para venda separada à PropCo</td></tr>
-              <tr><td>Aluguel de mercado</td><td>Não há — a empresa é dona do imóvel</td><td>R$ 240 mil/ano, reajustado pelo IGP-M a partir de 2027</td></tr>
+              <tr><td>Aluguel de mercado</td><td>Não há — a empresa é dona do imóvel</td><td>R$ 774 mil/ano — R$ 64,5 mil/mês (reajustado pelo IGP-M a partir de 2027)</td></tr>
               <tr><td>Depreciação de prédios</td><td>Incluída (R$ 294 mil/ano a mais que a OpCo)</td><td>Excluída da operação</td></tr>
               <tr><td>Dívida Líquida</td><td>R$ 11.777 mil (inclui dívida imobiliária)</td><td>R$ 10.677 mil (exclui R$ 1.100 mil de dívida imobiliária, transferida à PropCo)</td></tr>
               <tr><td>Peso do capital próprio (E/(D+E)) no WACC</td><td>60,7%</td><td>62,8%</td></tr>
               <tr class="subtotal"><td>WACC</td><td>23,61%</td><td>23,71%</td></tr>
-              <tr class="subtotal"><td>Enterprise Value</td><td>R$ 34.083 mil</td><td>R$ 31.254 mil</td></tr>
-              <tr class="keyrow"><td>Equity Value</td><td>R$ 22.306 mil</td><td>R$ 20.577 mil</td></tr>
+              <tr class="subtotal"><td>Enterprise Value</td><td>R$ 34.083 mil</td><td>R$ 27.801 mil</td></tr>
+              <tr class="keyrow"><td>Equity Value</td><td>R$ 22.306 mil</td><td>R$ 17.124 mil</td></tr>
             </tbody>
           </table>
         </div>
         <h4 style="margin:20px 0 8px;font-size:14px;font-weight:800">Por que o WACC muda (23,61% → 23,71%)</h4>
         <p style="margin:0 0 14px;font-size:13.5px;color:#3a3f43;line-height:1.55">O custo do capital próprio (Ke, 25,62% nominal) e o custo da dívida pós-impostos (Kd, 20,5%) são <b>idênticos</b> nas duas visões — não mudam com o ajuste OpCo, porque o beta usado no releverage é o das comparáveis setoriais, não a estrutura de capital da própria Fromtherm. O que muda é só o <b>peso</b> de cada fonte de capital: como a OpCo tem menos dívida líquida (exclui a dívida imobiliária), sua fatia de capital próprio na estrutura é maior (62,8% vs. 60,7% na FCDF). Como o Ke é maior que o Kd, uma fatia maior de capital próprio puxa o WACC médio ponderado um pouco para cima — daí o WACC da OpCo ser 0,10 p.p. mais alto, mesmo tendo menos dívida.</p>
         <h4 style="margin:0 0 8px;font-size:14px;font-weight:800">Por que o Enterprise Value e o Equity Value mudam</h4>
-        <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">A diferença de <b>R$ 1.729 mil no Equity Value</b> (R$ 22.306 mil vs. R$ 20.577 mil) reflete o valor que os imóveis representam quando ficam fora da operação: a OpCo deixa de ter a despesa de depreciação predial mas passa a pagar aluguel de mercado (o que reduz o FCFF projetado), e sua dívida líquida cai R$ 1.100 mil (a dívida imobiliária vai para a PropCo). A soma desses efeitos nos fluxos de caixa — descontada a valor presente pelo WACC (ligeiramente maior) de cada estrutura — explica o Enterprise Value R$ 2.829 mil menor da OpCo.</p>
+        <p style="margin:0 0 14px;font-size:13.5px;color:#3a3f43;line-height:1.55">A diferença de <b>R$ 5.182 mil no Equity Value</b> (R$ 22.306 mil vs. R$ 17.124 mil) reflete o valor que os imóveis representam quando ficam fora da operação: a OpCo deixa de ter a despesa de depreciação predial mas passa a pagar aluguel de mercado (o que reduz o FCFF projetado), e sua dívida líquida cai R$ 1.100 mil (a dívida imobiliária vai para a PropCo). A soma desses efeitos nos fluxos de caixa — descontada a valor presente pelo WACC (ligeiramente maior) de cada estrutura — explica o Enterprise Value R$ 6.282 mil menor da OpCo.</p>
+        <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">Nota (14/07/2026): o aluguel de mercado foi atualizado de R$ 20 mil/mês para <b>R$ 64,5 mil/mês</b> (R$ 21,50/m² sobre ~3.000 m² de área construída, valor médio de mercado para a região), o que ampliou a diferença de valor entre as duas visões frente à versão anterior do modelo (v9).</p>
         <p class="note">Os imóveis (e a dívida/valor da PropCo) não são avaliados nesta análise — o valor da FCDF OpCo representa só a operação, não o valor combinado OpCo + PropCo.</p>
       </div>
     </section>
@@ -785,11 +790,11 @@
       <p class="lead">Metodologia de Fluxo de Caixa Descontado (FCDF), cenário Base. A faixa completa (Otimista/Base/Pessimista) ainda não está disponível — ver nota ao final desta seção.</p>
       <div class="grid g2" style="margin:18px 0 12px">
         <div class="card accent"><div class="stat"><span class="cap">Enterprise Value · Fluxo de Caixa Descontado FCDF</span><span class="big">R$ 34,1 MM</span><span class="cap">R$ 34.083 mil · com imóveis</span></div></div>
-        <div class="card accent"><div class="stat"><span class="cap">Enterprise Value · FCDF (OpCo)</span><span class="big">R$ 31,3 MM</span><span class="cap">R$ 31.254 mil · sem imóveis (carve-out PropCo)</span></div></div>
+        <div class="card accent"><div class="stat"><span class="cap">Enterprise Value · FCDF (OpCo)</span><span class="big">R$ 27,8 MM</span><span class="cap">R$ 27.801 mil · sem imóveis (carve-out PropCo)</span></div></div>
       </div>
       <div class="grid g2" style="margin-bottom:20px">
         <div class="card accent"><div class="stat"><span class="cap">Equity Value · Fluxo de Caixa Descontado FCDF</span><span class="big">R$ 22,3 MM</span><span class="cap">R$ 22.306 mil · EV − Dívida Líquida</span></div></div>
-        <div class="card accent"><div class="stat"><span class="cap">Equity Value · FCDF (OpCo)</span><span class="big">R$ 20,6 MM</span><span class="cap">R$ 20.577 mil · EV − Dívida Líquida (exclui dívida imobiliária)</span></div></div>
+        <div class="card accent"><div class="stat"><span class="cap">Equity Value · FCDF (OpCo)</span><span class="big">R$ 17,1 MM</span><span class="cap">R$ 17.124 mil · EV − Dívida Líquida (exclui dívida imobiliária)</span></div></div>
       </div>
 
       <div class="grid g2" style="margin-bottom:20px">
@@ -805,9 +810,9 @@
           <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Quadro — FCDF (OpCo)</h4>
           <div class="kv"><span class="k">WACC</span><span class="v">23,71%</span></div>
           <div class="kv"><span class="k">g — crescimento na perpetuidade</span><span class="v">5,57%</span></div>
-          <div class="kv"><span class="k">Enterprise Value</span><span class="v">R$ 31.254 mil</span></div>
+          <div class="kv"><span class="k">Enterprise Value</span><span class="v">R$ 27.801 mil</span></div>
           <div class="kv"><span class="k">Dívida Líquida (2025, exclui dívida imobiliária)</span><span class="v">R$ 10.677 mil</span></div>
-          <div class="kv"><span class="k">Equity Value</span><span class="v"><b>R$ 20.577 mil</b></span></div>
+          <div class="kv"><span class="k">Equity Value</span><span class="v"><b>R$ 17.124 mil</b></span></div>
         </div>
       </div>
 
@@ -840,9 +845,9 @@
             <tbody>
               <tr><td>WACC</td><td>23,61%</td><td>23,71%</td></tr>
               <tr><td>g (perpetuidade)</td><td>5,57%</td><td>5,57%</td></tr>
-              <tr class="subtotal"><td>Enterprise Value</td><td>34.083</td><td>31.254</td></tr>
+              <tr class="subtotal"><td>Enterprise Value</td><td>34.083</td><td>27.801</td></tr>
               <tr><td>Dívida Líquida</td><td>11.777</td><td>10.677</td></tr>
-              <tr class="keyrow"><td>Equity Value (Valor p/ Acionista)</td><td>22.306</td><td>20.577</td></tr>
+              <tr class="keyrow"><td>Equity Value (Valor p/ Acionista)</td><td>22.306</td><td>17.124</td></tr>
             </tbody>
           </table>
         </div>
@@ -850,7 +855,7 @@
       <div class="grid g2" style="margin-top:18px">
         <div class="card">
           <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Como ler</h4>
-          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">As duas colunas não são cenários econômicos diferentes — são a mesma operação sob duas premissas de estrutura patrimonial: manter os imóveis (FCDF) ou vendê-los separadamente à PropCo, com a operação (OpCo) pagando aluguel de mercado. A diferença de Equity Value (R$ 22,3 mi vs. R$ 20,6 mi) reflete o valor retido pelos imóveis fora da operação.</p>
+          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">As duas colunas não são cenários econômicos diferentes — são a mesma operação sob duas premissas de estrutura patrimonial: manter os imóveis (FCDF) ou vendê-los separadamente à PropCo, com a operação (OpCo) pagando aluguel de mercado (atualizado em 14/07/2026 para R$ 64,5 mil/mês). A diferença de Equity Value (R$ 22,3 mi vs. R$ 17,1 mi) reflete o valor retido pelos imóveis fora da operação.</p>
         </div>
         <div class="card">
           <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Limitações desta faixa</h4>
@@ -892,6 +897,7 @@
         <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Documentos de apoio</h4>
         <ul class="biblist">
           <li>Modelo de valuation: Fromtherm_valuation_v9.xlsx (abas: Inputs, Modelo, CAPEX&amp;Dep., Dist. de lucros, Ke_&amp;_g, mercado, ERP, US_T-bonds, T10YIE, beta).</li>
+          <li>Modelo de valuation (FCDF OpCo, atualizado 14/07/2026): Fromtherm_valuation_v10.xlsx (aba "FCDF (OpCo)" e "BaseApoioALuguel" — aluguel de mercado revisado para R$ 64,5 mil/mês).</li>
           <li>Demonstrações contábeis utilizadas: Balancetes 2023, 2024, 2025 e 1º trimestre de 2026.</li>
           <li>Memória de cálculo do WACC (Ke) e da taxa de crescimento perpétuo (g) — aba "Ke_&amp;_g" da planilha base.</li>
         </ul>
