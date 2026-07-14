@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valuation | Fromtherm</title>
+<!--
+  Valuation — Fromtherm
+  Fonte dos dados: planilha base "Fromtherm_valuation_v9.xlsx" (abas coloridas 1 a 8) +
+  Sumário/Disclaimer (Google Slides do cliente) + Cenário Macroeconômico (planilha de indicadores O2).
+  Regras: somente dados da planilha base; campos vazios não são preenchidos.
+  Senha de acesso: Nome do Cliente + Ano Corrente da análise -> "Fromtherm2026"
+  Relatório em construção por etapas — nesta primeira leva: Capa, Sumário, Disclaimer,
+  Fonte de Dados, Cenário Macroeconômico, Fluxo de Caixa Descontado FCDF e FCDF (OpCo).
+  As demais seções do sumário (Sumário executivo, Visão geral da Companhia, Análise de Setor,
+  Resultados obtidos, Anexos) aparecem no menu como "em construção".
+-->
+<style>
+  :root{
+    /* Paleta O2 Inc. — Vivid Green #6CF269 (Pantone 802 C) + Intense Gray #494949 (Pantone 438 C) sobre fundo branco */
+    --verde:#6CF269;
+    --verde-esc:#494949;
+    --preto:#494949;
+    --escuro:#1c1c1c;
+    --cinza:#83868a;
+    --cinza-cl:#e9f9e6;
+    --linha:#e6e9e6;
+    --branco:#ffffff;
+    --sombra:0 1px 3px rgba(73,73,73,.08),0 8px 24px rgba(73,73,73,.06);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    background:var(--branco);color:var(--preto);line-height:1.55;-webkit-font-smoothing:antialiased;
+  }
+  svg.logo{display:block}
+
+  /* ---------- Password gate ---------- */
+  #gate{position:fixed;inset:0;z-index:1000;background:var(--escuro);display:flex;align-items:center;justify-content:center;padding:24px}
+  #gate .box{width:min(420px,100%);text-align:center;background:#fff;border-radius:var(--radius);padding:40px 34px;box-shadow:var(--sombra)}
+  #gate .box svg.logo{margin:0 auto 18px}
+  #gate h1{font-size:19px;margin:0 0 4px}
+  #gate p{color:var(--cinza);font-size:13px;margin:0 0 22px}
+  #gate input{width:100%;padding:13px 14px;font-size:15px;border:1px solid var(--linha);border-radius:10px;outline:none;transition:border-color .15s}
+  #gate input:focus{border-color:var(--verde)}
+  #gate button{margin-top:14px;width:100%;padding:13px;border:0;border-radius:10px;background:var(--verde);color:#22401d;font-size:15px;font-weight:800;cursor:pointer;transition:background .15s}
+  #gate button:hover{background:#57d854}
+  #gate .err{color:#c0392b;font-size:13px;margin-top:12px;min-height:18px}
+
+  /* ---------- App layout ---------- */
+  #app{display:none}
+  header.top{position:sticky;top:0;z-index:50;background:var(--branco);border-bottom:1px solid var(--linha)}
+  .top-inner{max-width:1320px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:16px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand .divider{width:1px;height:34px;background:var(--linha)}
+  .brand .t1{font-weight:700;font-size:15px;line-height:1.1}
+  .brand .t2{font-size:12px;color:var(--cinza)}
+  .top-actions{margin-left:auto;display:flex;gap:10px;align-items:center}
+  #autosaveStatus{font-size:12px;white-space:nowrap}
+  .btn-ghost{border:1px solid var(--linha);background:#fff;color:var(--preto);padding:8px 14px;border-radius:9px;font-size:13px;cursor:pointer;font-weight:600;transition:.15s}
+  .btn-ghost:hover{border-color:var(--verde);color:var(--preto)}
+  .btn-ghost.on{background:var(--verde);color:#22401d;border-color:var(--verde)}
+
+  .progress-badge{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--cinza);white-space:nowrap}
+  .progress-badge .bar{width:74px;height:6px;border-radius:4px;background:var(--linha);overflow:hidden}
+  .progress-badge .bar i{display:block;height:100%;background:var(--verde)}
+  .progress-badge b{color:var(--preto)}
+
+  nav.tabs{max-width:1320px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto;flex-wrap:wrap}
+  nav.tabs button{border:0;background:transparent;color:var(--cinza);padding:14px 16px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:.15s}
+  nav.tabs button:hover{color:var(--preto)}
+  nav.tabs button.active{color:var(--preto);border-bottom-color:var(--verde)}
+  nav.tabs button .n{display:inline-flex;width:20px;height:20px;border-radius:6px;margin-right:7px;background:#eef0ee;color:var(--cinza);font-size:11px;font-weight:800;align-items:center;justify-content:center;vertical-align:middle}
+  nav.tabs button.active .n{background:var(--verde);color:#2f4a2c}
+  nav.tabs button.pending{color:#b7bab8}
+  nav.tabs button.pending .n{background:#f3f4f3}
+  nav.tabs button.pending::after{content:"em construção";font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#b7bab8;display:block;margin-top:1px}
+  nav.tabs button.home{margin-right:6px;font-weight:800;color:var(--preto)}
+
+  .subtabs{display:flex;gap:8px;margin:-6px 0 22px;flex-wrap:wrap}
+  .subtabs button{border:1px solid var(--linha);background:#fff;color:var(--cinza);padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s}
+  .subtabs button:hover{border-color:var(--verde)}
+  .subtabs button.active{background:var(--preto);color:#fff;border-color:var(--preto)}
+  .subpane{display:none}
+  .subpane.active{display:block}
+
+  main{max-width:1320px;margin:0 auto;padding:34px 24px 80px}
+  section.pane{display:none;animation:fade .25s ease}
+  section.pane.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  h2.section-title{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--cinza);margin:0 0 6px}
+  h2.section-title::before{content:"";display:inline-block;width:16px;height:3px;background:var(--verde);border-radius:2px;vertical-align:middle;margin-right:9px;margin-bottom:3px}
+  h3.section-h{font-size:26px;margin:0 0 24px;font-weight:800;letter-spacing:-.4px}
+  .lead{color:var(--cinza);font-size:15px;max-width:760px}
+
+  .card{border:1px solid var(--linha);border-radius:var(--radius);background:#fff;box-shadow:var(--sombra);padding:24px}
+  .card.accent{border-left:4px solid var(--verde);background:#f6faf5}
+  .grid{display:grid;gap:18px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+  .kv{display:flex;flex-direction:column;gap:2px;padding:16px 0;border-bottom:1px solid var(--linha)}
+  .kv:last-child{border-bottom:0}
+  .kv .k{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--cinza);font-weight:700}
+  .kv .v{font-size:16px;color:var(--preto)}
+  .kv .v.empty{color:#9aa0a3;font-style:italic;font-size:14px}
+
+  .badge{display:inline-block;background:var(--cinza-cl);color:var(--verde-esc);padding:4px 11px;border-radius:20px;font-size:12px;font-weight:700}
+
+  ul.disc{list-style:none;padding:0;margin:0;counter-reset:d}
+  ul.disc li{position:relative;padding:14px 0 14px 44px;border-bottom:1px solid var(--linha);color:#2b3138;font-size:14.5px}
+  ul.disc li:last-child{border-bottom:0}
+  ul.disc li::before{counter-increment:d;content:counter(d);position:absolute;left:0;top:14px;width:28px;height:28px;border-radius:8px;background:var(--preto);color:var(--verde);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center}
+
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table.fin{width:100%;border-collapse:collapse;font-size:13px}
+  table.fin th,table.fin td{padding:10px 12px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--linha)}
+  table.fin th{white-space:normal;vertical-align:bottom;background:var(--verde);color:#1c2e19;font-weight:700;font-size:12px}
+  table.fin td.txt,table.fin th.txt{white-space:normal;text-align:left;min-width:190px}
+  table.fin th:first-child,table.fin td:first-child{text-align:left;white-space:normal;min-width:190px}
+  table.fin tbody tr:nth-child(even){background:#fafcf9}
+  table.fin tbody tr:hover{background:#f1f8ee}
+  table.fin tr.subtotal td,table.fin tr.keyrow td{font-weight:800;border-top:1px solid var(--preto);background:#e6f8df;color:#176a2a}
+  table.fin tr.finalrow td{font-weight:800;background:var(--preto);color:#fff}
+  table.fin td.muted{color:#b7bab8;font-style:italic}
+
+  /* ---------- Capa / divisores escuros (padrão O2) ---------- */
+  .cover{background:var(--escuro);color:#fff;border-radius:var(--radius);padding:70px 46px;position:relative;overflow:hidden;box-shadow:var(--sombra)}
+  .cover::before{content:"";position:absolute;left:0;top:0;bottom:0;width:8px;background:var(--verde)}
+  .cover .eyebrow{color:var(--verde);font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;margin-bottom:18px}
+  .cover h1{font-size:52px;margin:0 0 6px;font-weight:800;font-style:italic;letter-spacing:-1px}
+  .cover h2{font-size:34px;margin:0 0 22px;font-weight:800;color:var(--verde)}
+  .cover p{color:#c8cbc9;font-size:15px;max-width:520px;margin:0 0 40px}
+  .cover .date{color:#8a8d8b;font-size:13px}
+  .cover .o2mark{position:absolute;right:40px;top:40px;opacity:.9}
+
+  .sumario{display:grid;gap:12px;margin-top:18px}
+  .sum-item{display:flex;align-items:center;gap:18px;border:1px solid var(--linha);border-left:4px solid var(--verde);border-radius:12px;padding:18px 22px;transition:.15s;background:#fff;cursor:pointer;text-align:left;width:100%;font:inherit;color:inherit}
+  .sum-item:hover{transform:translateX(4px);box-shadow:var(--sombra)}
+  .sum-item .num{font-size:22px;font-weight:800;color:var(--preto);min-width:34px}
+  .sum-item .lab{font-size:16px;font-weight:700;color:var(--preto)}
+  .sum-item .sub{font-size:12.5px;color:var(--cinza);margin-top:2px}
+
+  .note{font-size:12.5px;color:var(--cinza);margin-top:14px}
+  .stat{display:flex;flex-direction:column;gap:2px}
+  .stat .big{font-size:30px;font-weight:800;color:var(--verde-esc);letter-spacing:-.5px}
+  .stat .cap{font-size:12.5px;color:var(--cinza)}
+
+  .placeholder{border:1px dashed var(--linha);border-radius:var(--radius);padding:60px 30px;text-align:center;color:var(--cinza)}
+  .placeholder .pico{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--verde-esc);font-weight:800;margin-bottom:10px}
+  .placeholder p{max-width:460px;margin:0 auto;font-size:14px}
+
+  footer{max-width:1320px;margin:0 auto;padding:22px 24px;color:var(--cinza);font-size:11px;letter-spacing:.14em;text-transform:uppercase;border-top:1px solid var(--linha)}
+  [contenteditable="true"]{outline:2px dashed var(--verde);outline-offset:3px;border-radius:4px}
+  .edit-hint{display:none;background:#fff8e1;border:1px solid #f0e0a0;color:#7a5b00;padding:8px 14px;border-radius:8px;font-size:13px;margin-bottom:20px}
+  body.editing .edit-hint{display:block}
+  #fmt-toolbar{position:fixed;left:50%;transform:translateX(-50%);bottom:22px;z-index:300;display:none;gap:8px;background:#fff;border:1px solid var(--linha);box-shadow:0 10px 34px rgba(73,73,73,.20);border-radius:12px;padding:9px 11px;align-items:center}
+  body.editing #fmt-toolbar{display:flex}
+  #fmt-toolbar button{border:1px solid var(--linha);background:#fff;border-radius:8px;padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer;color:var(--preto)}
+  #fmt-toolbar button:hover{border-color:var(--verde)}
+  #fmt-toolbar .lbl{font-size:12px;color:var(--cinza);margin-right:2px}
+  #fmt-toolbar .sw{width:15px;height:15px;border-radius:4px;background:#c3f3b0;display:inline-block;vertical-align:-2px;margin-right:6px}
+  .hl{background:#c3f3b0;border-radius:3px;padding:0 3px}
+</style>
+</head>
+<body>
+
+<!-- ============ PASSWORD GATE ============ -->
+<div id="gate">
+  <div class="box">
+    <svg class="logo" width="46" height="46" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="20" r="16" fill="none" stroke="#6CF269" stroke-width="4"/>
+      <circle cx="20" cy="20" r="6" fill="#6CF269"/>
+    </svg>
+    <h1>Valuation</h1>
+    <p>Documento protegido · Fromtherm</p>
+    <input id="pw" type="password" placeholder="Digite a senha de acesso" autocomplete="off" />
+    <button id="enter">Acessar</button>
+    <div class="err" id="err"></div>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app">
+  <div id="fmt-toolbar">
+    <span class="lbl">Formatar seleção:</span>
+    <button id="fmtBold" onmousedown="event.preventDefault()"><b>N</b> Negrito</button>
+    <button id="fmtHl" onmousedown="event.preventDefault()"><span class="sw"></span>Grifar verde</button>
+    <button id="fmtClear" onmousedown="event.preventDefault()">Limpar</button>
+  </div>
+  <header class="top">
+    <div class="top-inner">
+      <div class="brand">
+        <svg class="logo" width="34" height="34" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="16" fill="none" stroke="#6CF269" stroke-width="4"/>
+          <circle cx="20" cy="20" r="6" fill="#6CF269"/>
+        </svg>
+        <div class="divider"></div>
+        <div>
+          <div class="t1">Valuation</div>
+          <div class="t2">Fromtherm · 14 de julho de 2026</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <div class="progress-badge" title="Seções do sumário com conteúdo publicado nesta etapa">
+          <span>3 de 8 seções <b>· 38% concluído</b></span>
+          <span class="bar"><i style="width:38%"></i></span>
+        </div>
+        <span id="autosaveStatus" class="t2" style="color:var(--verde-esc);font-weight:600"></span>
+        <button class="btn-ghost" id="editToggle">✎ Modo de edição</button>
+        <button class="btn-ghost" id="exportBtn" title="Baixa uma cópia deste HTML com todas as edições feitas neste navegador">⬇ Baixar HTML editado</button>
+        <button class="btn-ghost" id="lock">Sair</button>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button class="home active" data-t="home">Home</button>
+      <button class="pending" data-t="executivo"><span class="n">1</span>Sumário executivo</button>
+      <button data-t="info"><span class="n">2</span>Informação do avaliador</button>
+      <button class="pending" data-t="visaogeral"><span class="n">3</span>Visão geral da Companhia</button>
+      <button data-t="macro"><span class="n">4</span>Análise macroeconômica</button>
+      <button class="pending" data-t="setor"><span class="n">5</span>Análise de Setor</button>
+      <button data-t="avaliacao"><span class="n">6</span>Avaliação</button>
+      <button class="pending" data-t="resultados"><span class="n">7</span>Resultados obtidos</button>
+      <button class="pending" data-t="anexos"><span class="n">8</span>Anexos</button>
+    </nav>
+  </header>
+
+  <main>
+    <div class="edit-hint">✎ Modo de edição ativo: clique nos textos para editá-los. Use a barra inferior para grifar em verde ou aplicar negrito. Suas edições ficam salvas automaticamente neste navegador; use "⬇ Baixar HTML editado" para gerar um arquivo com todas as edições. As tabelas de valuation (FCDF) não são editáveis por aqui — vêm da planilha base.</div>
+
+    <!-- ===== HOME: Capa + Sumário ===== -->
+    <section class="pane active" id="home">
+      <div class="cover">
+        <svg class="logo o2mark" width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="16" fill="none" stroke="#6CF269" stroke-width="4"/>
+          <circle cx="20" cy="20" r="6" fill="#6CF269"/>
+        </svg>
+        <div class="eyebrow">O2 Inc. · Oxigênio Empresarial</div>
+        <h1>VALUATION</h1>
+        <h2>Fromtherm</h2>
+        <p>Relatório de valuation individual, metodologia de Fluxo de Caixa Descontado (FCDF).</p>
+        <div class="date">14 de julho de 2026</div>
+      </div>
+
+      <h2 class="section-title" style="margin-top:40px">Sumário</h2>
+      <h3 class="section-h">Conteúdo do relatório</h3>
+      <p class="lead" style="margin-top:-14px;margin-bottom:6px">Clique em um bloco para ir direto à seção. Blocos ainda não publicados aparecem no menu superior marcados como "em construção".</p>
+      <div class="sumario">
+        <button class="sum-item" data-goto="info"><span class="num">01</span><span><span class="lab">Metodologia e Premissas</span><span class="sub" style="display:block">Informação do avaliador · disclaimer e fonte de dados</span></span></button>
+        <button class="sum-item" data-goto="macro"><span class="num">02</span><span><span class="lab">Análise Macroeconômica</span><span class="sub" style="display:block">Selic, IPCA, PIB, câmbio, desemprego e ICC</span></span></button>
+        <button class="sum-item" data-goto="avaliacao"><span class="num">03</span><span><span class="lab">Avaliação</span><span class="sub" style="display:block">Fluxo de Caixa Descontado (FCDF) e FCDF (OpCo)</span></span></button>
+        <button class="sum-item" data-goto="resultados"><span class="num">04</span><span><span class="lab">Resultados Obtidos</span><span class="sub" style="display:block">Em construção</span></span></button>
+      </div>
+    </section>
+
+    <!-- ===== 1. SUMÁRIO EXECUTIVO (placeholder) ===== -->
+    <section class="pane" id="executivo">
+      <h2 class="section-title">1 · Sumário executivo</h2>
+      <h3 class="section-h">Sumário executivo</h3>
+      <div class="placeholder">
+        <div class="pico">Em construção</div>
+        <p>Esta seção reunirá a conclusão executiva do valuation (faixa de valor, principais drivers e recomendação) assim que o Bloco 6 · Avaliação estiver completo. Será adicionada em uma próxima etapa.</p>
+      </div>
+    </section>
+
+    <!-- ===== 2. INFORMAÇÃO DO AVALIADOR (Disclaimer + Fonte de Dados) ===== -->
+    <section class="pane" id="info">
+      <h2 class="section-title">2 · Informação do avaliador</h2>
+      <h3 class="section-h">Informação do avaliador</h3>
+      <div class="subtabs" data-group="info">
+        <button class="active" data-sub="info-disclaimer">Disclaimer</button>
+        <button data-sub="info-fonte">Fonte de Dados</button>
+      </div>
+
+      <div class="subpane active" id="info-disclaimer">
+        <p class="lead" style="margin-bottom:20px">Condições e limitações do trabalho de valuation da O2 Inc.</p>
+        <div class="card">
+          <ul class="disc">
+            <li>A presente análise é realizada a partir dos documentos e informações gerenciais fornecidos pela Empresa com a finalidade de realização do trabalho de Valuation, não se constituindo em auditoria.</li>
+            <li>Esta apresentação contém análises e projeções desenvolvidas, em grande parte, com base nos relatórios gerenciais fornecidos pela empresa. Vale destacar que, apesar da confiabilidade das fontes utilizadas, as projeções refletem estimativas que podem sofrer alterações em função de condições internas e externas à empresa.</li>
+            <li>As informações contidas nos documentos e gerenciais que serviram de base à presente análise são de inteira responsabilidade da empresa.</li>
+            <li>O trabalho realizado se restringe a interpretação, análise e projeção das informações fornecidas. A O2 Inc. não se responsabiliza pela veracidade das informações, sendo elas de inteira responsabilidade do cliente.</li>
+            <li>As informações foram construídas com base nos dados disponibilizados pelo cliente, conforme solicitado.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="subpane" id="info-fonte">
+        <p class="lead" style="margin-bottom:20px">Base documental e regime contábil utilizados na análise.</p>
+        <div class="card">
+          <div class="kv"><span class="k">Fonte de Dados</span><span class="v">Balanço Patrimonial 2024 e 2025</span></div>
+          <div class="kv"><span class="k">Regime da Análise</span><span class="v">Competência</span></div>
+          <div class="kv"><span class="k">Premissas</span><span class="v empty">Não informado na planilha base.</span></div>
+          <div class="kv"><span class="k">Metodologia</span><span class="v empty">Não informado na planilha base.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 3. VISÃO GERAL DA COMPANHIA (placeholder) ===== -->
+    <section class="pane" id="visaogeral">
+      <h2 class="section-title">3 · Visão geral da Companhia</h2>
+      <h3 class="section-h">Visão geral da Companhia</h3>
+      <div class="placeholder">
+        <div class="pico">Em construção</div>
+        <p>Descrição institucional da Fromtherm (histórico, operação, mercado de atuação). Será adicionada em uma próxima etapa.</p>
+      </div>
+    </section>
+
+    <!-- ===== 4. ANÁLISE MACROECONÔMICA ===== -->
+    <section class="pane" id="macro">
+      <h2 class="section-title">4 · Análise macroeconômica</h2>
+      <h3 class="section-h">Cenário Macroeconômico</h3>
+      <p class="lead">Indicadores econômicos usados como premissa do modelo — Selic, IPCA, PIB, câmbio, desemprego e confiança do consumidor.</p>
+      <div class="card" style="margin-top:18px">
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr>
+              <th class="txt">Indicador</th><th>Unidade</th><th>2023</th><th>2024</th><th>2025</th><th>2026 (proj.)</th>
+              <th>Var. 23→24</th><th>Var. 24→25</th><th>Var. 25→26*</th><th class="txt">Fonte</th><th class="txt">Observação</th>
+            </tr></thead>
+            <tbody>
+              <tr><td class="txt">Taxa de Juros (Selic)</td><td>% a.a.</td><td>11,75%</td><td>12,25%</td><td>15,00%</td><td>14,00%</td><td>+4,26%</td><td>+22,45%</td><td>−6,67%</td><td class="txt">BCB / Copom (realizado) · BCB Focus (2026 projetado)</td><td class="txt">Fechamento do ano (Focus)</td></tr>
+              <tr><td class="txt">Inflação (IPCA)</td><td>% a.a.</td><td>4,62%</td><td>4,83%</td><td>4,26%</td><td>5,30%</td><td>+4,55%</td><td>−11,80%</td><td>+24,41%</td><td class="txt">IBGE (realizado) · BCB Focus (2026 projetado)</td><td class="txt">Projeção Focus 2026</td></tr>
+              <tr><td class="txt">PIB</td><td>% a.a.</td><td>3,20%</td><td>3,40%</td><td>2,30%</td><td>1,99%</td><td>+6,25%</td><td>−32,35%</td><td>−13,48%</td><td class="txt">IBGE (realizado) · BCB Focus (2026 projetado)</td><td class="txt">Projeção Focus 2026</td></tr>
+              <tr><td class="txt">Taxa de Câmbio (USD/BRL)</td><td>R$/USD</td><td>R$ 4,85</td><td>R$ 6,19</td><td>R$ 5,50</td><td>R$ 5,20</td><td>+27,63%</td><td>−11,15%</td><td>−5,45%</td><td class="txt">BCB PTAX (realizado) · BCB Focus (2026 projetado)</td><td class="txt">Fechamento do ano (Focus)</td></tr>
+              <tr><td class="txt">Índice de Desemprego</td><td>%</td><td>7,80%</td><td>6,60%</td><td>5,60%</td><td>5,60%</td><td>−15,38%</td><td>−15,15%</td><td>0,00%</td><td class="txt">IBGE – PNAD Contínua</td><td class="txt">Último dado: trim. encerrado mai/26</td></tr>
+              <tr><td class="txt">ICC – Conf. do Consumidor</td><td>pts</td><td>91,3</td><td>91,3</td><td>89,1</td><td>88,7</td><td>0,00%</td><td>−2,41%</td><td>−0,45%</td><td class="txt">FGV – IBRE</td><td class="txt">Último dado mensal (jun/26)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">* 2026 = expectativa de mercado (Focus) quando aplicável, ou último dado disponível. 2023–2025 = valores realizados. Fonte: Banco Central | IBGE | Fundação Getúlio Vargas · atualizado em 06/07/2026 (Selic, IPCA, PIB, câmbio), 26/06/2026 (desemprego) e 24/06/2026 (ICC).</p>
+      </div>
+    </section>
+
+    <!-- ===== 5. ANÁLISE DE SETOR (placeholder) ===== -->
+    <section class="pane" id="setor">
+      <h2 class="section-title">5 · Análise de Setor</h2>
+      <h3 class="section-h">Análise de Setor</h3>
+      <div class="placeholder">
+        <div class="pico">Em construção</div>
+        <p>Panorama do setor de atuação da Fromtherm (tamanho de mercado, crescimento, concorrência). Será adicionada em uma próxima etapa.</p>
+      </div>
+    </section>
+
+    <!-- ===== 6. AVALIAÇÃO (FCDF + FCDF OpCo) ===== -->
+    <section class="pane" id="avaliacao">
+      <h2 class="section-title">6 · Avaliação</h2>
+      <h3 class="section-h">Fluxo de Caixa Descontado</h3>
+      <p class="lead">Metodologia FCDF (Fluxo de Caixa Livre para a Empresa), horizonte explícito 2026F–2031F + perpetuidade. Cenário ativo na planilha base: <b>Base</b>.</p>
+      <div class="subtabs" data-group="avaliacao">
+        <button class="active" data-sub="aval-fcdf">Fluxo de Caixa Descontado FCDF</button>
+        <button data-sub="aval-opco">FCDF (OpCo)</button>
+      </div>
+
+      <!-- --- FCDF --- -->
+      <div class="subpane active" id="aval-fcdf">
+        <div class="grid g3" style="margin-bottom:20px">
+          <div class="card accent"><div class="stat"><span class="cap">Enterprise Value</span><span class="big">R$ 34,1 MM</span><span class="cap">R$ 34.083 mil</span></div></div>
+          <div class="card accent"><div class="stat"><span class="cap">Equity Value (EV − Dívida Líquida)</span><span class="big">R$ 22,3 MM</span><span class="cap">R$ 22.306 mil</span></div></div>
+          <div class="card"><div class="stat"><span class="cap">WACC · g (perpetuidade)</span><span class="big">23,61% · 5,57%</span><span class="cap">cenário Base</span></div></div>
+        </div>
+        <div class="card">
+          <div class="tbl-wrap">
+            <table class="fin">
+              <thead><tr>
+                <th class="txt">Valores em R$ mil</th><th>2026F</th><th>2027F</th><th>2028F</th><th>2029F</th><th>2030F</th><th>2031F</th>
+              </tr></thead>
+              <tbody>
+                <tr><td class="txt">EBIT</td><td>6.396</td><td>7.220</td><td>7.840</td><td>8.269</td><td>8.435</td><td>8.308</td></tr>
+                <tr><td class="txt">(-) IRPJ/CSLL</td><td>−1.176</td><td>−1.300</td><td>−1.410</td><td>−1.499</td><td>−1.562</td><td>−1.593</td></tr>
+                <tr class="subtotal"><td class="txt">NOPAT</td><td>5.221</td><td>5.919</td><td>6.429</td><td>6.770</td><td>6.873</td><td>6.715</td></tr>
+                <tr><td class="txt">(+) Depreciação</td><td>464</td><td>464</td><td>464</td><td>464</td><td>464</td><td>464</td></tr>
+                <tr><td class="txt">(-) NCG</td><td>−378</td><td>−1.379</td><td>−1.306</td><td>−1.079</td><td>−797</td><td>−463</td></tr>
+                <tr><td class="txt">(-) CAPEX/Investimentos</td><td class="muted">–</td><td class="muted">–</td><td class="muted">–</td><td class="muted">–</td><td class="muted">–</td><td class="muted">–</td></tr>
+                <tr class="keyrow"><td class="txt">Fluxo de Caixa Livre para a Empresa (FCFF)</td><td>5.306</td><td>5.004</td><td>5.588</td><td>6.155</td><td>6.540</td><td>6.715</td></tr>
+                <tr><td class="txt">(+) Perpetuidade</td><td class="muted">–</td><td class="muted">–</td><td class="muted">–</td><td class="muted">–</td><td class="muted">–</td><td>36.592</td></tr>
+                <tr><td class="txt">FCFF + Perpetuidade</td><td>5.306</td><td>5.004</td><td>5.588</td><td>6.155</td><td>6.540</td><td>43.308</td></tr>
+                <tr class="keyrow"><td class="txt">Fluxo de Caixa Descontado (VP)</td><td>5.306</td><td>4.049</td><td>3.657</td><td>3.259</td><td>2.802</td><td>15.010</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="grid g2" style="margin-top:18px">
+          <div class="card">
+            <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Premissas de desconto</h4>
+            <div class="kv"><span class="k">WACC</span><span class="v">23,61%</span></div>
+            <div class="kv"><span class="k">g — crescimento na perpetuidade</span><span class="v">5,57%</span></div>
+            <div class="kv"><span class="k">Enterprise Value (Valor da Empresa)</span><span class="v">R$ 34.083 mil</span></div>
+          </div>
+          <div class="card">
+            <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Ponte para Equity Value</h4>
+            <div class="kv"><span class="k">Dívida Bruta (2025)</span><span class="v">R$ 12.863 mil</span></div>
+            <div class="kv"><span class="k">(-) Caixa e Aplicações (2025)</span><span class="v">−R$ 1.086 mil</span></div>
+            <div class="kv"><span class="k">Dívida Líquida</span><span class="v">R$ 11.777 mil</span></div>
+            <div class="kv"><span class="k">Equity Value (Valor p/ Acionista) = EV − Dívida Líquida</span><span class="v"><b>R$ 22.306 mil</b></span></div>
+          </div>
+        </div>
+        <p class="note">Fonte: aba "Fluxo de Caixa Descontado FCDF" da planilha base, cenário Base (célula C7). Os cenários Otimista e Pessimista existem no modelo (seletor de cenário) mas não foram congelados nesta leva — ver Bloco 6 em etapa futura.</p>
+      </div>
+
+      <!-- --- FCDF (OpCo) --- -->
+      <div class="subpane" id="aval-opco">
+        <p class="lead" style="margin-bottom:18px">Ajuste OpCo/PropCo: os terrenos e prédios são segregados para venda separada (PropCo); a operação (OpCo) passa a pagar aluguel de mercado pelo uso dos imóveis. Instrução do cliente, 13/07/2026.</p>
+        <div class="grid g3" style="margin-bottom:20px">
+          <div class="card accent"><div class="stat"><span class="cap">Enterprise Value (OpCo)</span><span class="big">R$ 31,3 MM</span><span class="cap">R$ 31.254 mil</span></div></div>
+          <div class="card accent"><div class="stat"><span class="cap">Equity Value (OpCo)</span><span class="big">R$ 20,6 MM</span><span class="cap">R$ 20.577 mil</span></div></div>
+          <div class="card"><div class="stat"><span class="cap">WACC · g (perpetuidade)</span><span class="big">23,71% · 5,57%</span><span class="cap">cenário Base</span></div></div>
+        </div>
+        <div class="card">
+          <div class="tbl-wrap">
+            <table class="fin">
+              <thead><tr>
+                <th class="txt">Valores em R$ mil</th><th>2026F</th><th>2027F</th><th>2028F</th><th>2029F</th><th>2030F</th><th>2031F</th>
+              </tr></thead>
+              <tbody>
+                <tr><td class="txt">EBIT</td><td>6.156</td><td>6.970</td><td>7.581</td><td>8.001</td><td>8.156</td><td>8.019</td></tr>
+                <tr><td class="txt">(-) IRPJ/CSLL</td><td>−1.176</td><td>−1.300</td><td>−1.410</td><td>−1.499</td><td>−1.562</td><td>−1.593</td></tr>
+                <tr class="subtotal"><td class="txt">NOPAT</td><td>4.981</td><td>5.670</td><td>6.170</td><td>6.501</td><td>6.594</td><td>6.426</td></tr>
+                <tr><td class="txt">(+) Depreciação</td><td>170</td><td>170</td><td>170</td><td>170</td><td>170</td><td>170</td></tr>
+                <tr><td class="txt">(-) NCG</td><td>−378</td><td>−1.379</td><td>−1.306</td><td>−1.079</td><td>−797</td><td>−463</td></tr>
+                <tr><td class="txt">(-) CAPEX/Investimentos</td><td class="muted">–</td><td class="muted">–</td><td class="muted">–</td><td class="muted">–</td><td class="muted">–</td><td class="muted">–</td></tr>
+                <tr class="keyrow"><td class="txt">Fluxo de Caixa Livre para a Empresa (FCFF)</td><td>4.772</td><td>4.460</td><td>5.034</td><td>5.592</td><td>5.966</td><td>6.132</td></tr>
+                <tr><td class="txt">(+) Perpetuidade</td><td class="muted">–</td><td class="muted">–</td><td class="muted">–</td><td class="muted">–</td><td class="muted">–</td><td>34.693</td></tr>
+                <tr><td class="txt">FCFF + Perpetuidade</td><td>4.772</td><td>4.460</td><td>5.034</td><td>5.592</td><td>5.966</td><td>40.825</td></tr>
+                <tr class="keyrow"><td class="txt">Fluxo de Caixa Descontado (VP)</td><td>4.772</td><td>3.605</td><td>3.289</td><td>2.953</td><td>2.547</td><td>14.088</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="grid g2" style="margin-top:18px">
+          <div class="card">
+            <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Premissas de desconto</h4>
+            <div class="kv"><span class="k">WACC</span><span class="v">23,71%</span></div>
+            <div class="kv"><span class="k">g — crescimento na perpetuidade</span><span class="v">5,57%</span></div>
+            <div class="kv"><span class="k">Enterprise Value (Valor da Empresa)</span><span class="v">R$ 31.254 mil</span></div>
+          </div>
+          <div class="card">
+            <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Ponte para Equity Value</h4>
+            <div class="kv"><span class="k">Dívida Bruta (2025)</span><span class="v">R$ 12.863 mil</span></div>
+            <div class="kv"><span class="k">(-) Caixa e Aplicações (2025)</span><span class="v">−R$ 1.086 mil</span></div>
+            <div class="kv"><span class="k">Dívida Líquida (exclui dívida imobiliária)</span><span class="v">R$ 10.677 mil</span></div>
+            <div class="kv"><span class="k">Equity Value (Valor p/ Acionista) = EV − Dívida Líquida</span><span class="v"><b>R$ 20.577 mil</b></span></div>
+          </div>
+        </div>
+        <p class="note">Premissas do ajuste OpCo/PropCo (aba "FCDF (OpCo)" da planilha base): depreciação de prédios excluída da operação (R$ 294 mil/ano); aluguel de mercado de R$ 240 mil/ano pelos imóveis (reajustado pelo IGP-M a partir de 2027); dívida imobiliária de R$ 1.100 mil transferida à PropCo e excluída da dívida líquida da OpCo. Cenário Base (célula C7).</p>
+      </div>
+    </section>
+
+    <!-- ===== 7. RESULTADOS OBTIDOS (placeholder) ===== -->
+    <section class="pane" id="resultados">
+      <h2 class="section-title">7 · Resultados obtidos</h2>
+      <h3 class="section-h">Resultados obtidos</h3>
+      <div class="placeholder">
+        <div class="pico">Em construção</div>
+        <p>Faixa de valor consolidada e recomendação final. Será adicionada em uma próxima etapa, após o fechamento do Bloco 6 · Avaliação.</p>
+      </div>
+    </section>
+
+    <!-- ===== 8. ANEXOS (placeholder) ===== -->
+    <section class="pane" id="anexos">
+      <h2 class="section-title">8 · Anexos</h2>
+      <h3 class="section-h">Anexos</h3>
+      <div class="placeholder">
+        <div class="pico">Em construção</div>
+        <p>Bibliografia, fontes e documentos de apoio (memória de cálculo do WACC e da perpetuidade, tabelas de sensibilidade). Será adicionada em uma próxima etapa.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>O2 · Documento Confidencial · Fromtherm</footer>
+</div>
+
+<script>
+/* ================= PASSWORD ================= */
+/* Regra: senha = Nome do Cliente + Ano Corrente da análise */
+var SENHA = "Fromtherm2026";
+var gate = document.getElementById('gate');
+var app  = document.getElementById('app');
+function tryEnter(){
+  var v = document.getElementById('pw').value.trim();
+  if(v === SENHA){
+    gate.style.display='none';
+    app.style.display='block';
+  } else {
+    document.getElementById('err').textContent = 'Senha incorreta. Tente novamente.';
+  }
+}
+document.getElementById('enter').addEventListener('click', tryEnter);
+document.getElementById('pw').addEventListener('keydown', function(e){ if(e.key==='Enter') tryEnter(); });
+document.getElementById('lock').addEventListener('click', function(){
+  app.style.display='none'; gate.style.display='flex';
+  document.getElementById('pw').value=''; document.getElementById('err').textContent='';
+});
+
+/* ================= TOP NAV ================= */
+var tabs = document.getElementById('tabs');
+function showPane(id){
+  [].forEach.call(tabs.querySelectorAll('button'), x=>x.classList.remove('active'));
+  var btn = tabs.querySelector('[data-t="'+id+'"]');
+  if(btn) btn.classList.add('active');
+  [].forEach.call(document.querySelectorAll('.pane'), p=>p.classList.remove('active'));
+  var pane = document.getElementById(id);
+  if(pane) pane.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+tabs.addEventListener('click', function(e){
+  var b = e.target.closest('button'); if(!b) return;
+  showPane(b.getAttribute('data-t'));
+});
+
+/* ================= HOME -> SUMÁRIO CARDS ================= */
+document.querySelectorAll('.sum-item').forEach(function(el){
+  el.addEventListener('click', function(){ showPane(el.getAttribute('data-goto')); });
+});
+
+/* ================= SUBTABS (Informação do avaliador / Avaliação) ================= */
+document.querySelectorAll('.subtabs').forEach(function(group){
+  group.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    [].forEach.call(group.querySelectorAll('button'), x=>x.classList.remove('active'));
+    b.classList.add('active');
+    var id = b.getAttribute('data-sub');
+    var parent = group.closest('.pane');
+    [].forEach.call(parent.querySelectorAll('.subpane'), p=>p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  });
+});
+
+/* ================= EDIT MODE ================= */
+var editing=false;
+var editToggle=document.getElementById('editToggle');
+editToggle.addEventListener('click', function(){
+  editing=!editing;
+  document.body.classList.toggle('editing', editing);
+  editToggle.classList.toggle('on', editing);
+  editToggle.textContent = editing ? '✓ Editando (clique p/ concluir)' : '✎ Modo de edição';
+  var sel = '#app p, #app li, #app .v, #app h1, #app h2, #app h3, #app h4, #app .lab, #app .sub, #app .cap, #app .big, #app .kv .k, #app .lead, #app .note';
+  [].forEach.call(document.querySelectorAll(sel), function(el){
+    if(el.closest('table.fin')) return; // tabelas de valuation não são editáveis por aqui
+    el.setAttribute('contenteditable', editing ? 'true':'false');
+  });
+});
+
+/* ---- Barra de formatação (negrito / grifar verde) ---- */
+try{ document.execCommand('styleWithCSS', false, true); }catch(e){}
+function fmtCmd(fn){ return function(){ if(!editing) return; fn(); }; }
+document.getElementById('fmtBold').addEventListener('click', fmtCmd(function(){ document.execCommand('bold'); }));
+document.getElementById('fmtHl').addEventListener('click', fmtCmd(function(){
+  try{ document.execCommand('hiliteColor', false, '#c3f3b0'); }
+  catch(e){ document.execCommand('backColor', false, '#c3f3b0'); }
+}));
+document.getElementById('fmtClear').addEventListener('click', fmtCmd(function(){ document.execCommand('removeFormat'); }));
+
+/* ================= AUTOSAVE (edições de texto) + EXPORTAR HTML ================= */
+(function(){
+  var LS_KEY = 'valuation-fromtherm-edits-v1';
+  var EDITABLE_SEL = '#app p, #app li, #app .v, #app h1, #app h2, #app h3, #app h4, #app .lab, #app .sub, #app .cap, #app .big, #app .kv .k, #app .lead, #app .note';
+  var editableEls = [];
+  [].forEach.call(document.querySelectorAll(EDITABLE_SEL), function(el, idx){
+    if(el.closest('table.fin')) return;
+    el.setAttribute('data-ed-id', 'e'+idx);
+    editableEls.push(el);
+  });
+
+  function loadSaved(){
+    try{ var raw = localStorage.getItem(LS_KEY); return raw ? JSON.parse(raw) : null; }catch(e){ return null; }
+  }
+  function restoreSaved(){
+    var saved = loadSaved();
+    if(!saved) return;
+    editableEls.forEach(function(el){
+      var id = el.getAttribute('data-ed-id');
+      if(saved[id]!==undefined) el.innerHTML = saved[id];
+    });
+  }
+  var saveTimer=null, statusTimer=null;
+  function scheduleSave(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){
+      var map = {};
+      editableEls.forEach(function(el){ map[el.getAttribute('data-ed-id')] = el.innerHTML; });
+      try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+      var st=document.getElementById('autosaveStatus');
+      if(st){
+        var now=new Date();
+        st.textContent = '💾 salvo neste navegador às '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+        clearTimeout(statusTimer);
+        statusTimer = setTimeout(function(){ st.textContent=''; }, 5000);
+      }
+    }, 500);
+  }
+  document.addEventListener('input', function(e){
+    var t=e.target;
+    if(t && t.closest && t.closest('#app') && t.getAttribute && t.getAttribute('contenteditable')==='true'){
+      scheduleSave();
+    }
+  });
+  restoreSaved();
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function exportHTML(){
+    var clone = document.documentElement.cloneNode(true);
+    var gateC = clone.querySelector('#gate'); if(gateC) gateC.style.display='';
+    var appC = clone.querySelector('#app'); if(appC) appC.style.display='none';
+    var bodyC = clone.querySelector('body'); if(bodyC) bodyC.classList.remove('editing');
+    var pwC = clone.querySelector('#pw'); if(pwC) pwC.removeAttribute('value');
+    [].forEach.call(clone.querySelectorAll('[contenteditable]'), function(el){ el.removeAttribute('contenteditable'); });
+    var etC = clone.querySelector('#editToggle');
+    if(etC){ etC.classList.remove('on'); etC.textContent='✎ Modo de edição'; }
+    var stC = clone.querySelector('#autosaveStatus'); if(stC) stC.textContent='';
+
+    var html = '<!DOCTYPE html>\n' + clone.outerHTML;
+    var b = new Blob([html], {type:'text/html;charset=utf-8'});
+    var url = URL.createObjectURL(b);
+    var a = document.createElement('a');
+    var d = new Date();
+    a.href = url;
+    a.download = 'valuation-fromtherm-editado-'+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'-'+pad(d.getHours())+pad(d.getMinutes())+'.html';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+  }
+  var exportBtn = document.getElementById('exportBtn');
+  if(exportBtn) exportBtn.addEventListener('click', exportHTML);
+})();
+</script>
+</body>
+</html>
