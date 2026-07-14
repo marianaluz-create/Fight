@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Valuation | Fromtherm — Apresentação</title>
+<style>
+@page { size: 338.66mm 190.5mm; margin: 0; }
+*{box-sizing:border-box;}
+body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:#1c1c1c;}
+.slide{width:338.66mm;height:190.5mm;position:relative;overflow:hidden;background:#fff;page-break-after:always;}
+.slide:last-child{page-break-after:auto;}
+.slide.dark{background:#1c1c1c;color:#fff;}
+.stripe{position:absolute;left:0;top:0;bottom:0;width:7mm;background:#6CF269;}
+.pad{padding:14mm 20mm 16mm 20mm;height:100%;box-sizing:border-box;position:relative;}
+.dark .pad{padding-left:26mm;}
+.footer{position:absolute;left:20mm;right:20mm;bottom:8mm;display:flex;justify-content:space-between;font-size:8.5pt;border-top:1px solid #e2e5e3;padding-top:5px;color:#6b6f72;}
+.dark .footer{border-top:1px solid rgba(255,255,255,.18);color:#9aa0a3;}
+.footer b.brand{color:#2f8f3d;}
+.dark .footer b.brand{color:#6CF269;}
+.footer b.pg{color:#2f8f3d;}
+.dark .footer b.pg{color:#6CF269;}
+
+.kicker{font-size:9pt;font-weight:800;letter-spacing:.5px;color:#2f8f3d;text-transform:uppercase;}
+.kicker .soft{color:#9aa0a3;font-weight:600;margin-left:6px;}
+.dark .kicker{color:#6CF269;}
+h1.h1{font-size:23pt;font-weight:800;margin:5mm 0 6mm;letter-spacing:-.3px;}
+.dark h1.h1{font-size:30pt;margin-top:8mm;}
+.dark .eyebrow{font-size:11pt;font-weight:800;letter-spacing:2px;color:#6CF269;text-transform:uppercase;}
+.dark .subtitle{font-size:13pt;font-style:italic;color:#c7cbc8;margin-top:6mm;max-width:220mm;}
+.bignum{position:absolute;right:20mm;top:14mm;font-size:120pt;font-weight:800;color:rgba(255,255,255,.06);line-height:1;}
+
+.cards2{display:grid;grid-template-columns:1fr 1fr;gap:10mm;margin-top:4mm;}
+.cards3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8mm;margin-top:4mm;}
+.gcard{border:1px solid #e2e5e3;border-radius:3px;overflow:hidden;background:#fff;}
+.gcard .gh{background:#3fae4c;color:#fff;font-weight:800;padding:7px 14px;font-size:12pt;}
+.gcard .gb{background:#f4f6f4;padding:11px 14px;font-size:10.5pt;line-height:1.5;}
+.gcard .gb p{margin:0 0 8px;}
+.gcard .gb p:last-child{margin-bottom:0;}
+.gcard .gb b{color:#1c1c1c;}
+
+.plaincard{border:1px solid #e2e5e3;border-left:4px solid #3fae4c;border-radius:2px;background:#f7f9f7;padding:9px 13px;}
+.plaincard h4{margin:0 0 6px;font-size:11pt;font-weight:800;}
+.plaincard p{margin:0;font-size:10pt;line-height:1.5;color:#333;}
+
+.notebox{border-left:4px solid #3fae4c;background:#f4f6f4;padding:9px 14px;font-size:9.5pt;color:#333;margin-top:6mm;line-height:1.5;}
+.notebox b.lab{color:#2f8f3d;font-weight:800;margin-right:6px;}
+
+table.pf{width:100%;border-collapse:collapse;font-size:10pt;}
+table.pf thead th{background:#3fae4c;color:#fff;text-align:left;padding:7px 10px;font-weight:700;font-size:9.5pt;}
+table.pf thead th.num{text-align:right;}
+table.pf tbody td{padding:6px 10px;border-bottom:1px solid #e9ece9;}
+table.pf tbody td.num{text-align:right;font-variant-numeric:tabular-nums;}
+table.pf tbody tr:nth-child(even){background:#f7f9f7;}
+table.pf tbody tr.key td{font-weight:800;background:#e8f7e6;}
+table.pf tbody td.hl{background:#dff1db;font-weight:800;}
+
+.callout{border:1.5px solid #d99a3a;background:#fff8ef;border-radius:3px;padding:10px 14px;margin-top:5mm;}
+.callout .ch{font-weight:800;color:#a85d00;font-size:10.5pt;margin-bottom:4px;}
+.callout p{margin:0;font-size:9.5pt;line-height:1.5;color:#333;}
+
+.toc-row{display:flex;align-items:center;gap:14px;background:#eef4ee;padding:8px 16px;margin-bottom:6px;border-radius:2px;}
+.toc-chip{width:30px;height:30px;border-radius:3px;background:#3fae4c;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13pt;flex-shrink:0;}
+.toc-t{font-weight:800;font-size:12pt;}
+.toc-s{font-size:9.5pt;color:#6b6f72;margin-top:1px;}
+
+.stepgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8mm;margin-top:10mm;}
+.step{background:#f4f6f4;border:1px solid #e2e5e3;border-radius:3px;padding:14px;text-align:center;}
+.step .n{width:36px;height:36px;border-radius:50%;background:#3fae4c;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;margin:0 auto 10px;font-size:13pt;}
+.step h4{margin:0 0 8px;font-size:11pt;font-weight:800;}
+.step p{margin:0;font-size:9pt;color:#555;line-height:1.4;}
+
+.flow{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:6mm;align-items:center;margin-top:10mm;}
+.flow .box{background:#f4f6f4;border:1px solid #e2e5e3;border-radius:3px;padding:12px;text-align:center;}
+.flow .box.accent{background:#6CF269;border-color:#6CF269;}
+.flow .box b{display:block;font-size:10.5pt;margin-bottom:6px;}
+.flow .box span{font-size:8.5pt;color:#555;font-style:italic;}
+.flow .arrow{text-align:center;font-size:16pt;color:#3fae4c;}
+
+.statcard{border:1px solid #e2e5e3;border-radius:3px;overflow:hidden;background:#fff;}
+.statcard .sh{background:#eef4ee;padding:8px 14px;font-weight:800;font-size:10.5pt;color:#2f8f3d;}
+.statcard .sb{padding:12px 14px;}
+.statcard .sb .cap{font-size:8.5pt;text-transform:uppercase;letter-spacing:.4px;color:#6b6f72;font-weight:700;}
+.statcard .sb .big{display:block;font-size:20pt;font-weight:800;margin:4px 0;}
+.statcard .sb .sub{font-size:9pt;color:#6b6f72;}
+
+.chartrow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8mm;margin-top:8mm;}
+.chartbox h4{margin:0 0 4px;font-size:11pt;font-weight:800;}
+.chartbox .u{font-size:9pt;color:#6b6f72;margin-bottom:6px;}
+
+.legend2{display:flex;gap:16px;margin-top:6px;font-size:9pt;color:#555;}
+.legend2 i{display:inline-block;width:12px;height:3px;margin-right:5px;vertical-align:middle;}
+
+.decision-row{display:flex;align-items:center;gap:10px;border:1px solid #e2e5e3;border-radius:3px;padding:9px 14px;margin-bottom:8px;background:#f7f9f7;}
+.decision-row.on{border-color:#3fae4c;background:#eef8ec;}
+.dot{width:16px;height:16px;border-radius:50%;border:2px solid #9aa0a3;flex-shrink:0;}
+.dot.on{background:#3fae4c;border-color:#3fae4c;}
+.decision-row b{font-size:10.5pt;}
+.decision-row .rec{color:#2f8f3d;font-size:9pt;margin-left:auto;font-weight:800;}
+
+ul.bl{margin:0;padding-left:16px;}
+ul.bl li{margin-bottom:7px;font-size:10pt;line-height:1.5;}
+ul.bl li:last-child{margin-bottom:0;}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10mm;margin-top:6mm;}
+</style>
+</head>
+<body>
+
+<!-- 1. CAPA -->
+<div class="slide dark">
+  <div class="stripe"></div>
+  <div class="pad" style="display:flex;flex-direction:column;justify-content:center;height:100%;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:22mm;">
+      <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" fill="none" stroke="#6CF269" stroke-width="11"/><circle cx="50" cy="50" r="19" fill="none" stroke="#6CF269" stroke-width="11"/></svg>
+      <b style="font-size:13pt;">O2 <span style="color:#6CF269;font-size:9pt;">INC.</span></b>
+    </div>
+    <div style="font-size:11pt;font-style:italic;color:#9aa0a3;margin-bottom:14mm;">Oxigênio Empresarial®</div>
+    <div class="eyebrow" style="font-style:italic;font-size:40pt;font-weight:800;letter-spacing:0;">VALUATION</div>
+    <div style="font-size:34pt;font-weight:800;color:#6CF269;margin-top:4mm;">Fromtherm</div>
+    <div style="font-size:13pt;color:#c7cbc8;margin-top:10mm;max-width:220mm;">Relatório de valuation — Fluxo de Caixa Descontado (FCDF), cenário Base</div>
+    <div style="position:absolute;bottom:20mm;left:26mm;font-size:10pt;color:#9aa0a3;">Julho 2026</div>
+  </div>
+</div>
+
+<!-- 2. CONTEÚDO -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">CONTEÚDO <span class="soft">ESTRUTURA DO RELATÓRIO DE AVALIAÇÃO</span></div>
+    <h1 class="h1">Conteúdo</h1>
+    <div class="toc-row"><div class="toc-chip">—</div><div><div class="toc-t">Abertura</div><div class="toc-s">Notas relevantes · introdução · metodologia FCD</div></div></div>
+    <div class="toc-row"><div class="toc-chip">1</div><div><div class="toc-t">Premissas</div><div class="toc-s">Como as premissas de receita, custos e custo de capital foram construídas</div></div></div>
+    <div class="toc-row"><div class="toc-chip">2</div><div><div class="toc-t">Contexto de mercado</div><div class="toc-s">Ambiente macroeconômico e setor de trocadores de calor / bombas de calor</div></div></div>
+    <div class="toc-row"><div class="toc-chip">3</div><div><div class="toc-t">Resultado da Empresa</div><div class="toc-s">Resultado histórico + projetado</div></div></div>
+    <div class="toc-row"><div class="toc-chip">4</div><div><div class="toc-t">Resumo executivo</div><div class="toc-s">FCDF vs. FCDF (OpCo) — Enterprise Value e Equity Value</div></div></div>
+    <div class="toc-row"><div class="toc-chip">5</div><div><div class="toc-t">Conclusão e próximos passos</div><div class="toc-s">Situação atual e recomendações de continuidade do trabalho</div></div></div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">02</b></span></div>
+</div>
+
+<!-- 3. ABERTURA divider -->
+<div class="slide dark">
+  <div class="stripe"></div>
+  <div class="bignum"></div>
+  <div class="pad" style="display:flex;flex-direction:column;justify-content:center;height:100%;">
+    <div class="eyebrow">ABERTURA</div>
+    <div style="font-size:30pt;font-weight:800;margin-top:6mm;">Abertura</div>
+    <div class="subtitle">Notas relevantes, introdução e metodologia de avaliação.</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">03</b></span></div>
+</div>
+
+<!-- 4. DISCLAIMER -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">ANEXOS <span class="soft">DISCLAIMER</span></div>
+    <h1 class="h1">Disclaimer</h1>
+    <ul class="bl" style="margin-top:8mm;">
+      <li>Este Relatório foi elaborado pela O2 Inc. exclusivamente para uso da Administração da Fromtherm, com base em informações por ela fornecidas e em fontes públicas consideradas confiáveis. O trabalho não constitui auditoria, due diligence ou parecer legal/tributário.</li>
+      <li>As conclusões baseiam-se em premissas sobre eventos futuros que podem não se concretizar; os resultados reais podem diferir de forma relevante. O Relatório não representa recomendação de compra, venda ou retenção de participação — a decisão de qualquer transação é de responsabilidade exclusiva dos acionistas.</li>
+      <li>As informações contidas nos documentos gerenciais que serviram de base à presente análise são de inteira responsabilidade da empresa.</li>
+      <li>O trabalho realizado se restringe à interpretação, análise e projeção das informações fornecidas. A O2 Inc. não se responsabiliza pela veracidade das informações, sendo elas de inteira responsabilidade do cliente.</li>
+      <li>Esta avaliação não contempla o valor da marca (ativo intangível), cuja apuração tem natureza distinta e deve ser realizada em trabalho à parte.</li>
+      <li>A determinação do valor econômico de eventuais contingências e a avaliação patrimonial de ativos fixos não fizeram parte do escopo deste trabalho.</li>
+    </ul>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">04</b></span></div>
+</div>
+
+<!-- 5. INFORMAÇÕES IMPORTANTES SOBRE O MODELO -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">ABERTURA <span class="soft">NOTAS SOBRE O MODELO</span></div>
+    <h1 class="h1">Informações importantes sobre o modelo</h1>
+    <ul class="bl" style="margin-top:8mm;">
+      <li>O caso apresentado é o <b>cenário Base</b> — o único com FCFF, WACC e Enterprise Value recalculados ao vivo na planilha. Os cenários Otimista e Pessimista existem no seletor do modelo (célula C7), mas não foram recongelados nesta versão: não há, portanto, uma faixa Otimista–Pessimista nesta etapa.</li>
+      <li>Duas visões de valor são apresentadas: <b>FCDF</b> (mantendo os imóveis na operação) e <b>FCDF (OpCo)</b> (segregando terrenos e prédios para venda separada a uma PropCo, com a operação pagando aluguel de mercado — atualizado em 14/07/2026 para R$ 64,5 mil/mês).</li>
+      <li>As demonstrações contábeis utilizadas (2023, 2024, 2025 e 1º trimestre de 2026) não são auditadas; a contabilidade e as informações gerenciais são de responsabilidade da Fromtherm.</li>
+      <li>Regime tributário: <b>Lucro Presumido</b> — sem tax shield sobre a dívida (o custo da dívida pós-impostos é igual ao pré-impostos).</li>
+      <li>Esta avaliação não contempla o valor da marca (ativo intangível) nem a avaliação patrimonial de ativos fixos.</li>
+    </ul>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">05</b></span></div>
+</div>
+
+<!-- 6. O QUE É VALUATION -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">ABERTURA <span class="soft">CONCEITOS</span></div>
+    <h1 class="h1">O que é valuation? E por que hoje um cenário Base?</h1>
+    <div class="cards2">
+      <div class="gcard">
+        <div class="gh">O que é valuation?</div>
+        <div class="gb">
+          <p><b>É estimar quanto vale uma empresa hoje, com base no caixa que ela é capaz de gerar no futuro.</b></p>
+          <p>Não é o patrimônio contábil nem a soma dos bens: é o valor econômico do negócio em funcionamento — o que um comprador pagaria pela capacidade de gerar resultado ao longo do tempo.</p>
+        </div>
+      </div>
+      <div class="gcard">
+        <div class="gh">Por que só o cenário Base por enquanto?</div>
+        <div class="gb">
+          <p>O valor depende de premissas sobre o futuro — crescimento, custos, taxa de desconto. Pequenas mudanças nessas premissas alteram o resultado.</p>
+          <p>Esta etapa recongelou o cenário Base. Os cenários Otimista e Pessimista existem no modelo e podem ser recalculados numa próxima rodada, para chegar a uma faixa completa de valor.</p>
+        </div>
+      </div>
+    </div>
+    <div class="notebox"><b class="lab">NOTA</b>Princípio O2: valuation é sensível a premissas (ex.: WACC e crescimento) — por isso a análise de sensibilidade WACC × g apresentada no Bloco 4.</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">06</b></span></div>
+</div>
+
+<!-- 7. METODOLOGIA FCD -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">ABERTURA <span class="soft">METODOLOGIA</span></div>
+    <h1 class="h1">Metodologia de avaliação — Fluxo de Caixa Descontado</h1>
+    <p style="font-size:11pt;font-style:italic;color:#555;margin:0;">O valor do negócio decorre dos fluxos de caixa livres que ele gera no futuro, trazidos a valor presente por uma taxa que reflete tempo, custo de oportunidade e risco (WACC).</p>
+    <div class="stepgrid">
+      <div class="step"><div class="n">1</div><h4>Projetar resultados</h4><p>DRE projetada (receita, custos, despesas, impostos), 2026F–2031F.</p></div>
+      <div class="step"><div class="n">2</div><h4>Converter em caixa (FCFF)</h4><p>Ao NOPAT somam-se a depreciação e subtraem-se CAPEX e variação da NCG.</p></div>
+      <div class="step"><div class="n">3</div><h4>Descontar ao WACC</h4><p>Fluxos trazidos a valor presente pelo custo de capital (WACC).</p></div>
+      <div class="step"><div class="n">4</div><h4>Valor terminal</h4><p>Perpetuidade (Gordon) ao fim do horizonte explícito (g).</p></div>
+    </div>
+    <div class="notebox" style="margin-top:14mm;"><b class="lab">NOTA</b>Horizonte explícito 2026F–2031F (6 anos) + valor terminal. Duas estruturas de capital avaliadas: FCDF e FCDF (OpCo).</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">07</b></span></div>
+</div>
+
+<!-- 8. COMO CHEGAMOS AO VALOR -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">ABERTURA <span class="soft">COMO CALCULAMOS</span></div>
+    <h1 class="h1">Como chegamos ao valor — passo a passo</h1>
+    <div class="flow">
+      <div class="box"><b>Lucro projetado</b><span>quanto a empresa deve lucrar por ano</span></div>
+      <div class="arrow">+</div>
+      <div class="box"><b>Depreciação</b><span>custo que não saiu do caixa — volta</span></div>
+      <div class="arrow">−</div>
+      <div class="box"><b>Capital de giro</b><span>dinheiro preso em estoque e a receber</span></div>
+    </div>
+    <div class="flow" style="grid-template-columns:1fr .5fr 1fr;margin-top:10mm;">
+      <div class="box accent"><b>Caixa livre do ano</b><span>o que de fato sobra no ano (FCFF)</span></div>
+      <div class="arrow">→</div>
+      <div class="box"><b>Somar todos os anos + perpetuidade, trazer a valor presente pelo WACC</b><span>R$ no futuro vale menos do que hoje</span></div>
+    </div>
+    <div class="two-col" style="margin-top:14mm;grid-template-columns:1fr;">
+      <div class="box accent" style="background:#3fae4c;color:#fff;text-align:center;padding:14px;border-radius:3px;"><b style="font-size:13pt;">= Valor da Empresa (Enterprise Value)</b></div>
+    </div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">08</b></span></div>
+</div>
+
+<!-- 9. BLOCO 1 divider -->
+<div class="slide dark">
+  <div class="stripe"></div>
+  <div class="bignum">1</div>
+  <div class="pad" style="display:flex;flex-direction:column;justify-content:center;height:100%;">
+    <div class="eyebrow">BLOCO 1</div>
+    <div style="font-size:30pt;font-weight:800;margin-top:6mm;">Premissas</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">09</b></span></div>
+</div>
+
+<!-- 10. PREMISSAS -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">BLOCO 1 · PREMISSAS <span class="soft">COMO FORAM CONSTRUÍDAS</span></div>
+    <h1 class="h1">Premissas — as três principais alavancas: receita, custos e WACC</h1>
+    <div class="cards2">
+      <div class="gcard">
+        <div class="gh">Receita e custos</div>
+        <div class="gb">
+          <p><b>Crescimento (cenário Base).</b> Receita cresce 10,4% em 2026F, desacelerando para 8,3% (2027), 6,2% (2028), 4,1% (2029) e 2,0% a.a. no fim do horizonte — acima do crescimento setorial de trocadores de calor (6,0–6,5% a.a.), convergindo depois.</p>
+          <p><b>Margem EBIT em recuperação.</b> Caiu de 24,7% (2023) para 9,6% (2025) com a virada para revenda de produtos importados; a projeção Base assume recuperação parcial (margem EBIT ≈16% em 2026F–2031F) com a nova fábrica reduzindo a dependência de importação.</p>
+          <p><b>CAPEX.</b> Sem CAPEX projetado no horizonte explícito (aba "Fluxo de Caixa Descontado FCDF" da planilha base).</p>
+        </div>
+      </div>
+      <div class="gcard">
+        <div class="gh">WACC, g e capital</div>
+        <div class="gb">
+          <p><b>WACC = 23,61% (FCDF) / 23,71% (FCDF OpCo).</b> Ke (CAPM) = 25,62% nominal: Rf 4,27% + β relevado 1,68 × ERP 5,00% + risco-país 3,24% + diferencial de inflação BR–EUA 1,10% + prêmio de tamanho 8,60%. Kd pós-impostos = 20,50% (Selic LP 14,5% + spread 6,0%, sem tax shield — Lucro Presumido).</p>
+          <p><b>g (perpetuidade) = 5,57%</b> nominal: (1+inflação LP 3,5%)×(1+PIB real LP 2,0%) − 1, ambos do Relatório Focus. Mesmo Ke e Kd nas duas visões — muda só o peso de capital próprio/dívida (60,7% vs. 62,8%), pois a OpCo exclui a dívida imobiliária.</p>
+        </div>
+      </div>
+    </div>
+    <div class="notebox"><b class="lab">NOTA</b>A faixa de valor responde sobretudo a estas três alavancas. Sensibilidade WACC × g apresentada no Bloco 4.</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">10</b></span></div>
+</div>
+
+<!-- 11. CUSTO DE CAPITAL -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">BLOCO 1 · PREMISSAS <span class="soft">CUSTO DE CAPITAL</span></div>
+    <h1 class="h1">Custo de capital — Ke (CAPM) = 25,62% nominal</h1>
+    <table class="pf" style="margin-top:6mm;">
+      <thead><tr><th>Componente</th><th class="num">Valor</th><th>Fonte</th></tr></thead>
+      <tbody>
+        <tr><td>Rf — T-bond 10 anos (taxa livre de risco)</td><td class="num">4,27%</td><td>home.treasury.gov</td></tr>
+        <tr><td>β desalavancado (setorial: Machinery / Electrical Equipment)</td><td class="num">1,473</td><td>Damodaran</td></tr>
+        <tr><td>β relevado (Hamada, D/E médio das comparáveis)</td><td class="num">1,68</td><td>Damodaran — ajuste Hamada</td></tr>
+        <tr><td>ERP — prêmio de risco de mercado</td><td class="num">5,00%</td><td>Kroll</td></tr>
+        <tr><td>Risco-país (CRP Brasil)</td><td class="num">3,24%</td><td>Damodaran — CRP</td></tr>
+        <tr><td>Diferencial de inflação (BR − EUA)</td><td class="num">+1,10%</td><td>Focus / FRED</td></tr>
+        <tr><td>Prêmio de tamanho (PME)</td><td class="num">8,60%</td><td>Valuation Handbook 2023 (CFA Institute)</td></tr>
+        <tr class="key"><td>Ke = CAPM nominal</td><td class="num hl">25,62%</td><td>Rf + β×ERP + Risco País + Dif. Inflação + Prêmio Tamanho</td></tr>
+        <tr><td>Kd pré-impostos (Selic LP 14,50% + spread 6,00%)</td><td class="num">20,50%</td><td>Focus BCB + critério O2</td></tr>
+        <tr class="key"><td>Kd pós-impostos (sem tax shield — Lucro Presumido)</td><td class="num hl">20,50%</td><td>Kd pré × (1 − alíquota marginal 0%)</td></tr>
+      </tbody>
+    </table>
+    <div class="notebox"><b class="lab">g (perpetuidade)</b> = 5,57% = (1+3,50%)×(1+2,00%)−1 · Inflação LP e PIB projetado de longo prazo, ambos do Relatório Focus (BCB). WACC final pondera Ke e Kd pela estrutura real de capital: E/(D+E) 60,7% / D/(D+E) 39,3% (FCDF) e E/(D+E) 62,8% / D/(D+E) 37,2% (FCDF OpCo) → WACC 23,61% / 23,71%.</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">11</b></span></div>
+</div>
+
+<!-- 12. BLOCO 2 divider -->
+<div class="slide dark">
+  <div class="stripe"></div>
+  <div class="bignum">2</div>
+  <div class="pad" style="display:flex;flex-direction:column;justify-content:center;height:100%;">
+    <div class="eyebrow">BLOCO 2</div>
+    <div style="font-size:30pt;font-weight:800;margin-top:6mm;">Contexto de mercado</div>
+    <div class="subtitle">Ambiente macroeconômico e setor de trocadores de calor / bombas de calor.</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">12</b></span></div>
+</div>
+
+<!-- 13. TRAJETÓRIA MACRO -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">BLOCO 2 · CONTEXTO <span class="soft">MACROECONOMIA — TRAJETÓRIA</span></div>
+    <h1 class="h1">Trajetória macro — PIB, inflação e Selic (2023–2031F)</h1>
+    <div class="chartrow">
+      <div class="chartbox"><h4>PIB real (% a.a.)</h4><div class="u">IBGE / Focus BCB</div><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg"><rect x="30.4" y="35.3" width="20.5" height="148.7" fill="#2f8f3d" rx="2"/><text x="40.7" y="29.3" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">3,20%</text><text x="40.7" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2023</text><rect x="67.7" y="26.0" width="20.5" height="158.0" fill="#2f8f3d" rx="2"/><text x="78.0" y="20.0" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">3,40%</text><text x="78.0" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2024</text><rect x="105.1" y="77.1" width="20.5" height="106.9" fill="#2f8f3d" rx="2"/><text x="115.3" y="71.1" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">2,30%</text><text x="115.3" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2025</text><rect x="142.4" y="91.5" width="20.5" height="92.5" fill="#a9dab0" rx="2"/><text x="152.7" y="85.5" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">1,99%</text><text x="152.7" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2026F</text><rect x="179.7" y="105.5" width="20.5" height="78.5" fill="#a9dab0" rx="2"/><text x="190.0" y="99.5" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">1,69%</text><text x="190.0" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2027F</text><rect x="217.1" y="91.1" width="20.5" height="92.9" fill="#a9dab0" rx="2"/><text x="227.3" y="85.1" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">2,00%</text><text x="227.3" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2028F</text><rect x="254.4" y="91.1" width="20.5" height="92.9" fill="#a9dab0" rx="2"/><text x="264.7" y="85.1" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">2,00%</text><text x="264.7" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2029F</text><rect x="291.7" y="91.1" width="20.5" height="92.9" fill="#a9dab0" rx="2"/><text x="302.0" y="85.1" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">2,00%</text><text x="302.0" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2030F</text><rect x="329.1" y="91.1" width="20.5" height="92.9" fill="#a9dab0" rx="2"/><text x="339.3" y="85.1" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">2,00%</text><text x="339.3" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2031F</text></svg></div>
+      <div class="chartbox"><h4>IPCA (% a.a.)</h4><div class="u">IBGE / Focus BCB</div><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg"><rect x="30.4" y="46.3" width="20.5" height="137.7" fill="#2f8f3d" rx="2"/><text x="40.7" y="40.3" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">4,62%</text><text x="40.7" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2023</text><rect x="67.7" y="40.0" width="20.5" height="144.0" fill="#2f8f3d" rx="2"/><text x="78.0" y="34.0" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">4,83%</text><text x="78.0" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2024</text><rect x="105.1" y="57.0" width="20.5" height="127.0" fill="#2f8f3d" rx="2"/><text x="115.3" y="51.0" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">4,26%</text><text x="115.3" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2025</text><rect x="142.4" y="26.0" width="20.5" height="158.0" fill="#a9dab0" rx="2"/><text x="152.7" y="20.0" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">5,30%</text><text x="152.7" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2026F</text><rect x="179.7" y="59.4" width="20.5" height="124.6" fill="#a9dab0" rx="2"/><text x="190.0" y="53.4" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">4,18%</text><text x="190.0" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2027F</text><rect x="217.1" y="73.7" width="20.5" height="110.3" fill="#a9dab0" rx="2"/><text x="227.3" y="67.7" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">3,70%</text><text x="227.3" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2028F</text><rect x="254.4" y="79.7" width="20.5" height="104.3" fill="#a9dab0" rx="2"/><text x="264.7" y="73.7" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">3,50%</text><text x="264.7" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2029F</text><rect x="291.7" y="79.7" width="20.5" height="104.3" fill="#a9dab0" rx="2"/><text x="302.0" y="73.7" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">3,50%</text><text x="302.0" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2030F</text><rect x="329.1" y="79.7" width="20.5" height="104.3" fill="#a9dab0" rx="2"/><text x="339.3" y="73.7" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">3,50%</text><text x="339.3" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2031F</text></svg></div>
+      <div class="chartbox"><h4>Selic — fim de ano (%)</h4><div class="u">BCB / Copom / Focus</div><svg viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg"><rect x="30.4" y="60.2" width="20.5" height="123.8" fill="#2f8f3d" rx="2"/><text x="40.7" y="54.2" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">11,75%</text><text x="40.7" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2023</text><rect x="67.7" y="55.0" width="20.5" height="129.0" fill="#2f8f3d" rx="2"/><text x="78.0" y="49.0" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">12,25%</text><text x="78.0" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2024</text><rect x="105.1" y="26.0" width="20.5" height="158.0" fill="#2f8f3d" rx="2"/><text x="115.3" y="20.0" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">15,00%</text><text x="115.3" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2025</text><rect x="142.4" y="36.5" width="20.5" height="147.5" fill="#a9dab0" rx="2"/><text x="152.7" y="30.5" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">14,00%</text><text x="152.7" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2026F</text><rect x="179.7" y="57.6" width="20.5" height="126.4" fill="#a9dab0" rx="2"/><text x="190.0" y="51.6" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">12,00%</text><text x="190.0" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2027F</text><rect x="217.1" y="73.4" width="20.5" height="110.6" fill="#a9dab0" rx="2"/><text x="227.3" y="67.4" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">10,50%</text><text x="227.3" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2028F</text><rect x="254.4" y="73.4" width="20.5" height="110.6" fill="#a9dab0" rx="2"/><text x="264.7" y="67.4" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">10,50%</text><text x="264.7" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2029F</text><rect x="291.7" y="73.4" width="20.5" height="110.6" fill="#a9dab0" rx="2"/><text x="302.0" y="67.4" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">10,50%</text><text x="302.0" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2030F</text><rect x="329.1" y="73.4" width="20.5" height="110.6" fill="#a9dab0" rx="2"/><text x="339.3" y="67.4" text-anchor="middle" font-size="11.5" font-weight="800" fill="#333">10,50%</text><text x="339.3" y="202" text-anchor="middle" font-size="10.5" font-weight="600" fill="#83868a">2031F</text></svg></div>
+    </div>
+    <div class="notebox">Barras escuras = realizado (2023–2025); barras claras = projeção (Focus BCB 03/07/2026). Desinflação gradual (IPCA 5,30%→3,50%) com queda lenta da Selic (14,00%→10,50%): juro real segue elevado no horizonte — coerente com o WACC de 23,6–23,7% e o g de 5,57% do modelo.</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">13</b></span></div>
+</div>
+
+<!-- 14. CONTEXTO SETORIAL -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">BLOCO 2 · CONTEXTO <span class="soft">SETOR — TROCADORES DE CALOR E BOMBAS DE CALOR</span></div>
+    <h1 class="h1">Contexto setorial — trocadores de calor no Brasil</h1>
+    <table class="pf" style="margin-top:6mm;">
+      <thead><tr><th>Indicador</th><th class="num">Valor</th><th>Horizonte</th><th>Fonte</th></tr></thead>
+      <tbody>
+        <tr><td>Trocadores de calor Shell &amp; Tube — Brasil</td><td class="num">+6,0% a.a.</td><td>CAGR 2026–2031</td><td>Grand View Research</td></tr>
+        <tr><td>Trocadores de calor Plate &amp; Frame — Brasil</td><td class="num">+6,5% a.a.</td><td>CAGR 2026–2031</td><td>Grand View Research</td></tr>
+        <tr><td>Setor HVAC-R agregado — faturamento 2025</td><td class="num">R$ 50,15 bi</td><td>+10,4% vs. 2024</td><td>ABRAVA</td></tr>
+        <tr class="key"><td>Setor HVAC-R agregado — projeção 2026</td><td class="num hl">R$ 55,62 bi</td><td>+10,9% vs. 2025</td><td>ABRAVA</td></tr>
+      </tbody>
+    </table>
+    <div class="notebox">O crescimento de receita da Fromtherm no cenário Base (10,4% em 2026F, desacelerando a 2,0% a.a.) está acima do crescimento setorial de trocadores de calor (6,0–6,5% a.a.) nos primeiros anos, convergindo depois. A ABRAVA não publica recorte específico para bombas de calor de piscina — os números do setor HVAC-R agregado são usados como referência de contexto, não como tamanho do mercado da Fromtherm.</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">14</b></span></div>
+</div>
+
+<!-- 15. CONCORRENTES -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">BLOCO 2 · CONTEXTO <span class="soft">QUADRO DE CONCORRENTES</span></div>
+    <h1 class="h1">Quadro de concorrentes</h1>
+    <table class="pf" style="margin-top:6mm;font-size:9.3pt;">
+      <thead><tr><th>Marca / Empresa</th><th>Origem</th><th>Observação</th></tr></thead>
+      <tbody>
+        <tr><td>Nautilus</td><td>Nacional</td><td>Linha full inverter/Wi-Fi para piscinas residenciais e comerciais</td></tr>
+        <tr><td>Sodramar</td><td>Nacional</td><td>Linha full inverter/Wi-Fi para piscinas residenciais e comerciais</td></tr>
+        <tr><td>Komeco</td><td>Nacional</td><td>Também atua em bomba de calor para aquecimento central, além de piscinas</td></tr>
+        <tr><td>Industek</td><td>Nacional</td><td>Posiciona-se como pioneira em inovação e sustentabilidade</td></tr>
+        <tr><td>Tholz</td><td>Nacional</td><td>Concorrente citado no mercado de trocadores de calor para piscina</td></tr>
+        <tr><td>Maxtemp</td><td>Nacional</td><td>Foco em custo-benefício</td></tr>
+        <tr><td>Light Tech</td><td>Nacional</td><td>Linha de bomba/trocador de calor para piscina</td></tr>
+        <tr><td>Heliotek (Grupo Bosch)</td><td>Nacional (grupo internacional)</td><td>Maior fabricante de aquecedor solar do Brasil; também com linha de bomba de calor</td></tr>
+        <tr><td>AstralPool (Fluidra)</td><td>Internacional (Espanha), com operação no Brasil</td><td>Apontada como líder mundial em climatização de piscinas</td></tr>
+        <tr><td>Midea</td><td>Internacional (China), fábrica local em MG</td><td>Concorrente adjacente em climatização geral — pode expandir para o segmento de piscinas</td></tr>
+      </tbody>
+    </table>
+    <div class="notebox">Levantamento não exaustivo — concorrentes identificados via busca em sites de fabricantes e revendedores, não em base setorial fechada.</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">15</b></span></div>
+</div>
+
+<!-- 16. FORNECEDORES -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">BLOCO 2 · CONTEXTO <span class="soft">PRINCIPAIS FORNECEDORES DA CADEIA</span></div>
+    <h1 class="h1">Principais fornecedores da cadeia (limitado a 5)</h1>
+    <table class="pf" style="margin-top:6mm;font-size:9.3pt;">
+      <thead><tr><th>Insumo</th><th>Fornecedores típicos do setor</th><th>Observação</th></tr></thead>
+      <tbody>
+        <tr><td>Compressores</td><td>Copeland (ex-Emerson), Danfoss, Highly (Hitachi)</td><td>Três grandes fabricantes globais com linhas específicas para bombas de calor, distribuição ativa no Brasil</td></tr>
+        <tr><td>Gases refrigerantes (R32/R410A)</td><td>White Martins (grupo Linde), Honeywell (linha Genetron)</td><td>White Martins é a maior produtora/distribuidora de gases industriais da América Latina</td></tr>
+        <tr><td>Trocadores de calor / condensadores em titânio</td><td>Reido Titânio, JPX Equipamentos</td><td>Concorrentes diretos usam uniformemente condensadores de titânio pela resistência a cloro/sal</td></tr>
+        <tr><td>Aço/chapas para gabinetes</td><td>Aperam, Usiminas, Gerdau</td><td>Aperam lidera aço inox integrado; Usiminas fornece chapas para estampados</td></tr>
+        <tr><td>Componentes eletrônicos / placas de controle</td><td>Não confirmado com fornecedor primário específico</td><td>Recomenda-se levantamento direto com a empresa</td></tr>
+      </tbody>
+    </table>
+    <div class="notebox">Não foi encontrada confirmação pública de quais desses fornecedores atendem especificamente a Fromtherm — a lista reflete os fornecedores mais relevantes da cadeia de HVAC-R/bombas de calor no Brasil, identificados por presença comprovada em concorrentes diretos e na cadeia industrial nacional.</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">16</b></span></div>
+</div>
+
+<!-- 17. TENDÊNCIAS E AMEAÇA -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">BLOCO 2 · CONTEXTO <span class="soft">TENDÊNCIAS E AMEAÇA COMPETITIVA</span></div>
+    <h1 class="h1">Tendências de mercado e ameaça competitiva</h1>
+    <ul class="bl" style="margin-top:6mm;">
+      <li>Etiquetagem energética obrigatória do INMETRO (Portaria 269/2021) desde jan/2023 — pressiona o mercado por eficiência energética.</li>
+      <li>Tecnologia full inverter surge como padrão emergente, com até 50% de economia energética frente a sistemas convencionais — a linha FT da Fromtherm já se posiciona nessa faixa.</li>
+      <li>Aquecimento solar residencial (26,7 milhões de m² instalados no Brasil) segue crescendo — mercado adjacente/substituto em algumas aplicações.</li>
+    </ul>
+    <div class="callout">
+      <div class="ch">! Risco de entrada e de venda direta da China</div>
+      <p>Marcas chinesas já respondem por ~20% dos eletrônicos vendidos no Brasil (ante 16,5% em 2019). Fabricantes como Midea, TCL e Hisense já têm fábricas no Brasil (MG, Manaus) — a entrada já é estruturada via produção local, não apenas importação avulsa. No Mercado Livre já circulam bombas/trocadores de calor de marcas pouco tradicionais vendidas diretamente ao consumidor.</p>
+    </div>
+    <div class="notebox">A importação avulsa enfrenta barreira tributária relevante (II 0–60% + ICMS 7–18%+ + Siscomex). Não foi encontrada evidência de venda massiva direta ao consumidor via Shopee/AliExpress especificamente para bombas de calor de piscina.</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">17</b></span></div>
+</div>
+
+<!-- 18. BLOCO 3 divider -->
+<div class="slide dark">
+  <div class="stripe"></div>
+  <div class="bignum">3</div>
+  <div class="pad" style="display:flex;flex-direction:column;justify-content:center;height:100%;">
+    <div class="eyebrow">BLOCO 3</div>
+    <div style="font-size:30pt;font-weight:800;margin-top:6mm;">Resultado da Empresa</div>
+    <div class="subtitle">Resultado histórico + projetado.</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">18</b></span></div>
+</div>
+
+<!-- 19. EVOLUÇÃO DRE -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">BLOCO 3 · RESULTADO DA EMPRESA <span class="soft">PROJEÇÃO — EVOLUÇÃO</span></div>
+    <h1 class="h1">Evolução das principais linhas da DRE — Fromtherm (R$ mil)</h1>
+    <div style="margin-top:4mm;"><svg viewBox="0 0 980 290" xmlns="http://www.w3.org/2000/svg"><line x1="50" y1="24.0" x2="950" y2="24.0" stroke="#eef1ef" stroke-width="1"/><line x1="50" y1="83.0" x2="950" y2="83.0" stroke="#eef1ef" stroke-width="1"/><line x1="50" y1="142.0" x2="950" y2="142.0" stroke="#eef1ef" stroke-width="1"/><line x1="50" y1="201.0" x2="950" y2="201.0" stroke="#eef1ef" stroke-width="1"/><line x1="50" y1="260.0" x2="950" y2="260.0" stroke="#eef1ef" stroke-width="1"/><polyline points="50.0,147.7 162.5,108.6 275.0,89.6 387.5,85.0 500.0,66.8 612.5,50.7 725.0,37.7 837.5,28.6 950.0,24.0" fill="none" stroke="#2f8f3d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50.0" cy="147.7" r="4" fill="#fff" stroke="#2f8f3d" stroke-width="2.5"/><circle cx="162.5" cy="108.6" r="4" fill="#fff" stroke="#2f8f3d" stroke-width="2.5"/><circle cx="275.0" cy="89.6" r="4" fill="#fff" stroke="#2f8f3d" stroke-width="2.5"/><circle cx="387.5" cy="85.0" r="4" fill="#fff" stroke="#2f8f3d" stroke-width="2.5"/><circle cx="500.0" cy="66.8" r="4" fill="#fff" stroke="#2f8f3d" stroke-width="2.5"/><circle cx="612.5" cy="50.7" r="4" fill="#fff" stroke="#2f8f3d" stroke-width="2.5"/><circle cx="725.0" cy="37.7" r="4" fill="#fff" stroke="#2f8f3d" stroke-width="2.5"/><circle cx="837.5" cy="28.6" r="4" fill="#fff" stroke="#2f8f3d" stroke-width="2.5"/><circle cx="950.0" cy="24.0" r="4" fill="#fff" stroke="#2f8f3d" stroke-width="2.5"/><polyline points="50.0,209.0 162.5,197.1 275.0,206.5 387.5,192.0 500.0,185.6 612.5,180.4 725.0,176.4 837.5,173.9 950.0,173.1" fill="none" stroke="#8fd39a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50.0" cy="209.0" r="4" fill="#fff" stroke="#8fd39a" stroke-width="2.5"/><circle cx="162.5" cy="197.1" r="4" fill="#fff" stroke="#8fd39a" stroke-width="2.5"/><circle cx="275.0" cy="206.5" r="4" fill="#fff" stroke="#8fd39a" stroke-width="2.5"/><circle cx="387.5" cy="192.0" r="4" fill="#fff" stroke="#8fd39a" stroke-width="2.5"/><circle cx="500.0" cy="185.6" r="4" fill="#fff" stroke="#8fd39a" stroke-width="2.5"/><circle cx="612.5" cy="180.4" r="4" fill="#fff" stroke="#8fd39a" stroke-width="2.5"/><circle cx="725.0" cy="176.4" r="4" fill="#fff" stroke="#8fd39a" stroke-width="2.5"/><circle cx="837.5" cy="173.9" r="4" fill="#fff" stroke="#8fd39a" stroke-width="2.5"/><circle cx="950.0" cy="173.1" r="4" fill="#fff" stroke="#8fd39a" stroke-width="2.5"/><polyline points="50.0,232.3 162.5,227.7 275.0,243.7 387.5,231.3 500.0,227.6 612.5,224.8 725.0,222.8 837.5,222.1 950.0,222.7" fill="none" stroke="#2f8f3d" stroke-width="3" stroke-dasharray="7 5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50.0" cy="232.3" r="4" fill="#fff" stroke="#2f8f3d" stroke-width="2.5"/><circle cx="162.5" cy="227.7" r="4" fill="#fff" stroke="#2f8f3d" stroke-width="2.5"/><circle cx="275.0" cy="243.7" r="4" fill="#fff" stroke="#2f8f3d" stroke-width="2.5"/><circle cx="387.5" cy="231.3" r="4" fill="#fff" stroke="#2f8f3d" stroke-width="2.5"/><circle cx="500.0" cy="227.6" r="4" fill="#fff" stroke="#2f8f3d" stroke-width="2.5"/><circle cx="612.5" cy="224.8" r="4" fill="#fff" stroke="#2f8f3d" stroke-width="2.5"/><circle cx="725.0" cy="222.8" r="4" fill="#fff" stroke="#2f8f3d" stroke-width="2.5"/><circle cx="837.5" cy="222.1" r="4" fill="#fff" stroke="#2f8f3d" stroke-width="2.5"/><circle cx="950.0" cy="222.7" r="4" fill="#fff" stroke="#2f8f3d" stroke-width="2.5"/><polyline points="50.0,236.2 162.5,240.0 275.0,249.4 387.5,241.4 500.0,238.7 612.5,236.8 725.0,235.7 837.5,235.5 950.0,236.3" fill="none" stroke="#6b6f72" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50.0" cy="236.2" r="4" fill="#fff" stroke="#6b6f72" stroke-width="2.5"/><circle cx="162.5" cy="240.0" r="4" fill="#fff" stroke="#6b6f72" stroke-width="2.5"/><circle cx="275.0" cy="249.4" r="4" fill="#fff" stroke="#6b6f72" stroke-width="2.5"/><circle cx="387.5" cy="241.4" r="4" fill="#fff" stroke="#6b6f72" stroke-width="2.5"/><circle cx="500.0" cy="238.7" r="4" fill="#fff" stroke="#6b6f72" stroke-width="2.5"/><circle cx="612.5" cy="236.8" r="4" fill="#fff" stroke="#6b6f72" stroke-width="2.5"/><circle cx="725.0" cy="235.7" r="4" fill="#fff" stroke="#6b6f72" stroke-width="2.5"/><circle cx="837.5" cy="235.5" r="4" fill="#fff" stroke="#6b6f72" stroke-width="2.5"/><circle cx="950.0" cy="236.3" r="4" fill="#fff" stroke="#6b6f72" stroke-width="2.5"/><text x="50.0" y="282" text-anchor="middle" font-size="12" font-weight="600" fill="#83868a">2023</text><text x="162.5" y="282" text-anchor="middle" font-size="12" font-weight="600" fill="#83868a">2024</text><text x="275.0" y="282" text-anchor="middle" font-size="12" font-weight="600" fill="#83868a">2025</text><text x="387.5" y="282" text-anchor="middle" font-size="12" font-weight="600" fill="#83868a">2026F</text><text x="500.0" y="282" text-anchor="middle" font-size="12" font-weight="600" fill="#83868a">2027F</text><text x="612.5" y="282" text-anchor="middle" font-size="12" font-weight="600" fill="#83868a">2028F</text><text x="725.0" y="282" text-anchor="middle" font-size="12" font-weight="600" fill="#83868a">2029F</text><text x="837.5" y="282" text-anchor="middle" font-size="12" font-weight="600" fill="#83868a">2030F</text><text x="950.0" y="282" text-anchor="middle" font-size="12" font-weight="600" fill="#83868a">2031F</text></svg></div>
+    <div class="legend2">
+      <span><i style="background:#2f8f3d;"></i>Receita Bruta</span>
+      <span><i style="background:#8fd39a;"></i>Lucro Bruto</span>
+      <span><i style="background:#2f8f3d;border-top:2px dashed #2f8f3d;height:0;"></i>EBIT (Lucro Operacional)</span>
+      <span><i style="background:#6b6f72;"></i>Lucro Líquido</span>
+    </div>
+    <div class="notebox">Cenário Base. A margem cai em 2025 (virada para revenda de produtos importados) e a projeção assume recuperação parcial a partir de 2026F — premissa a validar frente aos números realizados (o 1º trimestre de 2026 fechou em prejuízo).</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">19</b></span></div>
+</div>
+
+<!-- 20. BALANÇO -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">BLOCO 3 · RESULTADO DA EMPRESA <span class="soft">BALANÇO PATRIMONIAL</span></div>
+    <h1 class="h1">Balanço patrimonial resumido (2023–2025, R$ mil)</h1>
+    <table class="pf" style="margin-top:6mm;">
+      <thead><tr><th>Valores em R$ mil</th><th class="num">2023A</th><th class="num">2024A</th><th class="num">2025A</th></tr></thead>
+      <tbody>
+        <tr><td><b>Ativo Circulante</b></td><td class="num"></td><td class="num"></td><td class="num"></td></tr>
+        <tr><td>Clientes (contas a receber)</td><td class="num">5.315</td><td class="num">7.475</td><td class="num">8.050</td></tr>
+        <tr><td>(-) Adiantamentos de Clientes</td><td class="num">−2.792</td><td class="num">−1.705</td><td class="num">−2.058</td></tr>
+        <tr><td>Estoques</td><td class="num">1.989</td><td class="num">6.953</td><td class="num">7.700</td></tr>
+        <tr><td>Caixa e Equivalentes</td><td class="num">1.544</td><td class="num">3.203</td><td class="num">1.086</td></tr>
+        <tr class="key"><td>Total do Ativo Circulante</td><td class="num hl">6.056</td><td class="num hl">15.925</td><td class="num hl">14.777</td></tr>
+        <tr><td>Imobilizado Líquido (total)</td><td class="num">5.855</td><td class="num">9.669</td><td class="num">10.535</td></tr>
+        <tr class="key"><td>Ativo Total</td><td class="num hl">–</td><td class="num hl">25.594</td><td class="num hl">25.312</td></tr>
+        <tr><td>Fornecedores</td><td class="num">1.258</td><td class="num">1.107</td><td class="num">1.024</td></tr>
+        <tr><td>Empréstimos e Financiamentos (Dívida Bruta)</td><td class="num">–</td><td class="num">12.421</td><td class="num">12.863</td></tr>
+        <tr class="key"><td>Patrimônio Líquido (apurado por diferença)</td><td class="num hl">–</td><td class="num hl">12.066</td><td class="num hl">11.425</td></tr>
+      </tbody>
+    </table>
+    <div class="notebox">A planilha base não traz uma linha própria de Patrimônio Líquido — o valor acima foi apurado pela equação contábil (Ativo Total − Passivo Circulante − Passivo Não Circulante). 2023 não computado por falta do dado de Empréstimos daquele ano. Este PL contábil é diferente do Equity Value apurado no FCDF, que é uma estimativa de valor de mercado, não um saldo contábil.</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">20</b></span></div>
+</div>
+
+<!-- 21. BLOCO 4 divider -->
+<div class="slide dark">
+  <div class="stripe"></div>
+  <div class="bignum">4</div>
+  <div class="pad" style="display:flex;flex-direction:column;justify-content:center;height:100%;">
+    <div class="eyebrow">BLOCO 4</div>
+    <div style="font-size:30pt;font-weight:800;margin-top:6mm;">Resumo executivo</div>
+    <div class="subtitle">FCDF vs. FCDF (OpCo) — Enterprise Value e Equity Value, cenário Base.</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">21</b></span></div>
+</div>
+
+<!-- 22. DUAS VISÕES DE VALOR -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">BLOCO 4 · RESUMO EXECUTIVO <span class="soft">DUAS VISÕES DE VALOR</span></div>
+    <h1 class="h1">Duas visões de valor — FCDF e FCDF (OpCo), cenário Base</h1>
+    <div class="cards2">
+      <div class="statcard">
+        <div class="sh">Fluxo de Caixa Descontado FCDF</div>
+        <div class="sb">
+          <span class="cap">Enterprise Value</span><span class="big">R$ 34,1 MM</span><span class="sub">R$ 34.083 mil · com imóveis</span>
+          <div style="margin:10px 0;border-top:1px solid #e9ece9;"></div>
+          <span class="cap">Equity Value</span><span class="big">R$ 22,3 MM</span><span class="sub">R$ 22.306 mil · WACC 23,61% · g 5,57%</span>
+        </div>
+      </div>
+      <div class="statcard">
+        <div class="sh">FCDF (OpCo)</div>
+        <div class="sb">
+          <span class="cap">Enterprise Value</span><span class="big">R$ 27,8 MM</span><span class="sub">R$ 27.801 mil · sem imóveis (carve-out PropCo)</span>
+          <div style="margin:10px 0;border-top:1px solid #e9ece9;"></div>
+          <span class="cap">Equity Value</span><span class="big">R$ 17,1 MM</span><span class="sub">R$ 17.124 mil · WACC 23,71% · g 5,57%</span>
+        </div>
+      </div>
+    </div>
+    <div class="cards3" style="margin-top:8mm;">
+      <div class="plaincard"><h4>Por que esse valor</h4><p>DCF (FCFF), horizonte 2026F–2031F + perpetuidade. Fonte: aba "Fluxo de Caixa Descontado FCDF" da planilha base.</p></div>
+      <div class="plaincard"><h4>Principal driver</h4><p>Recuperação de margem: receita cresceu (R$ 25,0 mi → 33,7 mi → 37,9 mi em 2023–2025), mas a margem EBIT caiu de 24,7% para 9,6%. A nova fábrica é a aposta para recuperar margem — já parcialmente refletida na projeção Base.</p></div>
+      <div class="plaincard"><h4>Principal risco</h4><p>Empresa alavancada (Dívida Líquida R$ 11,78 mi em 2025). O 1º trimestre de 2026 fechou em prejuízo (~R$ 318 mil): a recuperação de margem projetada ainda não apareceu nos números realizados.</p></div>
+    </div>
+    <div class="notebox">Reflete apenas o cenário Base — os cenários Otimista e Pessimista existem no seletor do modelo, mas não foram recongelados nesta versão.</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">22</b></span></div>
+</div>
+
+<!-- 23. SENSIBILIDADE -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">BLOCO 4 · SENSIBILIDADE</div>
+    <h1 class="h1">Sensibilidade WACC × g — Enterprise Value por visão (R$ mil)</h1>
+    <div class="two-col">
+      <div>
+        <div style="font-weight:800;color:#2f8f3d;margin-bottom:4px;">Fluxo de Caixa Descontado FCDF</div>
+        <table class="pf" style="font-size:9pt;">
+          <thead><tr><th>WACC \ g</th><th class="num">3,57%</th><th class="num">4,57%</th><th class="num">5,57%</th><th class="num">6,57%</th><th class="num">7,57%</th></tr></thead>
+          <tbody>
+            <tr><td>16,3%</td><td class="num">48.161</td><td class="num">50.432</td><td class="num hl">53.125</td><td class="num">56.370</td><td class="num">60.355</td></tr>
+            <tr><td>18,8%</td><td class="num">41.145</td><td class="num">42.584</td><td class="num hl">44.240</td><td class="num">46.165</td><td class="num">48.433</td></tr>
+            <tr><td>21,3%</td><td class="num">36.095</td><td class="num">37.063</td><td class="num hl">38.154</td><td class="num">39.393</td><td class="num">40.811</td></tr>
+            <tr><td>23,8%</td><td class="num">32.286</td><td class="num">32.966</td><td class="num hl">33.722</td><td class="num">34.564</td><td class="num">35.510</td></tr>
+            <tr><td>26,3%</td><td class="num">29.309</td><td class="num">29.804</td><td class="num hl">30.347</td><td class="num">30.944</td><td class="num">31.606</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div style="font-weight:800;color:#2f8f3d;margin-bottom:4px;">FCDF (OpCo)</div>
+        <table class="pf" style="font-size:9pt;">
+          <thead><tr><th>WACC \ g</th><th class="num">3,57%</th><th class="num">4,57%</th><th class="num">5,57%</th><th class="num">6,57%</th><th class="num">7,57%</th></tr></thead>
+          <tbody>
+            <tr><td>16,3%</td><td class="num">39.801</td><td class="num">41.734</td><td class="num hl">44.025</td><td class="num">46.786</td><td class="num">50.177</td></tr>
+            <tr><td>18,8%</td><td class="num">33.877</td><td class="num">35.101</td><td class="num hl">36.510</td><td class="num">38.148</td><td class="num">40.078</td></tr>
+            <tr><td>21,3%</td><td class="num">29.621</td><td class="num">30.445</td><td class="num hl">31.373</td><td class="num">32.427</td><td class="num">33.634</td></tr>
+            <tr><td>23,8%</td><td class="num">26.418</td><td class="num">26.997</td><td class="num hl">27.640</td><td class="num">28.357</td><td class="num">29.162</td></tr>
+            <tr><td>26,3%</td><td class="num">23.920</td><td class="num">24.341</td><td class="num hl">24.803</td><td class="num">25.312</td><td class="num">25.874</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="notebox">Mostra como o Enterprise Value mudaria se o WACC (linhas) ou o g (colunas) fossem diferentes dos usados no cenário Base. A coluna destacada (5,57%) é o g efetivamente usado no cenário Base. Fonte: quadro "Apoio" de cada aba da planilha base.</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">23</b></span></div>
+</div>
+
+<!-- 24. POR QUE OS VALORES DIFEREM -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">BLOCO 4 · COMO LER</div>
+    <h1 class="h1">Por que os valores diferem — FCDF vs. FCDF (OpCo)</h1>
+    <table class="pf" style="margin-top:6mm;">
+      <thead><tr><th>Premissa</th><th>Fluxo de Caixa Descontado FCDF</th><th>FCDF (OpCo)</th></tr></thead>
+      <tbody>
+        <tr><td>Estrutura patrimonial</td><td>Imóveis permanecem na empresa</td><td>Imóveis segregados para venda separada à PropCo</td></tr>
+        <tr><td>Aluguel de mercado</td><td>Não há</td><td>R$ 774 mil/ano — R$ 64,5 mil/mês</td></tr>
+        <tr><td>Dívida Líquida</td><td>R$ 11.777 mil</td><td>R$ 10.677 mil (exclui R$ 1.100 mil de dívida imobiliária)</td></tr>
+        <tr><td>Peso do capital próprio (E/(D+E))</td><td>60,7%</td><td>62,8%</td></tr>
+        <tr class="key"><td>WACC</td><td class="hl">23,61%</td><td class="hl">23,71%</td></tr>
+        <tr class="key"><td>Enterprise Value</td><td class="hl">R$ 34.083 mil</td><td class="hl">R$ 27.801 mil</td></tr>
+        <tr class="key"><td>Equity Value</td><td class="hl">R$ 22.306 mil</td><td class="hl">R$ 17.124 mil</td></tr>
+      </tbody>
+    </table>
+    <div class="notebox">A diferença de R$ 5.182 mil no Equity Value reflete o valor que os imóveis representam fora da operação: a OpCo passa a pagar aluguel de mercado (atualizado em 14/07/2026 para R$ 64,5 mil/mês, com base em R$ 21,50/m² sobre ~3.000 m²) e sua dívida líquida cai R$ 1.100 mil. Os imóveis (e o valor da PropCo) não são avaliados nesta análise.</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">24</b></span></div>
+</div>
+
+<!-- 25. BLOCO 5 divider -->
+<div class="slide dark">
+  <div class="stripe"></div>
+  <div class="bignum">5</div>
+  <div class="pad" style="display:flex;flex-direction:column;justify-content:center;height:100%;">
+    <div class="eyebrow">BLOCO 5</div>
+    <div style="font-size:30pt;font-weight:800;margin-top:6mm;">Conclusão e próximos passos</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">25</b></span></div>
+</div>
+
+<!-- 26. CONCLUSÃO -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">BLOCO 5 · CONCLUSÃO</div>
+    <h1 class="h1">Conclusão e próximos passos</h1>
+    <div class="two-col">
+      <div class="gcard">
+        <div class="gh">Situação atual</div>
+        <div class="gb">
+          <p>Cenário Base recongelado — Enterprise Value entre R$ 27,8 MM (OpCo) e R$ 34,1 MM (FCDF).</p>
+          <p>Margem EBIT em recuperação projetada (9,6% → ≈16%), ainda não confirmada nos números realizados: o 1º trimestre de 2026 fechou em prejuízo (~R$ 318 mil).</p>
+          <p>Dívida líquida relevante (R$ 11,78 mi em 2025), à qual o Equity Value é sensível.</p>
+        </div>
+      </div>
+      <div class="gcard">
+        <div class="gh">Próximos passos recomendados</div>
+        <div class="gb">
+          <p>Recongelar os cenários Otimista e Pessimista para chegar a uma faixa completa de valor.</p>
+          <p>Completar o campo "Entrevistas" da Fonte de Dados.</p>
+          <p>Acompanhar a recuperação de margem projetada frente aos números realizados de 2026.</p>
+          <p>Formalizar a estrutura PropCo/OpCo caso a segregação dos imóveis avance.</p>
+        </div>
+      </div>
+    </div>
+    <div class="notebox">Este material não constitui recomendação de compra, venda ou retenção de participação — a decisão de qualquer transação é de responsabilidade exclusiva dos acionistas.</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">26</b></span></div>
+</div>
+
+<!-- 27. BIBLIOGRAFIA divider -->
+<div class="slide dark">
+  <div class="stripe"></div>
+  <div class="pad" style="display:flex;flex-direction:column;justify-content:center;height:100%;">
+    <div style="font-size:26pt;font-weight:800;">Bibliografia, Fontes e Anexos</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">27</b></span></div>
+</div>
+
+<!-- 28. BIBLIOGRAFIA -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">ANEXOS <span class="soft">BIBLIOGRAFIA</span></div>
+    <h1 class="h1">Bibliografia e fontes</h1>
+    <div class="two-col">
+      <div>
+        <div style="font-weight:800;color:#2f8f3d;margin-bottom:6px;">Metodologia e custo de capital</div>
+        <ul class="bl">
+          <li>Assaf Neto, A. — Finanças Corporativas e Valor (metodologia do Ke)</li>
+          <li>Damodaran, A. — betas setoriais, ERP e Country Risk Premium (stern.nyu.edu/~adamodar)</li>
+          <li>Kroll — Cost of Capital / Equity Risk Premium</li>
+          <li>U.S. Department of the Treasury — T-bonds 10 anos (taxa livre de risco)</li>
+          <li>FRED (St. Louis Fed) — T10YIE (inflação implícita EUA)</li>
+          <li>Valuation Handbook 2023 (CFA Institute) — prêmio de tamanho</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-weight:800;color:#2f8f3d;margin-bottom:6px;">Dados de mercado e setor</div>
+        <ul class="bl">
+          <li>Banco Central do Brasil — Boletim Focus 03/07/2026 (Selic, IPCA, PIB, câmbio)</li>
+          <li>IBGE — Contas Nacionais Trimestrais e PNAD Contínua</li>
+          <li>FGV–IBRE — Índice de Confiança do Consumidor</li>
+          <li>Grand View Research — Shell &amp; Tube / Plate &amp; Frame Heat Exchanger Market, Brazil</li>
+          <li>ABRAVA — Setor de ventilação, ar-condicionado e refrigeração no Brasil</li>
+          <li>Fromtherm — site institucional (fromtherm.com.br)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">28</b></span></div>
+</div>
+
+<!-- 29. ANEXOS E DATA-ROOM -->
+<div class="slide">
+  <div class="pad">
+    <div class="kicker">ANEXOS <span class="soft">DOCUMENTOS DE APOIO</span></div>
+    <h1 class="h1">Anexos e data-room</h1>
+    <ul class="bl" style="margin-top:8mm;">
+      <li>Modelo de valuation: Fromtherm_valuation_v9.xlsx (abas: Inputs, Modelo, CAPEX&amp;Dep., Dist. de lucros, Ke_&amp;_g, mercado, ERP, US_T-bonds, T10YIE, beta).</li>
+      <li>Modelo de valuation (FCDF OpCo, atualizado 14/07/2026): Fromtherm_valuation_v10.xlsx — aba "FCDF (OpCo)" e "BaseApoioALuguel" (aluguel de mercado revisado para R$ 64,5 mil/mês).</li>
+      <li>Demonstrações contábeis utilizadas: 2023, 2024, 2025 e 1º trimestre de 2026.</li>
+      <li>Tabelas de sensibilidade WACC × g (Bloco 4, página 23) e memória de cálculo do WACC/Ke/g (aba "Ke_&amp;_g" de cada modelo).</li>
+    </ul>
+    <div class="notebox">As demonstrações contábeis e a planilha-base foram fornecidas pela Administração da Fromtherm; não foram objeto de auditoria por esta análise.</div>
+  </div>
+  <div class="footer"><span><b class="brand">O2 Inc.</b> · Confidencial</span><span>Valuation Fromtherm <b class="pg">29</b></span></div>
+</div>
+
+<!-- 30. OBRIGADO -->
+<div class="slide dark">
+  <div class="stripe"></div>
+  <div class="pad" style="display:flex;flex-direction:column;justify-content:center;height:100%;">
+    <div style="font-size:34pt;font-weight:800;">Obrigado.</div>
+    <div style="font-size:13pt;color:#c7cbc8;margin-top:6mm;">Valuation Fromtherm</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:22mm;">
+      <svg width="26" height="26" viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" fill="none" stroke="#6CF269" stroke-width="11"/><circle cx="50" cy="50" r="19" fill="none" stroke="#6CF269" stroke-width="11"/></svg>
+      <b style="font-size:12pt;">O2 <span style="color:#6CF269;font-size:8pt;">INC.</span></b>
+    </div>
+    <div style="font-size:10pt;font-style:italic;color:#9aa0a3;margin-top:6mm;">Oxigênio Empresarial®</div>
+  </div>
+</div>
+
+</body>
+</html>
