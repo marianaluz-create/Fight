@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valuation | Fromtherm</title>
+<!--
+  Valuation — Fromtherm
+  Fonte dos dados: planilha base "Fromtherm_valuation_v9.xlsx" (abas coloridas 1 a 5, Fluxo de Caixa
+  Descontado FCDF) + Sumário/Disclaimer (Google Slides do cliente) + Cenário
+  Macroeconômico (planilha de indicadores O2, mesma fonte nacional usada em todos os clientes).
+  A partir de 14/07/2026, os cálculos da aba FCDF (OpCo) foram atualizados para a planilha
+  "Fromtherm_valuation_v10.xlsx" (aluguel de mercado revisado para R$ 64,5 mil/mês); as demais
+  abas (FCDF sem carve-out, macro, setor etc.) permanecem na v9.
+  Regras: somente dados da planilha base; campos vazios não são preenchidos.
+  Senha de acesso: Nome do Cliente + Ano Corrente da análise -> "Fromtherm2026"
+  Modelo de referência: diagnostico-fight-analytics.html (abas 1-5 seguem exatamente o mesmo
+  layout/markup desse modelo padrão O2 — Capa, Sumário com bússola, Disclaimer, Fonte de Dados
+  e Cenário Macroeconômico com gráficos SVG). Abas 6-12 são específicas de Valuation.
+-->
+<style>
+  :root{
+    /* Paleta O2 Inc. — Vivid Green #6CF269 (Pantone 802 C) + Intense Gray #494949 (Pantone 438 C) sobre fundo branco */
+    --verde:#6CF269;      /* vivid green — usada como preenchimento/gráfico/acento */
+    --verde-2:#6CF269;
+    --verde-esc:#494949;  /* texto de ênfase — intense gray */
+    --preto:#494949;      /* intense gray — títulos e elementos escuros */
+    --cinza:#83868a;      /* texto secundário */
+    --cinza-cl:#e9f9e6;   /* chip/badge — leve tom verde */
+    --linha:#e6e9e6;
+    --branco:#ffffff;
+    --proj:#9aa0a3;
+    --sombra:0 1px 3px rgba(73,73,73,.08),0 8px 24px rgba(73,73,73,.06);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    background:var(--branco);
+    color:var(--preto);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* ---------- Password gate ---------- */
+  #gate{
+    position:fixed;inset:0;z-index:1000;
+    background:var(--branco);
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;
+  }
+  #gate .box{
+    width:min(420px,100%);text-align:center;
+    border:1px solid var(--linha);border-radius:var(--radius);
+    padding:40px 34px;box-shadow:var(--sombra);
+  }
+  #gate .o2-lockup{height:46px;width:auto;margin:0 auto 22px;display:block}
+  #gate h1{font-size:19px;margin:0 0 4px}
+  #gate p{color:var(--cinza);font-size:13px;margin:0 0 22px}
+  #gate input{
+    width:100%;padding:13px 14px;font-size:15px;
+    border:1px solid var(--linha);border-radius:10px;outline:none;
+    transition:border-color .15s;
+  }
+  #gate input:focus{border-color:var(--verde)}
+  #gate button{
+    margin-top:14px;width:100%;padding:13px;border:0;border-radius:10px;
+    background:var(--verde);color:#22401d;font-size:15px;font-weight:800;cursor:pointer;
+    transition:background .15s;
+  }
+  #gate button:hover{background:#57d854}
+  #gate .err{color:#c0392b;font-size:13px;margin-top:12px;min-height:18px}
+
+  /* ---------- App layout ---------- */
+  #app{display:none}
+  header.top{
+    position:sticky;top:0;z-index:50;background:var(--branco);
+    border-bottom:1px solid var(--linha);
+  }
+  .top-inner{
+    max-width:1320px;margin:0 auto;padding:14px 24px;
+    display:flex;align-items:center;gap:16px;
+  }
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand .o2-mark{height:38px;width:auto;display:block}
+  .brand .divider{width:1px;height:34px;background:var(--linha)}
+  .brand .t1{font-weight:700;font-size:15px;line-height:1.1}
+  .brand .t2{font-size:12px;color:var(--cinza)}
+  .top-actions{margin-left:auto;display:flex;gap:10px;align-items:center}
+
+  nav.tabs{
+    max-width:1320px;margin:0 auto;padding:0 12px;
+    display:flex;gap:2px;overflow-x:auto;
+  }
+  nav.tabs button{
+    border:0;background:transparent;color:var(--cinza);
+    padding:14px 16px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;
+    border-bottom:3px solid transparent;transition:.15s;
+  }
+  nav.tabs button:hover{color:var(--preto)}
+  nav.tabs button.active{color:var(--preto);border-bottom-color:var(--verde)}
+  nav.tabs button .n{
+    display:inline-flex;width:20px;height:20px;border-radius:6px;margin-right:7px;
+    background:#eef0ee;color:var(--cinza);font-size:11px;font-weight:800;
+    align-items:center;justify-content:center;vertical-align:middle;
+  }
+  nav.tabs button.active .n{background:var(--verde);color:#2f4a2c}
+
+  main{max-width:1320px;margin:0 auto;padding:34px 24px 80px}
+  section.pane{display:none;animation:fade .25s ease}
+  section.pane.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  h2.section-title{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--cinza);margin:0 0 6px}
+  h2.section-title::before{content:"";display:inline-block;width:16px;height:3px;background:var(--verde);border-radius:2px;vertical-align:middle;margin-right:9px;margin-bottom:3px}
+  h3.section-h{font-size:26px;margin:0 0 24px;font-weight:800;letter-spacing:-.4px}
+  .lead{color:var(--cinza);font-size:15px;max-width:760px}
+
+  .card{
+    border:1px solid var(--linha);border-radius:var(--radius);
+    background:#fff;box-shadow:var(--sombra);padding:24px;
+  }
+  .grid{display:grid;gap:18px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:820px){.g2,.g3{grid-template-columns:1fr}}
+
+  .kv{display:flex;flex-direction:column;gap:2px;padding:16px 0;border-bottom:1px solid var(--linha)}
+  .kv:last-child{border-bottom:0}
+  .kv .k{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--cinza);font-weight:700}
+  .kv .v{font-size:16px;color:var(--preto)}
+  .kv .v.empty{color:var(--proj);font-style:italic;font-size:14px}
+
+  .badge{display:inline-block;background:var(--cinza-cl);color:var(--verde-esc);
+    padding:4px 11px;border-radius:20px;font-size:12px;font-weight:700}
+
+  ul.disc{list-style:none;padding:0;margin:0;counter-reset:d}
+  ul.disc li{
+    position:relative;padding:14px 0 14px 44px;border-bottom:1px solid var(--linha);
+    color:#2b3138;font-size:14.5px;
+  }
+  ul.disc li:last-child{border-bottom:0}
+  ul.disc li::before{
+    counter-increment:d;content:counter(d);
+    position:absolute;left:0;top:14px;width:28px;height:28px;border-radius:8px;
+    background:var(--preto);color:var(--verde-2);font-size:12px;font-weight:800;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  /* Sumário — bússola + itens */
+  .sum-wrap{display:grid;grid-template-columns:300px 1fr;gap:46px;align-items:center;max-width:960px;margin-top:14px}
+  @media(max-width:760px){.sum-wrap{grid-template-columns:1fr;gap:26px;justify-items:center}}
+  .compass{width:100%;max-width:300px;height:auto}
+  .sumario{display:grid;gap:14px;width:100%}
+  .sum-item{
+    display:flex;align-items:center;gap:18px;border:1px solid var(--linha);
+    border-left:4px solid var(--verde);border-radius:12px;padding:18px 22px;
+    transition:.15s;background:#fff;
+  }
+  .sum-item:hover{transform:translateX(4px);box-shadow:var(--sombra)}
+  .sum-item .num{font-size:22px;font-weight:800;color:var(--preto);min-width:42px}
+  .sum-item .lab{font-size:17px;font-weight:600;color:var(--preto)}
+
+  /* Charts */
+  .chart-card h4{margin:0 0 2px;font-size:16px;font-weight:700}
+  .chart-card .src{font-size:11.5px;color:var(--cinza);margin:0 0 6px}
+  .chart-card .unit{font-size:12px;color:var(--verde-esc);font-weight:700;margin-bottom:8px}
+  .legend{display:flex;gap:16px;font-size:11.5px;color:var(--cinza);margin-top:6px;flex-wrap:wrap}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .legend i{width:14px;height:3px;border-radius:2px;display:inline-block}
+  .note{font-size:12.5px;color:var(--cinza);margin-top:14px}
+  svg{width:100%;height:auto;display:block}
+
+  .site-link{color:var(--preto);font-weight:700;text-decoration:none;border-bottom:2px solid var(--verde)}
+  .stat{display:flex;flex-direction:column;gap:2px}
+  .stat .big{font-size:30px;font-weight:800;color:var(--verde-esc);letter-spacing:-.5px}
+  .stat .cap{font-size:12.5px;color:var(--cinza)}
+  .pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .pill{background:var(--cinza-cl);color:var(--verde-esc);padding:6px 12px;border-radius:20px;font-size:12.5px;font-weight:600}
+  p.body{font-size:14.5px;color:#2b3138}
+  footer{max-width:1320px;margin:0 auto;padding:22px 24px;color:var(--cinza);font-size:11px;letter-spacing:.14em;text-transform:uppercase;border-top:1px solid var(--linha)}
+
+  /* ---------- Abas financeiras (7 a 12) ---------- */
+  .split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(340px,1fr);gap:22px;align-items:start}
+  @media(max-width:980px){.split{grid-template-columns:1fr}}
+  .stack{display:flex;flex-direction:column;gap:18px}
+  .split.tmaj{grid-template-columns:minmax(0,1.55fr) minmax(300px,1fr)}
+  @media(max-width:980px){.split.tmaj{grid-template-columns:1fr}}
+  .card.accent{border-left:4px solid var(--verde);background:#f6faf5}
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table.fin{width:100%;border-collapse:collapse;font-size:11.5px;min-width:0}
+  table.fin.wide{min-width:520px}
+  table.fin th,table.fin td{padding:5px 5px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--linha)}
+  table.fin th{white-space:normal;vertical-align:bottom}
+  table.fin td.txt,table.fin th.txt{white-space:normal;text-align:left;min-width:120px}
+  table.fin.roomy{font-size:13.5px}
+  table.fin.roomy th,table.fin.roomy td{padding:10px 14px}
+  table.fin.roomy thead th{font-size:12px}
+  table.fin.roomy tbody tr:nth-child(even){background:#fafcf9}
+  table.fin.wide2{min-width:920px;font-size:11px}
+  table.fin.wide2 th,table.fin.wide2 td{padding:6px 6px}
+  table.fin tr.riskrow td{background:#fdf1ee;color:#a4402a;font-weight:800}
+  table.fin td.riskcell{background:#fdf1ee;color:#a4402a;font-weight:800}
+  /* ---------- Simulador interativo (Projeção de Caixa) ---------- */
+  input.sim-in{
+    width:100%;min-width:70px;border:1.5px solid #b9c7ef;background:#f3f7ff;color:#1d3fae;
+    font:inherit;font-weight:700;font-size:inherit;text-align:right;border-radius:6px;
+    padding:4px 6px;
+  }
+  input.sim-in:focus{outline:none;border-color:#1d3fae;background:#eaf0ff}
+  input[type="date"].sim-in{text-align:left;font-weight:600}
+  /* ---------- Layout "planilha" (barras escuras + destaques) — aba Projeção de Caixa ---------- */
+  .card.sheet{padding:0;overflow:hidden}
+  .card.sheet .bar-title{background:var(--preto);color:#fff;font-weight:800;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;padding:12px 20px;margin:0}
+  .card.sheet .bar-body{padding:20px}
+  table.fin.sheet thead th{background:#e8fde8}
+  table.fin.sheet tbody tr:nth-child(even){background:#fafcf9}
+  table.fin.sheet.combo td{border-bottom:none;padding-top:10px;padding-bottom:10px}
+  tr.bar-row .bar-title-cell{background:var(--preto);color:#fff;font-weight:800;text-align:left;white-space:normal}
+  td.cell-green,tr.bar-row td.cell-green{background:var(--verde);color:var(--preto);font-weight:800;text-align:right}
+  .cell-green-txt{color:#176a2a;font-weight:700}
+  td.cell-red,#alert-saldo-val.cell-red{color:#990000;font-weight:800}
+  td.cell-note,.cell-note{color:#83868a;font-style:italic}
+  #alert-saldo-val,#alert-semana-val,#alert-count-val{font-weight:700}
+  .callout ul.plain{margin-top:2px}
+  table.fin th:first-child,table.fin td:first-child{text-align:left;white-space:normal;min-width:130px}
+  table.fin thead th{background:#f3f7f1;color:var(--preto);font-weight:700;font-size:10.5px;letter-spacing:.01em}
+  table.fin tbody tr:hover{background:#fafcf9}
+  table.fin tr.group td{background:#eef8ec;font-weight:800;color:var(--preto);text-transform:uppercase;font-size:11.5px;letter-spacing:.03em}
+  table.fin tr.subtotal td{font-weight:800;border-top:1px solid var(--preto)}
+  table.fin tr.margin td{color:var(--cinza);font-style:italic}
+  .panel-title{margin:0 0 12px;font-size:15px;font-weight:800;color:var(--preto);padding-bottom:8px;border-bottom:2px solid var(--verde)}
+  .rev-list{display:flex;flex-direction:column;gap:14px}
+  .rev-item{border-left:3px solid var(--verde);padding:2px 0 2px 12px}
+  .rev-h{font-size:12.5px;font-weight:800;color:var(--preto);margin-bottom:3px}
+  .rev-body{font-size:13px;color:#3a3f43;line-height:1.5}
+  .note-box{background:#f6faf5;border:1px solid var(--linha)}
+  ul.plain{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px}
+  ul.plain li{position:relative;padding-left:18px;font-size:13.5px;color:#3a3f43;line-height:1.5}
+  ul.plain li::before{content:"";position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:2px;background:var(--verde)}
+
+  /* ---------- Ponto de Atenção (callouts) ---------- */
+  .block-h{font-size:14px;font-weight:800;color:var(--preto);margin:28px 0 14px;text-transform:uppercase;letter-spacing:.05em}
+  .callout{border:1px solid var(--linha);border-radius:14px;padding:20px 22px;box-shadow:var(--sombra)}
+  .callout .co-h{display:flex;align-items:center;gap:12px;font-weight:800;font-size:15px;color:var(--preto);margin-bottom:9px}
+  .callout .co-n{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex:none}
+  .callout p{margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55}
+  .callout.warn{background:#fef6f0;border-color:#f2d7c2}
+  .callout.warn .co-n{background:#e0863f;color:#fff}
+  .callout.ok{background:#f2fbef;border-color:#cfead0}
+  .callout.ok .co-n{background:var(--verde);color:#22401d}
+
+  /* highlight + linha-chave DRE + barra de formatação */
+  .hl{background:#c3f3b0;border-radius:3px;padding:0 3px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+  table.fin tr.keyrow td{background:#e6f8df;color:#176a2a;font-weight:800}
+  table.fin th.keycell,table.fin td.keycell{background:#e6f8df;color:#176a2a;font-weight:800}
+  table.fin tr.hlrow td{background:#c3f3b0;font-weight:800}
+
+
+  ul.biblist{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+  ul.biblist li{position:relative;padding-left:16px;font-size:13.5px;color:#3a3f43;line-height:1.55}
+  ul.biblist li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--verde)}
+
+  .progress-badge{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--cinza);white-space:nowrap}
+  .progress-badge .bar{width:74px;height:6px;border-radius:4px;background:var(--linha);overflow:hidden}
+  .progress-badge .bar i{display:block;height:100%;background:var(--verde)}
+  .progress-badge b{color:var(--preto)}
+</style>
+</head>
+<body>
+
+<!-- ============ PASSWORD GATE ============ -->
+<div id="gate">
+  <div class="box">
+    <svg class="o2-lockup" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="O2 Inc."><circle cx="50" cy="50" r="38" fill="none" stroke="#6CF269" stroke-width="11"/><circle cx="50" cy="50" r="19" fill="none" stroke="#6CF269" stroke-width="11"/><text x="103" y="70" font-family="Segoe UI, Arial, sans-serif" font-weight="800" font-size="58" fill="#6CF269">O2</text><text x="213" y="70" font-family="Segoe UI, Arial, sans-serif" font-weight="800" font-size="24" fill="#6CF269">INC.</text></svg>
+    <h1>Valuation</h1>
+    <p>Documento protegido · Fromtherm</p>
+    <input id="pw" type="password" placeholder="Digite a senha de acesso" autocomplete="off" />
+    <button id="enter">Acessar</button>
+    <div class="err" id="err"></div>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app">
+  <header class="top">
+    <div class="top-inner">
+      <div class="brand">
+        <svg class="o2-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="O2 Inc."><circle cx="50" cy="50" r="38" fill="none" stroke="#6CF269" stroke-width="11"/><circle cx="50" cy="50" r="19" fill="none" stroke="#6CF269" stroke-width="11"/></svg>
+        <div class="divider"></div>
+        <div>
+          <div class="t1">Valuation</div>
+          <div class="t2">Fromtherm · 14 de julho de 2026</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <div class="progress-badge" title="Sua posição no documento — avança conforme você navega pelas abas">
+          <span id="progressText">Seção 1 de 13 <b>· 8% concluído</b></span>
+          <span class="bar"><i id="progressBar" style="width:8%"></i></span>
+        </div>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button data-t="capa" class="active"><span class="n">1</span>Capa</button>
+      <button data-t="sumario"><span class="n">2</span>Sumário</button>
+      <button data-t="disclaimer"><span class="n">3</span>Disclaimer</button>
+      <button data-t="fonte"><span class="n">4</span>Fonte de Dados</button>
+      <button data-t="macro"><span class="n">5</span>Cenário Macroeconômico</button>
+      <button data-t="visaogeral"><span class="n">6</span>Visão geral da Companhia</button>
+      <button data-t="setor"><span class="n">7</span>Análise de Setor</button>
+      <button data-t="fcdf"><span class="n">8</span>Fluxo de Caixa Descontado FCDF</button>
+      <button data-t="opco"><span class="n">9</span>FCDF (OpCo)</button>
+      <button data-t="executivo"><span class="n">10</span>Sumário Executivo</button>
+      <button data-t="resultados"><span class="n">11</span>Resultados Obtidos</button>
+      <button data-t="anexos"><span class="n">12</span>Anexos</button>
+      <button data-t="avaliacaotrabalho"><span class="n">13</span>Avaliação</button>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ===== 1. CAPA ===== -->
+    <section class="pane active" id="capa">
+      <div class="card" style="text-align:center;padding:80px 28px;border:0;box-shadow:none">
+        <svg style="height:80px;width:auto;margin:0 auto 30px;display:block" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="O2 Inc."><circle cx="50" cy="50" r="38" fill="none" stroke="#6CF269" stroke-width="11"/><circle cx="50" cy="50" r="19" fill="none" stroke="#6CF269" stroke-width="11"/><text x="103" y="70" font-family="Segoe UI, Arial, sans-serif" font-weight="800" font-size="58" fill="#6CF269">O2</text><text x="213" y="70" font-family="Segoe UI, Arial, sans-serif" font-weight="800" font-size="24" fill="#6CF269">INC.</text></svg>
+        <div style="width:60px;height:4px;background:var(--verde);margin:0 auto 26px;border-radius:2px"></div>
+        <h2 class="section-title" style="margin-bottom:14px">Valuation</h2>
+        <h3 style="font-size:44px;font-weight:800;margin:0 0 18px;letter-spacing:-1px">Fromtherm</h3>
+        <img src="data:image/png;base64,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" alt="Fromtherm Bombas de Calor" style="height:56px;width:auto;margin:0 auto 22px;display:block">
+        <p style="font-size:16px;color:var(--cinza);margin:0">Data da Apresentação · 14 de julho de 2026</p>
+      </div>
+    </section>
+
+    <!-- ===== 2. SUMÁRIO ===== -->
+    <section class="pane" id="sumario">
+      <h2 class="section-title">Documento</h2>
+      <h3 class="section-h">Sumário</h3>
+      <div class="sum-wrap">
+        <svg class="compass" viewBox="0 0 220 220" role="img" aria-label="Bússola">
+          <path d="M128.1,7.6 A104,104 0 0 1 212.4,91.9 M212.4,128.1 A104,104 0 0 1 128.1,212.4 M91.9,212.4 A104,104 0 0 1 7.6,128.1 M7.6,91.9 A104,104 0 0 1 91.9,7.6" fill="none" stroke="#494949" stroke-width="3" stroke-linecap="round"/>
+          <path d="M110,110 L110,14 L123,110 Z M110,110 L206,110 L110,123 Z M110,110 L110,206 L97,110 Z M110,110 L14,110 L110,97 Z M110,110 L151,69 L116.4,116.4 Z M110,110 L151,151 L103.6,116.4 Z M110,110 L69,151 L103.6,103.6 Z M110,110 L69,69 L116.4,103.6 Z" fill="#494949"/>
+          <path d="M110,110 L110,14 L97,110 Z M110,110 L206,110 L110,97 Z M110,110 L110,206 L123,110 Z M110,110 L14,110 L110,123 Z M110,110 L151,69 L103.6,103.6 Z M110,110 L151,151 L116.4,103.6 Z M110,110 L69,151 L116.4,116.4 Z M110,110 L69,69 L103.6,116.4 Z" fill="#6CF269"/>
+          <circle cx="110" cy="110" r="7" fill="#fff" stroke="#494949" stroke-width="3"/>
+        </svg>
+        <div class="sumario">
+          <div class="sum-item"><span class="num">01</span><span class="lab">Metodologia e Premissas</span></div>
+          <div class="sum-item"><span class="num">02</span><span class="lab">Análise Macroeconômica</span></div>
+          <div class="sum-item"><span class="num">03</span><span class="lab">Avaliação</span></div>
+          <div class="sum-item"><span class="num">04</span><span class="lab">Resultados Obtidos</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 3. DISCLAIMER ===== -->
+    <section class="pane" id="disclaimer">
+      <h2 class="section-title">Aviso Legal</h2>
+      <h3 class="section-h">Disclaimer</h3>
+      <div class="card">
+        <ul class="disc">
+          <li>A presente análise é realizada a partir dos documentos e informações gerenciais fornecidos pela Empresa com a finalidade de realização do trabalho de Valuation, não se constituindo em auditoria;</li>
+          <li>Esta apresentação contém análises e projeções desenvolvidas, em grande parte, com base nos relatórios gerenciais fornecidos pela empresa. Vale destacar que, apesar da confiabilidade das fontes utilizadas, as projeções refletem estimativas que podem sofrer alterações em função de condições internas e externas à empresa;</li>
+          <li>As informações contidas nos documentos e gerenciais que serviram de base à presente análise são de inteira responsabilidade da empresa;</li>
+          <li>O trabalho realizado se restringe a interpretação, análise e projeção das informações fornecidas. A O2 Inc. não se responsabiliza pela veracidade das informações, sendo elas de inteira responsabilidade do cliente;</li>
+          <li>As informações foram construídas com base nos dados disponibilizados pelo cliente, conforme solicitado.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== 4. FONTE DE DADOS ===== -->
+    <section class="pane" id="fonte">
+      <h2 class="section-title">Bases do Trabalho</h2>
+      <h3 class="section-h">Fonte de Dados</h3>
+      <div class="card" style="max-width:680px">
+        <div class="kv">
+          <span class="k">Fonte de Dados</span>
+          <span class="v"><ul class="plain">
+            <li>Balanço Patrimonial e Demonstrativo dos Resultados dos anos de 2023, 2024, 2025 e 1º Trimestre de 2026</li>
+          </ul></span>
+        </div>
+        <div class="kv">
+          <span class="k">Regime da Análise</span>
+          <span class="v"><ul class="plain">
+            <li>Competência</li>
+          </ul></span>
+        </div>
+        <div class="kv">
+          <span class="k">Endividamento</span>
+          <span class="v"><ul class="plain">
+            <li>Dezembro/2025</li>
+          </ul></span>
+        </div>
+        <div class="kv">
+          <span class="k">Entrevistas</span>
+          <span class="v"><ul class="plain">
+            <li class="empty" style="color:var(--proj);font-style:italic">Não informado na planilha base — preencher com as entrevistas realizadas (use o Modo de edição para completar).</li>
+          </ul></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 5. CENÁRIO MACROECONÔMICO ===== -->
+    <section class="pane" id="macro">
+      <h2 class="section-title">Contexto Externo</h2>
+      <h3 class="section-h">Cenário Macroeconômico</h3>
+      <p class="lead" style="margin-bottom:8px">Indicadores realizados (2023–2025) e projeções de mercado até 2031 (Selic, IPCA, PIB, IGP-M e câmbio — mesmas premissas usadas no FCDF). Desemprego e ICC não têm projeção no Focus, mostrados só até o último dado disponível (2026).</p>
+      <p class="src" style="color:var(--cinza);font-size:12.5px;margin:0 0 24px">Fontes: Banco Central (BCB / Copom / Focus 03/07/2026 / PTAX) · IBGE · FGV-IBRE · planilha de valuation (abas "inputs" / "Modelo (Critérios O2)")</p>
+      <div class="grid g2" id="charts"></div>
+
+      <h2 class="section-title" style="margin-top:34px">Leitura de Mercado — Próximos Anos</h2>
+      <div class="card">
+        <ul class="disc">
+          <li><b>Juros ainda altos, mas em queda.</b> A Selic recua de 15,00% (2025) para 14,00% (2026) e 12,00% (2027), estabilizando perto de 10,50% a partir de 2028 — um ciclo de afrouxamento monetário gradual, não uma queda abrupta. Isso sustenta um custo de capital elevado no curto prazo (o WACC de 23,6-23,7% usado no FCDF reflete esse ambiente), com alívio gradual ao longo do horizonte explícito.</li>
+          <li><b>Inflação convergindo para a meta.</b> O IPCA cai de 5,30% (2026) para 3,50% (2029 em diante), sinalizando uma desinflação consistente que reduz a incerteza sobre custos e contratos indexados nos próximos anos.</li>
+          <li><b>Câmbio com depreciação gradual do Real.</b> A projeção do USD/BRL sobe de R$ 5,20 (2026) para R$ 5,50 (2031) — relevante para a Fromtherm, que ainda depende de mercadoria importada (CMV importado) parte do seu custo: a depreciação gradual do câmbio tende a pressionar margens na medida em que a nova fábrica ainda não substituiu toda a importação.</li>
+          <li><b>Crescimento econômico moderado.</b> O PIB projetado converge para ~2,00% a.a. no longo prazo (mesma premissa usada no g da perpetuidade do modelo) — um crescimento vegetativo do mercado consumidor. Isso reforça que o crescimento de receita projetado da Fromtherm no cenário Base (10,4% em 2026F, convergindo a 2,0% em 2031F) depende mais de ganho de participação de mercado e recuperação de margem do que do crescimento da economia como um todo.</li>
+          <li><b>IGP-M ainda volátil.</b> Depois de oscilar entre -3,18% (2023) e +6,54% (2024), o índice converge para ~3,70% a.a. a partir de 2029 — relevante sobretudo para o reajuste do aluguel de mercado assumido no cenário FCDF (OpCo).</li>
+        </ul>
+        <p class="note">Leitura elaborada a partir dos indicadores desta página (BCB Focus, IBGE, FGV-IBRE) e das premissas do modelo de valuation — não é uma projeção adicional, é uma interpretação do que os dados já apresentados significam para o horizonte 2026-2031.</p>
+      </div>
+    </section>
+
+    <!-- ===== 6. VISÃO GERAL DA COMPANHIA ===== -->
+    <section class="pane" id="visaogeral">
+      <h2 class="section-title">A Empresa</h2>
+      <h3 class="section-h">Visão geral da Companhia</h3>
+      <p class="lead">Fabricante brasileira de trocadores de calor e bombas de calor elétricas, sediada em Santa Catarina.</p>
+      <div class="grid g2" style="margin-top:18px">
+        <div class="card">
+          <div class="kv"><span class="k">Nome</span><span class="v">Fromtherm Sistemas Térmicos</span></div>
+          <div class="kv"><span class="k">Setor</span><span class="v">Trocadores de calor e bombas de calor elétricas (aquecimento/resfriamento de piscinas e sistemas de aquecimento central)</span></div>
+          <div class="kv"><span class="k">Sede</span><span class="v">Santa Catarina — atende todo o território nacional</span></div>
+          <div class="kv"><span class="k">Tempo de mercado</span><span class="v">Mais de 20 anos</span></div>
+          <div class="kv"><span class="k">Regime tributário</span><span class="v">Lucro Presumido</span></div>
+        </div>
+        <div class="card">
+          <div class="kv"><span class="k">Produtos</span><span class="v">Linha FT de bombas de calor/trocadores de calor — opera em temperaturas negativas, aquece até 40°C e resfria até 10°C, com até 75% de economia de energia frente a sistemas convencionais</span></div>
+          <div class="kv"><span class="k">Estrutura de capital (2025)</span><span class="v">Dívida Bruta R$ 12,86 mi · Caixa R$ 1,09 mi · Dívida Líquida R$ 11,78 mi</span></div>
+        </div>
+      </div>
+      <h2 class="section-title" style="margin-top:34px">Momento atual</h2>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr><th>Valores em R$ mil</th><th>2023A</th><th>2024A</th><th>2025A</th></tr></thead>
+            <tbody>
+              <tr><td>Receita Bruta</td><td>24.986</td><td>33.699</td><td>37.913</td></tr>
+              <tr><td>EBIT</td><td>6.172</td><td>7.198</td><td>3.632</td></tr>
+              <tr class="margin"><td>Margem EBIT</td><td>24,7%</td><td>21,4%</td><td>9,6%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin:18px 0 0;font-size:13.5px;color:#3a3f43;line-height:1.55">A receita cresceu de forma consistente, mas a margem caiu com a virada para revenda de produtos importados (o custo da mercadoria vendida, próximo de zero em 2023, passou a representar parcela relevante do custo em 2025). A companhia está investindo em uma nova fábrica para produzir internamente e recuperar margem — essa recuperação já está parcialmente refletida na projeção Base (ver Sumário Executivo e Avaliação).</p>
+        <p class="note">Fonte: Balancetes Fromtherm 2023–2025 (aba "Fluxo de Caixa Descontado FCDF" e notas da planilha base) e site institucional <a class="site-link" href="https://fromtherm.com.br/" target="_blank" rel="noopener">fromtherm.com.br</a>.</p>
+      </div>
+
+      <h2 class="section-title" style="margin-top:34px">Balanços (resumido)</h2>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr><th>Valores em R$ mil</th><th>2023A</th><th>2024A</th><th>2025A</th></tr></thead>
+            <tbody>
+              <tr class="group"><td colspan="4">Ativo Circulante</td></tr>
+              <tr><td>Clientes (contas a receber)</td><td>5.315</td><td>7.475</td><td>8.050</td></tr>
+              <tr><td>(-) Adiantamentos de Clientes</td><td>−2.792</td><td>−1.705</td><td>−2.058</td></tr>
+              <tr><td>Estoques</td><td>1.989</td><td>6.953</td><td>7.700</td></tr>
+              <tr><td>Caixa e Equivalentes</td><td>1.544</td><td>3.203</td><td>1.086</td></tr>
+              <tr class="subtotal"><td>Total do Ativo Circulante</td><td>6.056</td><td>15.925</td><td>14.777</td></tr>
+              <tr class="group"><td colspan="4">Ativo Não Circulante</td></tr>
+              <tr><td>Imobilizado Líquido (total)</td><td>5.855</td><td>9.669</td><td>10.535</td></tr>
+              <tr class="subtotal keyrow"><td>Ativo Total</td><td>–</td><td>25.594</td><td>25.312</td></tr>
+              <tr class="group"><td colspan="4">Passivo Circulante</td></tr>
+              <tr><td>Fornecedores</td><td>1.258</td><td>1.107</td><td>1.024</td></tr>
+              <tr class="group"><td colspan="4">Passivo Não Circulante</td></tr>
+              <tr><td>Empréstimos e Financiamentos (Dívida Bruta)</td><td>–</td><td>12.421</td><td>12.863</td></tr>
+              <tr class="group"><td colspan="4">Patrimônio Líquido</td></tr>
+              <tr class="keyrow"><td>Patrimônio Líquido (apurado por diferença)</td><td>–</td><td>12.066</td><td>11.425</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Balanço resumido com as contas disponibilizadas na planilha base (aba "Balancetes"). A planilha não traz uma linha própria de Patrimônio Líquido — o valor acima foi apurado pela equação contábil (Ativo Total − Passivo Circulante − Passivo Não Circulante) a partir das contas disponíveis, e não pelo balanço contábil completo do cliente (que pode ter contas adicionais não representadas aqui, como impostos a recuperar/diferir). 2023 não computado por falta do dado de Empréstimos e Financiamentos daquele ano. Este PL contábil é diferente do "Equity Value" apurado no FCDF (Página 8/9), que é uma estimativa de valor de mercado, não um saldo contábil.</p>
+      </div>
+    </section>
+
+    <!-- ===== 7. ANÁLISE DE SETOR ===== -->
+    <section class="pane" id="setor">
+      <h2 class="section-title">Mercado</h2>
+      <h3 class="section-h">Análise de Setor</h3>
+      <p class="lead">Mercado de trocadores de calor (heat exchangers), segmentado por tecnologia — referência de crescimento setorial usada como contraponto ao crescimento de receita projetado da Fromtherm.</p>
+      <div class="card" style="margin-top:18px">
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr><th>Indicador</th><th>Valor</th><th>Horizonte</th><th>Fonte</th></tr></thead>
+            <tbody>
+              <tr><td>Trocadores de calor Shell &amp; Tube — Brasil</td><td>+6,0% a.a.</td><td>CAGR 2026–2031</td><td>Grand View Research</td></tr>
+              <tr><td>Trocadores de calor Plate &amp; Frame — Brasil</td><td>+6,5% a.a.</td><td>CAGR 2026–2031</td><td>Grand View Research</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Fontes: <a class="site-link" href="https://www.grandviewresearch.com/horizon/outlook/shell-and-tube-heat-exchanger-market/brazil" target="_blank" rel="noopener">Grand View Research — Shell &amp; Tube Heat Exchanger Market, Brazil</a> · <a class="site-link" href="https://www.grandviewresearch.com/horizon/outlook/plate-frame-heat-exchangers-market/brazil" target="_blank" rel="noopener">Grand View Research — Plate &amp; Frame Heat Exchangers Market, Brazil</a>.</p>
+      </div>
+      <div class="grid g2" style="margin-top:18px">
+        <div class="card">
+          <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Crescimento de receita da Fromtherm vs. mercado</h4>
+          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">No cenário Base, a receita da Fromtherm cresce 10,4% em 2026F, desacelerando para 8,3% (2027), 6,2% (2028), 4,1% (2029) e 2,0% a.a. no fim do horizonte — acima do crescimento setorial de 6,0–6,5% a.a. nos primeiros anos, convergindo depois. Fonte: aba "Fluxo de Caixa Descontado FCDF" da planilha base.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Perfil de risco setorial (beta)</h4>
+          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">Beta desalavancado de 1,473 — média dos setores Machinery (1,496) e Electrical Equipment (1,450) de mercados emergentes, usados como proxy para trocadores de calor. Fonte: Damodaran (jan/2026), aba "Ke_&_g" da planilha base.</p>
+        </div>
+      </div>
+
+      <h2 class="section-title" style="margin-top:34px">Quadro de Concorrentes</h2>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr><th>Marca / Empresa</th><th>Origem</th><th>Observação</th></tr></thead>
+            <tbody>
+              <tr><td>Nautilus</td><td>Nacional</td><td>Linha full inverter/Wi-Fi para piscinas residenciais e comerciais</td></tr>
+              <tr><td>Sodramar</td><td>Nacional</td><td>Linha full inverter/Wi-Fi para piscinas residenciais e comerciais</td></tr>
+              <tr><td>Komeco</td><td>Nacional</td><td>Também atua em bomba de calor para aquecimento central, além de piscinas</td></tr>
+              <tr><td>Industek</td><td>Nacional</td><td>Posiciona-se como pioneira em inovação e sustentabilidade</td></tr>
+              <tr><td>Tholz</td><td>Nacional</td><td>Concorrente citado no mercado de trocadores de calor para piscina</td></tr>
+              <tr><td>Maxtemp</td><td>Nacional</td><td>Foco em custo-benefício</td></tr>
+              <tr><td>Light Tech</td><td>Nacional</td><td>Linha de bomba/trocador de calor para piscina</td></tr>
+              <tr><td>Heliotek (Grupo Bosch)</td><td>Nacional (grupo internacional)</td><td>Maior fabricante de aquecedor solar do Brasil; também com linha de bomba de calor</td></tr>
+              <tr><td>AstralPool (Fluidra)</td><td>Internacional (Espanha), com operação no Brasil</td><td>Apontada como líder mundial em climatização de piscinas</td></tr>
+              <tr><td>Midea</td><td>Internacional (China), fábrica local em MG</td><td>Concorrente adjacente em climatização geral — pode expandir para o segmento de piscinas</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Fontes: <a class="site-link" href="https://blog.globaltechbrasil.com/aquecedores/melhores-marcas-de-trocador-de-calor-full-inverter/" target="_blank" rel="noopener">Globaltech Brasil</a> · <a class="site-link" href="https://www.rilcomercial.com.br/aquecimento-para-piscina1/trocador-de-calor/" target="_blank" rel="noopener">Ril Comercial</a> · <a class="site-link" href="https://www.komeco.com.br/bomba-de-calor-para-aquecimento-central/" target="_blank" rel="noopener">Komeco</a> · <a class="site-link" href="https://industek.com.br/produtos/bomba-de-calor-piscina/" target="_blank" rel="noopener">Industek</a> · <a class="site-link" href="https://www.heliotek.com.br/para-casa/bombas-de-calor" target="_blank" rel="noopener">Heliotek</a> · <a class="site-link" href="https://solaresol.com.br/trocador-de-calor/" target="_blank" rel="noopener">Solaresol</a> · <a class="site-link" href="https://www.embrar.com.br/sistemas-de-climatizacao/bomba-de-calor/midea" target="_blank" rel="noopener">Embrar/Midea</a>. Levantamento não exaustivo — concorrentes identificados via busca em sites de fabricantes e revendedores, não em base setorial fechada.</p>
+      </div>
+
+      <h2 class="section-title" style="margin-top:34px">Principais Fornecedores da Cadeia</h2>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr><th>Insumo</th><th>Fornecedores típicos do setor</th><th>Observação</th></tr></thead>
+            <tbody>
+              <tr><td>Compressores</td><td>Copeland (ex-Emerson), Danfoss, Highly (Hitachi)</td><td>Os três grandes fabricantes globais com linhas específicas para bombas de calor (scroll e rotativos), com distribuição ativa no Brasil</td></tr>
+              <tr><td>Gases refrigerantes (R32/R410A)</td><td>White Martins (grupo Linde), Honeywell (linha Genetron)</td><td>White Martins é a maior produtora/distribuidora de gases industriais da América Latina</td></tr>
+              <tr><td>Trocadores de calor / condensadores em titânio</td><td>Reido Titânio, JPX Equipamentos</td><td>Concorrentes diretos do segmento usam uniformemente condensadores de titânio pela resistência a cloro/sal</td></tr>
+              <tr><td>Aço/chapas para gabinetes</td><td>Aperam, Usiminas, Gerdau</td><td>Aperam lidera aço inox integrado; Usiminas fornece chapas para estampados de eletrodomésticos</td></tr>
+              <tr><td>Componentes eletrônicos / placas de controle</td><td>Não confirmado com fornecedor primário específico</td><td>Busca só retornou revendas de peças de reposição, não fabricantes — recomenda-se levantamento direto com a empresa</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Não foi encontrada confirmação pública de quais desses fornecedores atendem especificamente a Fromtherm — a lista reflete os fornecedores mais relevantes da cadeia de HVAC-R/bombas de calor no Brasil, identificados por presença comprovada em concorrentes diretos (Nautilus, Sodramar, Industek) e na cadeia industrial nacional. Fontes: <a class="site-link" href="https://www.danfoss.com/pt-br/products/dcs/compressors/compressors-for-air-conditioning-and-heating/heating-scrolls-hhp/" target="_blank" rel="noopener">Danfoss</a> · <a class="site-link" href="https://www.copeland.com/pt-br/brands/copeland" target="_blank" rel="noopener">Copeland</a> · <a class="site-link" href="https://hitachi-compressors.com/" target="_blank" rel="noopener">Highly/Hitachi</a> · <a class="site-link" href="https://www.whitemartins.com.br/produtos-e-servi%C3%A7os/gases" target="_blank" rel="noopener">White Martins</a> · <a class="site-link" href="https://www.eletrofrigor.com.br/produto/gas-r32-dac-3-0-kg-genetron-honeywell-1220" target="_blank" rel="noopener">Honeywell Genetron</a> · <a class="site-link" href="https://www.jpxequipamentos.com.br/trocador-calor" target="_blank" rel="noopener">JPX Equipamentos</a> · <a class="site-link" href="https://www.reidotitanio.com.br/trocador-de-calor" target="_blank" rel="noopener">Reido Titânio</a> · <a class="site-link" href="https://brasil.aperam.com/" target="_blank" rel="noopener">Aperam</a> · <a class="site-link" href="https://maissolucoes.usiminas.com/" target="_blank" rel="noopener">Usiminas</a> · <a class="site-link" href="https://mais.gerdau.com.br/" target="_blank" rel="noopener">Gerdau</a>.</p>
+      </div>
+
+      <h2 class="section-title" style="margin-top:34px">Associação Setorial</h2>
+      <div class="card">
+        <p style="margin:0 0 14px;font-size:13.5px;color:#3a3f43;line-height:1.55">A <b>ABRAVA</b> (Associação Brasileira de Refrigeração, Ar Condicionado, Ventilação e Aquecimento) é a entidade oficial do setor de HVAC-R no Brasil, no qual bombas de calor se inserem.</p>
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr><th>Indicador (setor HVAC-R agregado)</th><th>2025</th><th>Projeção 2026</th></tr></thead>
+            <tbody>
+              <tr><td>Faturamento do setor (ventilação, ar-condicionado e refrigeração)</td><td>R$ 50,15 bilhões (+10,4% vs. 2024)</td><td>R$ 55,62 bilhões</td></tr>
+              <tr class="keyrow"><td>Crescimento esperado do setor, 2026 vs. 2025</td><td colspan="2">+10,9% a.a.</td></tr>
+              <tr><td>Segmento de instalação e manutenção</td><td>+20,7%</td><td>+19,8% (projeção)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Crescimento 2026 vs. 2025 calculado a partir do faturamento do setor (R$ 55,62 bi ÷ R$ 50,15 bi − 1). Fonte: <a class="site-link" href="https://abrava.com.br/setor-de-ventilacao-ar-condicionado-e-refrigeracao-no-brasil-teve-faturamento-da-ordem-de-r-5015-bilhoes-em-2025/" target="_blank" rel="noopener">ABRAVA</a> · <a class="site-link" href="https://www.febrava.com.br/pt-br/blog/refrigeracao/setor-de-climatizacao-fatura-50-bi-em-2025.html" target="_blank" rel="noopener">Febrava</a>. A ABRAVA não publica um recorte específico para bombas de calor de piscina — os números acima são do setor HVAC-R agregado, usados como referência de contexto, não como tamanho do mercado da Fromtherm.</p>
+      </div>
+
+      <h2 class="section-title" style="margin-top:34px">Tendências de Mercado e Tecnologia</h2>
+      <div class="card">
+        <ul class="disc">
+          <li>Etiquetagem energética obrigatória do INMETRO (Portaria 269/2021) desde janeiro/2023, com prazo de adequação do varejo até junho/2024 e multas de R$ 100 mil a R$ 1,5 milhão por descumprimento — pressiona o mercado por eficiência energética.</li>
+          <li>A ABRAVA destaca avanços de fabricantes (ex.: Daikin) na nova classificação do Programa Brasileiro de Etiquetagem, reforçando a eficiência energética como diferencial competitivo.</li>
+          <li>Tecnologia full inverter surge como padrão emergente no segmento, com ganhos de até 50% de economia energética frente a sistemas convencionais — a própria linha FT da Fromtherm já se posiciona nessa faixa de eficiência.</li>
+          <li>Aquecimento solar residencial (26,7 milhões de m² instalados no Brasil) segue crescendo e avança sobre o chuveiro elétrico — mercado adjacente/substituto ao aquecimento por bomba de calor em algumas aplicações.</li>
+        </ul>
+        <p class="note">Fontes: <a class="site-link" href="https://blogclimatiza.com.br/selo-procel-ar-condicionado-guia-2025/" target="_blank" rel="noopener">Blog Climatiza</a> · <a class="site-link" href="https://abrava.com.br/daikin-ultrapassa-nivel-de-eficiencia-energetica-na-nova-classificacao-do-programa-brasileiro-de-etiquetagem/" target="_blank" rel="noopener">ABRAVA</a> · <a class="site-link" href="https://blog.globaltechbrasil.com/aquecedores/melhores-marcas-de-trocador-de-calor-full-inverter/" target="_blank" rel="noopener">Globaltech Brasil</a> · <a class="site-link" href="https://en.clickpetroleoegas.com.br/solar-heater-advances-to-267-million-m-in-brazil-and-threatens-electric-showers-in-homes-in-the-south-and-southeast-davila/" target="_blank" rel="noopener">Click Petróleo e Gás</a>. Adoção de refrigerante R32 é tendência de mercado amplamente reportada no setor, mas não foi encontrada fonte nacional específica que confirme sua adoção no segmento de bombas de calor para piscina no Brasil.</p>
+      </div>
+
+      <h2 class="section-title" style="margin-top:34px">Ameaça Competitiva — Novos Entrantes e Importação Chinesa</h2>
+      <div class="callout warn">
+        <div class="co-h"><span class="co-n">!</span>Risco de entrada e de venda direta da China</div>
+        <p>Marcas chinesas já respondem por cerca de <b>20% dos eletrônicos vendidos no Brasil</b> (ante 16,5% em 2019), disputando espaço com marcas estabelecidas. Fabricantes como <b>Midea, TCL e Hisense</b> já têm fábricas no Brasil (Minas Gerais, Manaus) — ou seja, a entrada já é estruturada via produção local, não apenas importação avulsa. No Mercado Livre já circulam bombas/trocadores de calor de piscina de marcas pouco tradicionais (ex.: GDA BC-300) vendidas diretamente ao consumidor, ao lado das marcas nacionais estabelecidas.</p>
+      </div>
+      <p class="note">Por outro lado, a importação avulsa de menor escala enfrenta barreira tributária relevante: Imposto de Importação de 0–60% conforme o NCM do produto, mais ICMS estadual (7–18%+) e taxas do Siscomex. Não foi encontrada evidência de venda massiva direta ao consumidor brasileiro via Shopee/AliExpress especificamente para bombas de calor de piscina — esse padrão de venda direta é mais forte em eletrônicos de consumo geral do que neste nicho. Fontes: <a class="site-link" href="https://www.infomoney.com.br/consumo/ar-condicionado-pela-metade-do-preco-gera-entusiasmo-por-marcas-chinesas-no-brasil/" target="_blank" rel="noopener">InfoMoney</a> · <a class="site-link" href="https://www.mercadolivre.com.br/gda-bc-300-trocador-bomba-de-calor-aquecedor-para-piscinas-30000l/p/MLB37923523" target="_blank" rel="noopener">Mercado Livre</a> · <a class="site-link" href="https://primem.com.br/blog/impostos-importacao-china/" target="_blank" rel="noopener">Primem</a>.</p>
+    </section>
+
+    <!-- ===== 8. FLUXO DE CAIXA DESCONTADO FCDF ===== -->
+    <section class="pane" id="fcdf">
+      <h2 class="section-title">Avaliação</h2>
+      <h3 class="section-h">Fluxo de Caixa Descontado FCDF</h3>
+      <p class="lead">Metodologia FCDF (Fluxo de Caixa Livre para a Empresa), horizonte explícito 2026F–2031F + perpetuidade. Cenário ativo na planilha base: <b>Base</b>.</p>
+      <div class="grid g3" style="margin:18px 0 20px">
+        <div class="card accent"><div class="stat"><span class="cap">Enterprise Value</span><span class="big">R$ 34,1 MM</span><span class="cap">R$ 34.083 mil</span></div></div>
+        <div class="card accent"><div class="stat"><span class="cap">Equity Value (EV − Dívida Líquida)</span><span class="big">R$ 22,3 MM</span><span class="cap">R$ 22.306 mil</span></div></div>
+        <div class="card"><div class="stat"><span class="cap">WACC · g (perpetuidade)</span><span class="big">23,61% · 5,57%</span><span class="cap">cenário Base</span></div></div>
+      </div>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr>
+              <th>Valores em R$ mil</th><th>2026F</th><th>2027F</th><th>2028F</th><th>2029F</th><th>2030F</th><th>2031F</th>
+            </tr></thead>
+            <tbody>
+              <tr><td>EBIT</td><td>6.396</td><td>7.220</td><td>7.840</td><td>8.269</td><td>8.435</td><td>8.308</td></tr>
+              <tr class="margin"><td>% da Receita Bruta</td><td>16,42%</td><td>16,79%</td><td>16,83%</td><td>16,72%</td><td>16,38%</td><td>15,82%</td></tr>
+              <tr><td>(-) IRPJ/CSLL</td><td>−1.176</td><td>−1.300</td><td>−1.410</td><td>−1.499</td><td>−1.562</td><td>−1.593</td></tr>
+              <tr class="margin"><td>% da Receita Bruta</td><td>−3,02%</td><td>−3,02%</td><td>−3,03%</td><td>−3,03%</td><td>−3,03%</td><td>−3,03%</td></tr>
+              <tr class="subtotal"><td>NOPAT</td><td>5.221</td><td>5.919</td><td>6.429</td><td>6.770</td><td>6.873</td><td>6.715</td></tr>
+              <tr class="margin"><td>% da Receita Bruta</td><td>13,40%</td><td>13,77%</td><td>13,81%</td><td>13,69%</td><td>13,35%</td><td>12,79%</td></tr>
+              <tr><td>(+) Depreciação</td><td>464</td><td>464</td><td>464</td><td>464</td><td>464</td><td>464</td></tr>
+              <tr><td>(-) NCG</td><td>−378</td><td>−1.379</td><td>−1.306</td><td>−1.079</td><td>−797</td><td>−463</td></tr>
+              <tr><td>(-) CAPEX/Investimentos</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
+              <tr class="keyrow"><td>Fluxo de Caixa Livre para a Empresa (FCFF)</td><td>5.306</td><td>5.004</td><td>5.588</td><td>6.155</td><td>6.540</td><td>6.715</td></tr>
+              <tr><td>(+) Perpetuidade</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>36.592</td></tr>
+              <tr><td>FCFF + Perpetuidade</td><td>5.306</td><td>5.004</td><td>5.588</td><td>6.155</td><td>6.540</td><td>43.308</td></tr>
+              <tr class="keyrow"><td>Fluxo de Caixa Descontado (VP)</td><td>5.306</td><td>4.049</td><td>3.657</td><td>3.259</td><td>2.802</td><td>15.010</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">% da Receita Bruta = linha ÷ Receita Bruta do respectivo ano (aba "Fluxo de Caixa Descontado FCDF" da planilha base).</p>
+      </div>
+      <div class="grid g2" style="margin-top:18px">
+        <div class="card">
+          <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Premissas de desconto</h4>
+          <div class="kv"><span class="k">WACC</span><span class="v">23,61%</span></div>
+          <div class="kv"><span class="k">g — crescimento na perpetuidade</span><span class="v">5,57%</span></div>
+          <div class="kv"><span class="k">Enterprise Value (Valor da Empresa)</span><span class="v">R$ 34.083 mil</span></div>
+        </div>
+        <div class="card">
+          <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Ponte para Equity Value (2025)</h4>
+          <div class="kv"><span class="k">Dívida Bruta (2025)</span><span class="v">R$ 12.863 mil</span></div>
+          <div class="kv"><span class="k">(-) Caixa e Aplicações (2025)</span><span class="v">−R$ 1.086 mil</span></div>
+          <div class="kv"><span class="k">Dívida Líquida</span><span class="v">R$ 11.777 mil</span></div>
+          <div class="kv"><span class="k">Equity Value (Valor p/ Acionista) = EV − Dívida Líquida</span><span class="v"><b>R$ 22.306 mil</b></span></div>
+        </div>
+      </div>
+      <p class="note">Fonte: aba "Fluxo de Caixa Descontado FCDF" da planilha base, cenário Base (célula C7). Os cenários Otimista e Pessimista existem no modelo (seletor de cenário) mas não foram congelados nesta leva.</p>
+
+      <h2 class="section-title" style="margin-top:34px">Sensibilidade — Enterprise Value (WACC × g)</h2>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr>
+              <th>WACC \ g</th><th>3,57%</th><th>4,57%</th><th class="keycell">5,57%</th><th>6,57%</th><th>7,57%</th>
+            </tr></thead>
+            <tbody>
+              <tr><td>16,3%</td><td>48.161</td><td>50.432</td><td class="keycell">53.125</td><td>56.370</td><td>60.355</td></tr>
+              <tr><td>18,8%</td><td>41.145</td><td>42.584</td><td class="keycell">44.240</td><td>46.165</td><td>48.433</td></tr>
+              <tr><td>21,3%</td><td>36.095</td><td>37.063</td><td class="keycell">38.154</td><td>39.393</td><td>40.811</td></tr>
+              <tr><td>23,8%</td><td>32.286</td><td>32.966</td><td class="keycell">33.722</td><td>34.564</td><td>35.510</td></tr>
+              <tr><td>26,3%</td><td>29.309</td><td>29.804</td><td class="keycell">30.347</td><td>30.944</td><td>31.606</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h4 style="margin:20px 0 8px;font-size:14px;font-weight:800">O que este quadro mostra</h4>
+        <p style="margin:0 0 10px;font-size:13.5px;color:#3a3f43;line-height:1.55">É uma <b>análise de sensibilidade</b>, padrão em avaliações por Fluxo de Caixa Descontado: mostra como o Enterprise Value mudaria se o WACC (linhas) ou a taxa de crescimento na perpetuidade g (colunas) fossem diferentes das usadas no cenário Base. Como o valor presente dos fluxos futuros depende diretamente dessas duas premissas, pequenas variações nelas mudam bastante o valor final — por isso a O2 trata o valuation como uma <b>faixa</b>, não um número único.</p>
+        <p class="note">O WACC efetivo do cenário Base (23,61%) fica entre as linhas de 21,3% e 23,8% mostradas — a tabela usa incrementos fixos de 2,5 p.p. em torno de um valor de referência, não necessariamente o WACC exato do modelo. A coluna destacada em verde (5,57%) é o g efetivamente usado no cenário Base. Fonte: aba "Fluxo de Caixa Descontado FCDF" da planilha base (quadro "Apoio").</p>
+      </div>
+    </section>
+
+    <!-- ===== 9. FCDF (OpCo) ===== -->
+    <section class="pane" id="opco">
+      <h2 class="section-title">Avaliação</h2>
+      <h3 class="section-h">FCDF (OpCo)</h3>
+      <p class="lead">Ajuste OpCo/PropCo: os terrenos e prédios são segregados para venda separada (PropCo); a operação (OpCo) passa a pagar aluguel de mercado pelo uso dos imóveis. Instrução do cliente, 13/07/2026 — aluguel atualizado em 14/07/2026 para R$ 64,5 mil/mês (ver nota abaixo).</p>
+      <div class="grid g3" style="margin:18px 0 20px">
+        <div class="card accent"><div class="stat"><span class="cap">Enterprise Value (OpCo)</span><span class="big">R$ 27,8 MM</span><span class="cap">R$ 27.801 mil</span></div></div>
+        <div class="card accent"><div class="stat"><span class="cap">Equity Value (OpCo)</span><span class="big">R$ 17,1 MM</span><span class="cap">R$ 17.124 mil</span></div></div>
+        <div class="card"><div class="stat"><span class="cap">WACC · g (perpetuidade)</span><span class="big">23,71% · 5,57%</span><span class="cap">cenário Base</span></div></div>
+      </div>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr>
+              <th>Valores em R$ mil</th><th>2026F</th><th>2027F</th><th>2028F</th><th>2029F</th><th>2030F</th><th>2031F</th>
+            </tr></thead>
+            <tbody>
+              <tr><td>EBIT</td><td>5.622</td><td>6.415</td><td>7.004</td><td>7.403</td><td>7.536</td><td>7.376</td></tr>
+              <tr><td>(-) IRPJ/CSLL</td><td>−1.176</td><td>−1.300</td><td>−1.410</td><td>−1.499</td><td>−1.562</td><td>−1.593</td></tr>
+              <tr class="subtotal"><td>NOPAT</td><td>4.447</td><td>5.114</td><td>5.594</td><td>5.903</td><td>5.974</td><td>5.783</td></tr>
+              <tr><td>(+) Depreciação</td><td>170</td><td>170</td><td>170</td><td>170</td><td>170</td><td>170</td></tr>
+              <tr><td>(-) NCG</td><td>−378</td><td>−1.379</td><td>−1.306</td><td>−1.079</td><td>−797</td><td>−463</td></tr>
+              <tr><td>(-) CAPEX/Investimentos</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
+              <tr class="keyrow"><td>Fluxo de Caixa Livre para a Empresa (FCFF)</td><td>4.238</td><td>3.905</td><td>4.457</td><td>4.994</td><td>5.346</td><td>5.489</td></tr>
+              <tr><td>(+) Perpetuidade</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>30.952</td></tr>
+              <tr><td>FCFF + Perpetuidade</td><td>4.238</td><td>3.905</td><td>4.457</td><td>4.994</td><td>5.346</td><td>36.440</td></tr>
+              <tr class="keyrow"><td>Fluxo de Caixa Descontado (VP)</td><td>4.238</td><td>3.156</td><td>2.912</td><td>2.638</td><td>2.282</td><td>12.575</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="grid g2" style="margin-top:18px">
+        <div class="card">
+          <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Premissas de desconto</h4>
+          <div class="kv"><span class="k">WACC</span><span class="v">23,71%</span></div>
+          <div class="kv"><span class="k">g — crescimento na perpetuidade</span><span class="v">5,57%</span></div>
+          <div class="kv"><span class="k">Enterprise Value (Valor da Empresa)</span><span class="v">R$ 27.801 mil</span></div>
+        </div>
+        <div class="card">
+          <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Ponte para Equity Value</h4>
+          <div class="kv"><span class="k">Dívida Bruta (2025)</span><span class="v">R$ 12.863 mil</span></div>
+          <div class="kv"><span class="k">(-) Caixa e Aplicações (2025)</span><span class="v">−R$ 1.086 mil</span></div>
+          <div class="kv"><span class="k">Dívida Líquida (exclui dívida imobiliária)</span><span class="v">R$ 10.677 mil</span></div>
+          <div class="kv"><span class="k">Equity Value (Valor p/ Acionista) = EV − Dívida Líquida</span><span class="v"><b>R$ 17.124 mil</b></span></div>
+        </div>
+      </div>
+      <p class="note">Premissas do ajuste OpCo/PropCo (aba "FCDF (OpCo)" da planilha base): depreciação de prédios excluída da operação (R$ 294 mil/ano); aluguel de mercado de R$ 774 mil/ano — R$ 64,5 mil/mês (reajustado pelo IGP-M a partir de 2027); dívida imobiliária de R$ 1.100 mil transferida à PropCo e excluída da dívida líquida da OpCo. Cenário Base (célula C7).</p>
+      <p class="note">Aluguel de mercado atualizado em 14/07/2026 (aba "BaseApoioALuguel" da planilha v10): R$ 21,50/m² × ~3.000 m² de área construída = R$ 64.500/mês (R$ 774 mil/ano) — valor médio de m² para a região, conforme apurado pelo cliente. Substitui a estimativa anterior de R$ 20 mil/mês.</p>
+
+      <h2 class="section-title" style="margin-top:34px">Sensibilidade — Enterprise Value (WACC × g)</h2>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr>
+              <th>WACC \ g</th><th>3,57%</th><th>4,57%</th><th class="keycell">5,57%</th><th>6,57%</th><th>7,57%</th>
+            </tr></thead>
+            <tbody>
+              <tr><td>16,3%</td><td>39.801</td><td>41.734</td><td class="keycell">44.025</td><td>46.786</td><td>50.177</td></tr>
+              <tr><td>18,8%</td><td>33.877</td><td>35.101</td><td class="keycell">36.510</td><td>38.148</td><td>40.078</td></tr>
+              <tr><td>21,3%</td><td>29.621</td><td>30.445</td><td class="keycell">31.373</td><td>32.427</td><td>33.634</td></tr>
+              <tr><td>23,8%</td><td>26.418</td><td>26.997</td><td class="keycell">27.640</td><td>28.357</td><td>29.162</td></tr>
+              <tr><td>26,3%</td><td>23.920</td><td>24.341</td><td class="keycell">24.803</td><td>25.312</td><td>25.874</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h4 style="margin:20px 0 8px;font-size:14px;font-weight:800">O que este quadro mostra</h4>
+        <p style="margin:0 0 10px;font-size:13.5px;color:#3a3f43;line-height:1.55">Mesma leitura da sensibilidade da página anterior, aplicada ao Enterprise Value da OpCo: mostra como o valor mudaria se o WACC (linhas) ou o g (colunas) fossem diferentes dos usados no cenário Base. A tabela é ligeiramente mais baixa que a da FCDF em cada célula, na mesma proporção da diferença de Enterprise Value já explicada acima (imóveis fora da operação).</p>
+        <p class="note">O WACC efetivo do cenário Base da OpCo (23,71%) fica entre as linhas de 21,3% e 23,8% mostradas. A coluna destacada em verde (5,57%) é o g efetivamente usado no cenário Base. Fonte: aba "FCDF (OpCo)" da planilha base (quadro "Apoio").</p>
+      </div>
+
+      <h2 class="section-title" style="margin-top:34px">Diferenças entre FCDF e FCDF OpCo</h2>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr><th>Premissa</th><th>Fluxo de Caixa Descontado FCDF</th><th>FCDF (OpCo)</th></tr></thead>
+            <tbody>
+              <tr><td>Estrutura patrimonial</td><td>Imóveis (terrenos e prédios) permanecem na empresa</td><td>Imóveis segregados para venda separada à PropCo</td></tr>
+              <tr><td>Aluguel de mercado</td><td>Não há — a empresa é dona do imóvel</td><td>R$ 774 mil/ano — R$ 64,5 mil/mês (reajustado pelo IGP-M a partir de 2027)</td></tr>
+              <tr><td>Depreciação de prédios</td><td>Incluída (R$ 294 mil/ano a mais que a OpCo)</td><td>Excluída da operação</td></tr>
+              <tr><td>Dívida Líquida</td><td>R$ 11.777 mil (inclui dívida imobiliária)</td><td>R$ 10.677 mil (exclui R$ 1.100 mil de dívida imobiliária, transferida à PropCo)</td></tr>
+              <tr><td>Peso do capital próprio (E/(D+E)) no WACC</td><td>60,7%</td><td>62,8%</td></tr>
+              <tr class="subtotal"><td>WACC</td><td>23,61%</td><td>23,71%</td></tr>
+              <tr class="subtotal"><td>Enterprise Value</td><td>R$ 34.083 mil</td><td>R$ 27.801 mil</td></tr>
+              <tr class="keyrow"><td>Equity Value</td><td>R$ 22.306 mil</td><td>R$ 17.124 mil</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h4 style="margin:20px 0 8px;font-size:14px;font-weight:800">Por que o WACC muda (23,61% → 23,71%)</h4>
+        <p style="margin:0 0 14px;font-size:13.5px;color:#3a3f43;line-height:1.55">O custo do capital próprio (Ke, 25,62% nominal) e o custo da dívida pós-impostos (Kd, 20,5%) são <b>idênticos</b> nas duas visões — não mudam com o ajuste OpCo, porque o beta usado no releverage é o das comparáveis setoriais, não a estrutura de capital da própria Fromtherm. O que muda é só o <b>peso</b> de cada fonte de capital: como a OpCo tem menos dívida líquida (exclui a dívida imobiliária), sua fatia de capital próprio na estrutura é maior (62,8% vs. 60,7% na FCDF). Como o Ke é maior que o Kd, uma fatia maior de capital próprio puxa o WACC médio ponderado um pouco para cima — daí o WACC da OpCo ser 0,10 p.p. mais alto, mesmo tendo menos dívida.</p>
+        <h4 style="margin:0 0 8px;font-size:14px;font-weight:800">Por que o Enterprise Value e o Equity Value mudam</h4>
+        <p style="margin:0 0 14px;font-size:13.5px;color:#3a3f43;line-height:1.55">A diferença de <b>R$ 5.182 mil no Equity Value</b> (R$ 22.306 mil vs. R$ 17.124 mil) reflete o valor que os imóveis representam quando ficam fora da operação: a OpCo deixa de ter a despesa de depreciação predial mas passa a pagar aluguel de mercado (o que reduz o FCFF projetado), e sua dívida líquida cai R$ 1.100 mil (a dívida imobiliária vai para a PropCo). A soma desses efeitos nos fluxos de caixa — descontada a valor presente pelo WACC (ligeiramente maior) de cada estrutura — explica o Enterprise Value R$ 6.282 mil menor da OpCo.</p>
+        <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">Nota (14/07/2026): o aluguel de mercado foi atualizado de R$ 20 mil/mês para <b>R$ 64,5 mil/mês</b> (R$ 21,50/m² sobre ~3.000 m² de área construída, valor médio de mercado para a região), o que ampliou a diferença de valor entre as duas visões frente à versão anterior do modelo (v9).</p>
+        <p class="note">Os imóveis (e a dívida/valor da PropCo) não são avaliados nesta análise — o valor da FCDF OpCo representa só a operação, não o valor combinado OpCo + PropCo.</p>
+      </div>
+    </section>
+
+    <!-- ===== 10. SUMÁRIO EXECUTIVO ===== -->
+    <section class="pane" id="executivo">
+      <h2 class="section-title">Conclusão</h2>
+      <h3 class="section-h">Sumário Executivo</h3>
+      <p class="lead">Metodologia de Fluxo de Caixa Descontado (FCDF), cenário Base. A faixa completa (Otimista/Base/Pessimista) ainda não está disponível — ver nota ao final desta seção.</p>
+      <div class="grid g2" style="margin:18px 0 12px">
+        <div class="card accent"><div class="stat"><span class="cap">Enterprise Value · Fluxo de Caixa Descontado FCDF</span><span class="big">R$ 34,1 MM</span><span class="cap">R$ 34.083 mil · com imóveis</span></div></div>
+        <div class="card accent"><div class="stat"><span class="cap">Enterprise Value · FCDF (OpCo)</span><span class="big">R$ 27,8 MM</span><span class="cap">R$ 27.801 mil · sem imóveis (carve-out PropCo)</span></div></div>
+      </div>
+      <div class="grid g2" style="margin-bottom:20px">
+        <div class="card accent"><div class="stat"><span class="cap">Equity Value · Fluxo de Caixa Descontado FCDF</span><span class="big">R$ 22,3 MM</span><span class="cap">R$ 22.306 mil · EV − Dívida Líquida</span></div></div>
+        <div class="card accent"><div class="stat"><span class="cap">Equity Value · FCDF (OpCo)</span><span class="big">R$ 17,1 MM</span><span class="cap">R$ 17.124 mil · EV − Dívida Líquida (exclui dívida imobiliária)</span></div></div>
+      </div>
+
+      <div class="grid g2" style="margin-bottom:20px">
+        <div class="card">
+          <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Quadro — Fluxo de Caixa Descontado FCDF</h4>
+          <div class="kv"><span class="k">WACC</span><span class="v">23,61%</span></div>
+          <div class="kv"><span class="k">g — crescimento na perpetuidade</span><span class="v">5,57%</span></div>
+          <div class="kv"><span class="k">Enterprise Value</span><span class="v">R$ 34.083 mil</span></div>
+          <div class="kv"><span class="k">Dívida Líquida (2025)</span><span class="v">R$ 11.777 mil</span></div>
+          <div class="kv"><span class="k">Equity Value</span><span class="v"><b>R$ 22.306 mil</b></span></div>
+        </div>
+        <div class="card">
+          <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Quadro — FCDF (OpCo)</h4>
+          <div class="kv"><span class="k">WACC</span><span class="v">23,71%</span></div>
+          <div class="kv"><span class="k">g — crescimento na perpetuidade</span><span class="v">5,57%</span></div>
+          <div class="kv"><span class="k">Enterprise Value</span><span class="v">R$ 27.801 mil</span></div>
+          <div class="kv"><span class="k">Dívida Líquida (2025, exclui dívida imobiliária)</span><span class="v">R$ 10.677 mil</span></div>
+          <div class="kv"><span class="k">Equity Value</span><span class="v"><b>R$ 17.124 mil</b></span></div>
+        </div>
+      </div>
+
+      <div class="grid g3">
+        <div class="card">
+          <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Por que esse valor</h4>
+          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">DCF (FCFF) a WACC 23,61% e g 5,57%, horizonte 2026F–2031F + perpetuidade. Fonte: aba "Fluxo de Caixa Descontado FCDF" da planilha base.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Principal driver</h4>
+          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">Recuperação de margem: a receita cresceu (R$ 25,0 mi → 33,7 mi → 37,9 mi em 2023-2025), mas a margem EBIT caiu de 24,7% para 9,6% com a virada para revenda de produtos importados. A nova fábrica é a aposta para produzir internamente e recuperar margem — projeção Base já assume essa recuperação parcial (margem EBIT volta a ~16% em 2026F).</p>
+        </div>
+        <div class="card">
+          <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Principal risco</h4>
+          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">Empresa alavancada (Dívida Líquida R$ 11,78 mi em 2025) — o Equity Value é sensível a essa dívida. Conforme nota da planilha base, o 1º trimestre de 2026 fechou em prejuízo (~R$ 318 mil): a recuperação de margem projetada ainda não apareceu nos números realizados.</p>
+        </div>
+      </div>
+      <p class="note">Este sumário reflete apenas o cenário Base — o único com FCFF, WACC e EV recalculados ao vivo na aba "Fluxo de Caixa Descontado FCDF" desta planilha (Fromtherm_valuation_v9.xlsx). Os cenários Otimista e Pessimista existem no seletor do modelo (célula C7), mas não foram recongelados nesta versão do arquivo.</p>
+    </section>
+
+    <!-- ===== 11. RESULTADOS OBTIDOS ===== -->
+    <section class="pane" id="resultados">
+      <h2 class="section-title">Conclusão</h2>
+      <h3 class="section-h">Resultados Obtidos</h3>
+      <p class="lead">Duas visões, mesma metodologia (FCDF a WACC ≈ 23,6–23,7% e g 5,57%): mantendo os imóveis na operação, ou segregando-os para venda separada (carve-out PropCo).</p>
+      <div class="card" style="margin-top:18px">
+        <div class="tbl-wrap">
+          <table class="fin">
+            <thead><tr><th>Cenário Base (R$ mil)</th><th>Fluxo de Caixa Descontado FCDF</th><th>FCDF (OpCo)</th></tr></thead>
+            <tbody>
+              <tr><td>WACC</td><td>23,61%</td><td>23,71%</td></tr>
+              <tr><td>g (perpetuidade)</td><td>5,57%</td><td>5,57%</td></tr>
+              <tr class="subtotal"><td>Enterprise Value</td><td>34.083</td><td>27.801</td></tr>
+              <tr><td>Dívida Líquida</td><td>11.777</td><td>10.677</td></tr>
+              <tr class="keyrow"><td>Equity Value (Valor p/ Acionista)</td><td>22.306</td><td>17.124</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="grid g2" style="margin-top:18px">
+        <div class="card">
+          <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Como ler</h4>
+          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">As duas colunas não são cenários econômicos diferentes — são a mesma operação sob duas premissas de estrutura patrimonial: manter os imóveis (FCDF) ou vendê-los separadamente à PropCo, com a operação (OpCo) pagando aluguel de mercado (atualizado em 14/07/2026 para R$ 64,5 mil/mês). A diferença de Equity Value (R$ 22,3 mi vs. R$ 17,1 mi) reflete o valor retido pelos imóveis fora da operação.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Limitações desta faixa</h4>
+          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">Estes números refletem apenas o cenário Base. Os cenários Otimista e Pessimista existem no seletor do modelo, mas não foram recalculados/congelados nesta versão da planilha (Fromtherm_valuation_v9.xlsx) — não há, portanto, uma faixa Otimista–Pessimista para apresentar nesta etapa.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 12. ANEXOS ===== -->
+    <section class="pane" id="anexos">
+      <h2 class="section-title">Anexos</h2>
+      <h3 class="section-h">Bibliografia e Fontes</h3>
+      <div class="grid g2" style="margin-top:18px">
+        <div class="card">
+          <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Metodologia e custo de capital</h4>
+          <ul class="biblist">
+            <li>Assaf Neto, A. — <i>Finanças Corporativas e Valor</i> (metodologia do Ke).</li>
+            <li>Damodaran, A. — beta setorial desalavancado (Machinery/Electrical, mercados emergentes): <a class="site-link" href="https://pages.stern.nyu.edu/~adamodar/pc/datasets/betaemerg.xls" target="_blank" rel="noopener">pages.stern.nyu.edu/~adamodar</a></li>
+            <li>Damodaran — Country Risk Premium (Brasil): <a class="site-link" href="https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/ctryprem.html" target="_blank" rel="noopener">pages.stern.nyu.edu/~adamodar</a></li>
+            <li>Kroll — Cost of Capital / Equity Risk Premium: <a class="site-link" href="https://www.kroll.com/en/insights/cost-of-capital" target="_blank" rel="noopener">kroll.com</a></li>
+            <li>U.S. Department of the Treasury — T-bonds 10 anos (taxa livre de risco): <a class="site-link" href="https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value=2026" target="_blank" rel="noopener">home.treasury.gov</a></li>
+            <li>FRED (St. Louis Fed) — T10YIE, inflação implícita EUA: <a class="site-link" href="https://fred.stlouisfed.org/series/T10YIE" target="_blank" rel="noopener">fred.stlouisfed.org</a></li>
+            <li>Valuation Handbook 2023 (CFA Institute) — prêmio de tamanho: <a class="site-link" href="https://rpc.cfainstitute.org/research/foundation/2024/valuation-handbook-2023" target="_blank" rel="noopener">rpc.cfainstitute.org</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Dados de mercado e setor</h4>
+          <ul class="biblist">
+            <li>Banco Central do Brasil — Boletim Focus (Selic, IPCA, PIB, câmbio).</li>
+            <li>IBGE — Contas Nacionais Trimestrais (PIB) e PNAD Contínua (desemprego).</li>
+            <li>FGV–IBRE — Índice de Confiança do Consumidor (ICC).</li>
+            <li>Grand View Research — Shell &amp; Tube Heat Exchanger Market, Brazil: <a class="site-link" href="https://www.grandviewresearch.com/horizon/outlook/shell-and-tube-heat-exchanger-market/brazil" target="_blank" rel="noopener">grandviewresearch.com</a></li>
+            <li>Grand View Research — Plate &amp; Frame Heat Exchangers Market, Brazil: <a class="site-link" href="https://www.grandviewresearch.com/horizon/outlook/plate-frame-heat-exchangers-market/brazil" target="_blank" rel="noopener">grandviewresearch.com</a></li>
+            <li>Fromtherm — site institucional: <a class="site-link" href="https://fromtherm.com.br/" target="_blank" rel="noopener">fromtherm.com.br</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="card" style="margin-top:18px">
+        <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Documentos de apoio</h4>
+        <ul class="biblist">
+          <li>Modelo de valuation: Fromtherm_valuation_v9.xlsx (abas: Inputs, Modelo, CAPEX&amp;Dep., Dist. de lucros, Ke_&amp;_g, mercado, ERP, US_T-bonds, T10YIE, beta).</li>
+          <li>Modelo de valuation (FCDF OpCo, atualizado 14/07/2026): Fromtherm_valuation_v10.xlsx (aba "FCDF (OpCo)" e "BaseApoioALuguel" — aluguel de mercado revisado para R$ 64,5 mil/mês).</li>
+          <li>Demonstrações contábeis utilizadas: Balancetes 2023, 2024, 2025 e 1º trimestre de 2026.</li>
+          <li>Memória de cálculo do WACC (Ke) e da taxa de crescimento perpétuo (g) — aba "Ke_&amp;_g" da planilha base.</li>
+        </ul>
+        <p class="note">As tabelas de sensibilidade WACC × g e as memórias de cálculo detalhadas ficam na planilha base — não foram reproduzidas nesta primeira leva do relatório.</p>
+      </div>
+    </section>
+
+    <!-- ===== 13. AVALIAÇÃO (pesquisa de satisfação) ===== -->
+    <section class="pane" id="avaliacaotrabalho">
+      <h2 class="section-title">Sua Opinião</h2>
+      <h3 class="section-h">Avaliação</h3>
+      <div class="card" style="text-align:center;padding:60px 28px;max-width:460px;margin:18px auto 0">
+        <p style="font-size:16px;color:var(--preto);font-weight:700;margin:0 0 24px">Por favor, faça sua avaliação do trabalho recebido.</p>
+        <a href="https://app.pipefy.com/public/form/ph0zIsy2?cs=1280100287" target="_blank" rel="noopener">
+          <svg viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="QR code - avaliação do trabalho O2 Inc." style="width:220px;height:220px;margin:0 auto;display:block;border-radius:12px"><rect width="37" height="37" fill="#ffffff"/><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM11,2H12V3H11zM13,2H14V3H13zM14,2H15V3H14zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM23,2H24V3H23zM25,2H26V3H25zM28,2H29V3H28zM29,2H30V3H29zM30,2H31V3H30zM31,2H32V3H31zM32,2H33V3H32zM33,2H34V3H33zM34,2H35V3H34zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM12,3H13V4H12zM14,3H15V4H14zM16,3H17V4H16zM18,3H19V4H18zM19,3H20V4H19zM23,3H24V4H23zM25,3H26V4H25zM28,3H29V4H28zM34,3H35V4H34zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM12,4H13V5H12zM13,4H14V5H13zM14,4H15V5H14zM15,4H16V5H15zM16,4H17V5H16zM17,4H18V5H17zM18,4H19V5H18zM22,4H23V5H22zM28,4H29V5H28zM30,4H31V5H30zM31,4H32V5H31zM32,4H33V5H32zM34,4H35V5H34zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM10,5H11V6H10zM11,5H12V6H11zM12,5H13V6H12zM17,5H18V6H17zM19,5H20V6H19zM20,5H21V6H20zM21,5H22V6H21zM22,5H23V6H22zM24,5H25V6H24zM26,5H27V6H26zM28,5H29V6H28zM30,5H31V6H30zM31,5H32V6H31zM32,5H33V6H32zM34,5H35V6H34zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM11,6H12V7H11zM13,6H14V7H13zM14,6H15V7H14zM15,6H16V7H15zM18,6H19V7H18zM20,6H21V7H20zM21,6H22V7H21zM22,6H23V7H22zM23,6H24V7H23zM24,6H25V7H24zM26,6H27V7H26zM28,6H29V7H28zM30,6H31V7H30zM31,6H32V7H31zM32,6H33V7H32zM34,6H35V7H34zM2,7H3V8H2zM8,7H9V8H8zM11,7H12V8H11zM12,7H13V8H12zM13,7H14V8H13zM16,7H17V8H16zM17,7H18V8H17zM18,7H19V8H18zM20,7H21V8H20zM21,7H22V8H21zM22,7H23V8H22zM24,7H25V8H24zM26,7H27V8H26zM28,7H29V8H28zM34,7H35V8H34zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM22,8H23V9H22zM24,8H25V9H24zM26,8H27V9H26zM28,8H29V9H28zM29,8H30V9H29zM30,8H31V9H30zM31,8H32V9H31zM32,8H33V9H32zM33,8H34V9H33zM34,8H35V9H34zM10,9H11V10H10zM12,9H13V10H12zM13,9H14V10H13zM14,9H15V10H14zM17,9H18V10H17zM18,9H19V10H18zM19,9H20V10H19zM20,9H21V10H20zM22,9H23V10H22zM24,9H25V10H24zM26,9H27V10H26zM2,10H3V11H2zM4,10H5V11H4zM5,10H6V11H5zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM11,10H12V11H11zM12,10H13V11H12zM16,10H17V11H16zM17,10H18V11H17zM18,10H19V11H18zM19,10H20V11H19zM21,10H22V11H21zM23,10H24V11H23zM25,10H26V11H25zM26,10H27V11H26zM28,10H29V11H28zM31,10H32V11H31zM33,10H34V11H33zM34,10H35V11H34zM2,11H3V12H2zM4,11H5V12H4zM6,11H7V12H6zM9,11H10V12H9zM15,11H16V12H15zM18,11H19V12H18zM20,11H21V12H20zM21,11H22V12H21zM22,11H23V12H22zM23,11H24V12H23zM24,11H25V12H24zM25,11H26V12H25zM28,11H29V12H28zM29,11H30V12H29zM31,11H32V12H31zM32,11H33V12H32zM34,11H35V12H34zM2,12H3V13H2zM5,12H6V13H5zM6,12H7V13H6zM8,12H9V13H8zM9,12H10V13H9zM11,12H12V13H11zM14,12H15V13H14zM15,12H16V13H15zM18,12H19V13H18zM19,12H20V13H19zM23,12H24V13H23zM25,12H26V13H25zM29,12H30V13H29zM30,12H31V13H30zM31,12H32V13H31zM33,12H34V13H33zM34,12H35V13H34zM3,13H4V14H3zM6,13H7V14H6zM9,13H10V14H9zM10,13H11V14H10zM11,13H12V14H11zM14,13H15V14H14zM18,13H19V14H18zM25,13H26V14H25zM26,13H27V14H26zM27,13H28V14H27zM28,13H29V14H28zM29,13H30V14H29zM31,13H32V14H31zM33,13H34V14H33zM34,13H35V14H34zM4,14H5V15H4zM7,14H8V15H7zM8,14H9V15H8zM10,14H11V15H10zM11,14H12V15H11zM12,14H13V15H12zM14,14H15V15H14zM16,14H17V15H16zM18,14H19V15H18zM19,14H20V15H19zM20,14H21V15H20zM22,14H23V15H22zM25,14H26V15H25zM27,14H28V15H27zM30,14H31V15H30zM31,14H32V15H31zM2,15H3V16H2zM4,15H5V16H4zM5,15H6V16H5zM7,15H8V16H7zM9,15H10V16H9zM11,15H12V16H11zM16,15H17V16H16zM20,15H21V16H20zM21,15H22V16H21zM22,15H23V16H22zM24,15H25V16H24zM28,15H29V16H28zM29,15H30V16H29zM32,15H33V16H32zM33,15H34V16H33zM2,16H3V17H2zM3,16H4V17H3zM4,16H5V17H4zM5,16H6V17H5zM7,16H8V17H7zM8,16H9V17H8zM10,16H11V17H10zM11,16H12V17H11zM13,16H14V17H13zM16,16H17V17H16zM19,16H20V17H19zM20,16H21V17H20zM21,16H22V17H21zM24,16H25V17H24zM28,16H29V17H28zM30,16H31V17H30zM31,16H32V17H31zM4,17H5V18H4zM5,17H6V18H5zM6,17H7V18H6zM9,17H10V18H9zM11,17H12V18H11zM12,17H13V18H12zM13,17H14V18H13zM14,17H15V18H14zM15,17H16V18H15zM17,17H18V18H17zM23,17H24V18H23zM25,17H26V18H25zM26,17H27V18H26zM27,17H28V18H27zM28,17H29V18H28zM29,17H30V18H29zM32,17H33V18H32zM2,18H3V19H2zM3,18H4V19H3zM5,18H6V19H5zM6,18H7V19H6zM7,18H8V19H7zM8,18H9V19H8zM9,18H10V19H9zM10,18H11V19H10zM15,18H16V19H15zM16,18H17V19H16zM20,18H21V19H20zM22,18H23V19H22zM23,18H24V19H23zM24,18H25V19H24zM25,18H26V19H25zM27,18H28V19H27zM28,18H29V19H28zM30,18H31V19H30zM31,18H32V19H31zM32,18H33V19H32zM3,19H4V20H3zM6,19H7V20H6zM7,19H8V20H7zM9,19H10V20H9zM17,19H18V20H17zM20,19H21V20H20zM22,19H23V20H22zM23,19H24V20H23zM24,19H25V20H24zM25,19H26V20H25zM27,19H28V20H27zM28,19H29V20H28zM30,19H31V20H30zM31,19H32V20H31zM34,19H35V20H34zM3,20H4V21H3zM6,20H7V21H6zM8,20H9V21H8zM10,20H11V21H10zM13,20H14V21H13zM14,20H15V21H14zM15,20H16V21H15zM16,20H17V21H16zM17,20H18V21H17zM19,20H20V21H19zM20,20H21V21H20zM23,20H24V21H23zM24,20H25V21H24zM26,20H27V21H26zM28,20H29V21H28zM29,20H30V21H29zM30,20H31V21H30zM32,20H33V21H32zM33,20H34V21H33zM2,21H3V22H2zM3,21H4V22H3zM7,21H8V22H7zM9,21H10V22H9zM11,21H12V22H11zM13,21H14V22H13zM14,21H15V22H14zM16,21H17V22H16zM18,21H19V22H18zM19,21H20V22H19zM21,21H22V22H21zM24,21H25V22H24zM25,21H26V22H25zM27,21H28V22H27zM28,21H29V22H28zM30,21H31V22H30zM33,21H34V22H33zM5,22H6V23H5zM7,22H8V23H7zM8,22H9V23H8zM9,22H10V23H9zM14,22H15V23H14zM15,22H16V23H15zM17,22H18V23H17zM18,22H19V23H18zM19,22H20V23H19zM22,22H23V23H22zM23,22H24V23H23zM24,22H25V23H24zM26,22H27V23H26zM29,22H30V23H29zM31,22H32V23H31zM32,22H33V23H32zM34,22H35V23H34zM2,23H3V24H2zM3,23H4V24H3zM6,23H7V24H6zM12,23H13V24H12zM14,23H15V24H14zM15,23H16V24H15zM16,23H17V24H16zM17,23H18V24H17zM18,23H19V24H18zM21,23H22V24H21zM23,23H24V24H23zM24,23H25V24H24zM25,23H26V24H25zM26,23H27V24H26zM27,23H28V24H27zM28,23H29V24H28zM29,23H30V24H29zM31,23H32V24H31zM34,23H35V24H34zM5,24H6V25H5zM7,24H8V25H7zM8,24H9V25H8zM10,24H11V25H10zM11,24H12V25H11zM12,24H13V25H12zM13,24H14V25H13zM14,24H15V25H14zM17,24H18V25H17zM19,24H20V25H19zM22,24H23V25H22zM24,24H25V25H24zM25,24H26V25H25zM26,24H27V25H26zM28,24H29V25H28zM32,24H33V25H32zM33,24H34V25H33zM34,24H35V25H34zM3,25H4V26H3zM5,25H6V26H5zM10,25H11V26H10zM14,25H15V26H14zM15,25H16V26H15zM16,25H17V26H16zM17,25H18V26H17zM21,25H22V26H21zM31,25H32V26H31zM2,26H3V27H2zM4,26H5V27H4zM5,26H6V27H5zM7,26H8V27H7zM8,26H9V27H8zM11,26H12V27H11zM13,26H14V27H13zM14,26H15V27H14zM19,26H20V27H19zM21,26H22V27H21zM24,26H25V27H24zM25,26H26V27H25zM26,26H27V27H26zM27,26H28V27H27zM28,26H29V27H28zM29,26H30V27H29zM30,26H31V27H30zM31,26H32V27H31zM34,26H35V27H34zM10,27H11V28H10zM12,27H13V28H12zM14,27H15V28H14zM15,27H16V28H15zM16,27H17V28H16zM17,27H18V28H17zM18,27H19V28H18zM20,27H21V28H20zM21,27H22V28H21zM22,27H23V28H22zM26,27H27V28H26zM30,27H31V28H30zM31,27H32V28H31zM2,28H3V29H2zM3,28H4V29H3zM4,28H5V29H4zM5,28H6V29H5zM6,28H7V29H6zM7,28H8V29H7zM8,28H9V29H8zM10,28H11V29H10zM11,28H12V29H11zM12,28H13V29H12zM13,28H14V29H13zM14,28H15V29H14zM16,28H17V29H16zM18,28H19V29H18zM21,28H22V29H21zM22,28H23V29H22zM24,28H25V29H24zM25,28H26V29H25zM26,28H27V29H26zM28,28H29V29H28zM30,28H31V29H30zM2,29H3V30H2zM8,29H9V30H8zM10,29H11V30H10zM12,29H13V30H12zM13,29H14V30H13zM15,29H16V30H15zM20,29H21V30H20zM23,29H24V30H23zM24,29H25V30H24zM25,29H26V30H25zM26,29H27V30H26zM30,29H31V30H30zM31,29H32V30H31zM32,29H33V30H32zM34,29H35V30H34zM2,30H3V31H2zM4,30H5V31H4zM5,30H6V31H5zM6,30H7V31H6zM8,30H9V31H8zM11,30H12V31H11zM12,30H13V31H12zM14,30H15V31H14zM21,30H22V31H21zM23,30H24V31H23zM25,30H26V31H25zM26,30H27V31H26zM27,30H28V31H27zM28,30H29V31H28zM29,30H30V31H29zM30,30H31V31H30zM32,30H33V31H32zM33,30H34V31H33zM34,30H35V31H34zM2,31H3V32H2zM4,31H5V32H4zM5,31H6V32H5zM6,31H7V32H6zM8,31H9V32H8zM10,31H11V32H10zM11,31H12V32H11zM12,31H13V32H12zM15,31H16V32H15zM16,31H17V32H16zM18,31H19V32H18zM20,31H21V32H20zM29,31H30V32H29zM34,31H35V32H34zM2,32H3V33H2zM4,32H5V33H4zM5,32H6V33H5zM6,32H7V33H6zM8,32H9V33H8zM10,32H11V33H10zM12,32H13V33H12zM13,32H14V33H13zM14,32H15V33H14zM16,32H17V33H16zM17,32H18V33H17zM18,32H19V33H18zM24,32H25V33H24zM26,32H27V33H26zM27,32H28V33H27zM28,32H29V33H28zM29,32H30V33H29zM32,32H33V33H32zM2,33H3V34H2zM8,33H9V34H8zM11,33H12V34H11zM14,33H15V34H14zM15,33H16V34H15zM17,33H18V34H17zM18,33H19V34H18zM19,33H20V34H19zM20,33H21V34H20zM21,33H22V34H21zM22,33H23V34H22zM26,33H27V34H26zM28,33H29V34H28zM29,33H30V34H29zM30,33H31V34H30zM34,33H35V34H34zM2,34H3V35H2zM3,34H4V35H3zM4,34H5V35H4zM5,34H6V35H5zM6,34H7V35H6zM7,34H8V35H7zM8,34H9V35H8zM10,34H11V35H10zM12,34H13V35H12zM13,34H14V35H13zM14,34H15V35H14zM15,34H16V35H15zM16,34H17V35H16zM18,34H19V35H18zM19,34H20V35H19zM20,34H21V35H20zM21,34H22V35H21zM22,34H23V35H22zM23,34H24V35H23zM25,34H26V35H25zM28,34H29V35H28zM30,34H31V35H30zM32,34H33V35H32z" fill="#1c1c1c"/></svg>
+        </a>
+        <p class="note" style="margin-top:22px">Aponte a câmera do celular para o QR code, ou acesse <a class="site-link" href="https://app.pipefy.com/public/form/ph0zIsy2?cs=1280100287" target="_blank" rel="noopener">o formulário</a> diretamente.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>O2 · Documento Confidencial · Fromtherm</footer>
+</div>
+
+
+<script>
+/* ================= PASSWORD ================= */
+/* Regra: senha = Nome do Cliente + Ano Corrente da análise */
+var SENHA = "Fromtherm2026";
+var gate = document.getElementById('gate');
+var app  = document.getElementById('app');
+function tryEnter(){
+  var v = document.getElementById('pw').value.trim();
+  if(v === SENHA){
+    gate.style.display='none';
+    app.style.display='block';
+  } else {
+    document.getElementById('err').textContent = 'Senha incorreta. Tente novamente.';
+  }
+}
+document.getElementById('enter').addEventListener('click', tryEnter);
+document.getElementById('pw').addEventListener('keydown', function(e){ if(e.key==='Enter') tryEnter(); });
+
+/* ================= TABS ================= */
+var tabs = document.getElementById('tabs');
+var tabButtons = [].slice.call(tabs.querySelectorAll('button'));
+
+function updateProgress(activeBtn){
+  var idx = tabButtons.indexOf(activeBtn) + 1;
+  var total = tabButtons.length;
+  var pct = Math.round((idx / total) * 100);
+  var txt = document.getElementById('progressText');
+  var bar = document.getElementById('progressBar');
+  if(txt) txt.innerHTML = 'Seção ' + idx + ' de ' + total + ' <b>· ' + pct + '% concluído</b>';
+  if(bar) bar.style.width = pct + '%';
+}
+
+tabs.addEventListener('click', function(e){
+  var b = e.target.closest('button'); if(!b) return;
+  tabButtons.forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  var id = b.getAttribute('data-t');
+  [].forEach.call(document.querySelectorAll('.pane'), p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  updateProgress(b);
+});
+
+updateProgress(tabButtons[0]);
+
+/* ================= CHARTS (Cenário Macroeconômico) ================= */
+/* Dados extraídos da Planilha de Indicadores Econômicos (mesma fonte nacional usada em todos os
+   clientes O2 — aba "5. Cenário Macroeconômico" da planilha base) + abas "inputs"/"Modelo (Critérios O2)"
+   da planilha de valuation (mesmas premissas de IPCA, IGP-M e câmbio usadas no FCDF). Selic e PIB
+   2029-2031 e IGP-M/IPCA 2030-2031 repetem o último ano com projeção oficial disponível (mesma
+   convenção adotada no modelo). Desemprego e ICC não têm projeção no relatório Focus do BCB — o
+   gráfico mostra só o realizado + o último dado disponível (2026).
+*/
+var YEARS_LONG = ['2023','2024','2025','2026F','2027F','2028F','2029F','2030F','2031F'];
+var YEARS_SHORT = ['2023','2024','2025','2026*'];
+var INDICATORS = [
+  {t:'Taxa de Juros (Selic)', unit:'% a.a.', years:YEARS_LONG, realized:3,
+   src:'BCB / Copom (realizado) · BCB Focus 03/07/2026 (2026-28) · 2029-31 repete 2028',
+   vals:[11.75,12.25,15.00,14.00,12.00,10.50,10.50,10.50,10.50], fmt:v=>v.toFixed(2).replace('.',',')+'%',
+   legendProj:'Projeção 2026–2031 (Focus BCB · 2029-31 repete 2028)'},
+  {t:'Inflação (IPCA)', unit:'% a.a.', years:YEARS_LONG, realized:3,
+   src:'IBGE (realizado) · BCB Focus 03/07/2026 (2026-29) · 2030-31 repete 2029',
+   vals:[4.62,4.83,4.26,5.30,4.18,3.70,3.50,3.50,3.50], fmt:v=>v.toFixed(2).replace('.',',')+'%',
+   legendProj:'Projeção 2026–2031 (Focus BCB, mesma premissa do FCDF)'},
+  {t:'PIB', unit:'% a.a.', years:YEARS_LONG, realized:3,
+   src:'IBGE (realizado) · BCB Focus 03/07/2026 (2026-29) · 2030-31 = PIB de longo prazo do modelo (2,00%)',
+   vals:[3.20,3.40,2.30,1.99,1.69,2.00,2.00,2.00,2.00], fmt:v=>v.toFixed(2).replace('.',',')+'%',
+   legendProj:'Projeção 2026–2031 (Focus BCB · 2030-31 = PIB LP do modelo)'},
+  {t:'IGP-M', unit:'% a.a.', years:YEARS_LONG, realized:3,
+   src:'FGV-IBRE (realizado) · BCB Focus 03/07/2026 (2026-29) · 2030-31 repete 2029',
+   vals:[-3.18,6.54,-1.05,5.68,4.00,3.82,3.70,3.70,3.70], fmt:v=>v.toFixed(2).replace('.',',')+'%',
+   legendProj:'Projeção 2026–2031 (Focus BCB, mesma premissa do FCDF OpCo)'},
+  {t:'Taxa de Câmbio (USD/BRL)', unit:'R$ / USD', years:YEARS_LONG, realized:3,
+   src:'BCB PTAX (realizado) · BCB Focus 03/07/2026 (2026-27) · 2028-31 estimado, mesma premissa do FCDF',
+   vals:[4.85,6.19,5.50,5.20,5.28,5.35,5.40,5.45,5.50], fmt:v=>'R$ '+v.toFixed(2).replace('.',','),
+   legendProj:'Projeção 2026–2031 (Focus BCB / estimativa do modelo)'},
+  {t:'Taxa de Desemprego', unit:'%', years:YEARS_SHORT, realized:3, src:'IBGE – PNAD Contínua (sem projeção no relatório Focus do BCB)',
+   vals:[7.80,6.60,5.60,5.60], fmt:v=>v.toFixed(2).replace('.',',')+'%',
+   legendProj:'Último dado disponível (2026) — sem projeção Focus'},
+  {t:'ICC – Índice de Confiança do Consumidor', unit:'pts', years:YEARS_SHORT, realized:3, src:'FGV – IBRE (sem projeção no relatório Focus do BCB)',
+   vals:[91.3,91.3,89.1,88.7], fmt:v=>v.toFixed(1).replace('.',',')+' pts',
+   legendProj:'Último dado disponível (2026) — sem projeção Focus'}
+];
+
+function buildChart(ind){
+  var W=520,H=280, ml=58,mr=58,mt=40,mb=34;
+  var iw=W-ml-mr, ih=H-mt-mb;
+  var vals=ind.vals, years=ind.years, realized=ind.realized;
+  var min=Math.min.apply(null,vals), max=Math.max.apply(null,vals);
+  var pad=(max-min)*0.25 || Math.abs(max)*0.15 || 1;
+  var lo=min-pad, hi=max+pad;
+  function x(i){ return ml + (vals.length===1?iw/2:iw*i/(vals.length-1)); }
+  function y(v){ return mt + ih*(1-(v-lo)/(hi-lo)); }
+
+  var g='';
+  for(var k=0;k<=3;k++){
+    var gy=mt+ih*k/3;
+    g+='<line x1="'+ml+'" y1="'+gy+'" x2="'+(W-mr)+'" y2="'+gy+'" stroke="#eef1ef" stroke-width="1"/>';
+  }
+  var solid='', dash='';
+  for(var i=0;i<vals.length-1;i++){
+    var seg='M'+x(i).toFixed(1)+','+y(vals[i]).toFixed(1)+' L'+x(i+1).toFixed(1)+','+y(vals[i+1]).toFixed(1);
+    if(i+1<realized) solid+=seg+' '; else dash+=seg+' ';
+  }
+  g+='<path d="'+solid+'" fill="none" stroke="#6CF269" stroke-width="3.5" stroke-linecap="round"/>';
+  g+='<path d="'+dash+'" fill="none" stroke="#9aa0a3" stroke-width="3" stroke-dasharray="6 5" stroke-linecap="round"/>';
+  var fsize = vals.length>6 ? 11.5 : 14;
+  for(var j=0;j<vals.length;j++){
+    var proj=(j>=realized);
+    var col=proj?'#9aa0a3':'#6CF269';
+    g+='<circle cx="'+x(j).toFixed(1)+'" cy="'+y(vals[j]).toFixed(1)+'" r="4.5" fill="#fff" stroke="'+col+'" stroke-width="3"/>';
+    var ly=y(vals[j])-13;
+    if(ly<mt+8) ly=y(vals[j])+22;
+    g+='<text x="'+x(j).toFixed(1)+'" y="'+ly.toFixed(1)+'" text-anchor="middle" font-size="'+fsize+'" font-weight="800" fill="'+ (proj?'#83868a':'#494949') +'">'+ind.fmt(vals[j])+'</text>';
+    g+='<text x="'+x(j).toFixed(1)+'" y="'+(H-12)+'" text-anchor="middle" font-size="11.5" font-weight="600" fill="#83868a">'+years[j]+'</text>';
+  }
+  return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+ind.t+'">'+g+'</svg>';
+}
+
+var host=document.getElementById('charts');
+host.innerHTML='';
+INDICATORS.forEach(function(ind){
+  var el=document.createElement('div');
+  el.className='card chart-card';
+  el.innerHTML='<h4>'+ind.t+'</h4><div class="unit">'+ind.unit+'</div><p class="src">'+ind.src+'</p>'+
+    buildChart(ind)+
+    '<div class="legend"><span><i style="background:#6CF269"></i>Realizado (2023–2025)</span>'+
+    '<span><i style="background:#9aa0a3"></i>'+ind.legendProj+'</span></div>';
+  host.appendChild(el);
+});
+
+</script>
+</body>
+</html>
