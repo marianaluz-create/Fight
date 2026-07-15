@@ -87,7 +87,6 @@
   .brand .t1{font-weight:700;font-size:15px;line-height:1.1}
   .brand .t2{font-size:12px;color:var(--cinza)}
   .top-actions{margin-left:auto;display:flex;gap:10px;align-items:center}
-  #autosaveStatus{font-size:12px;white-space:nowrap}
   .btn-ghost{
     border:1px solid var(--linha);background:#fff;color:var(--preto);
     padding:8px 14px;border-radius:9px;font-size:13px;cursor:pointer;font-weight:600;
@@ -323,9 +322,8 @@
           <span id="progressText">Seção 1 de 13 <b>· 8% concluído</b></span>
           <span class="bar"><i id="progressBar" style="width:8%"></i></span>
         </div>
-        <span id="autosaveStatus" class="t2" style="color:var(--verde-esc);font-weight:600"></span>
         <button class="btn-ghost" id="editToggle">✎ Modo de edição</button>
-        <button class="btn-ghost" id="exportBtn" title="Baixa uma cópia deste HTML com todas as edições feitas neste navegador">⬇ Baixar HTML editado</button>
+        <button class="btn-ghost" id="exportBtn" title="Baixa uma cópia deste HTML com as edições feitas nesta sessão">⬇ Baixar HTML editado</button>
         <button class="btn-ghost" id="lock">Sair</button>
       </div>
     </div>
@@ -347,7 +345,7 @@
   </header>
 
   <main>
-    <div class="edit-hint">✎ Modo de edição ativo: clique nos textos para editá-los. Use a barra inferior para grifar em verde ou aplicar negrito. Suas edições ficam salvas automaticamente neste navegador; use "⬇ Baixar HTML editado" para gerar um arquivo com todas as edições. Os gráficos e dados quantitativos não são editáveis por aqui (edite a planilha base).</div>
+    <div class="edit-hint">✎ Modo de edição ativo: clique nos textos para editá-los. Use a barra inferior para grifar em verde ou aplicar negrito. Suas edições existem apenas nesta aba/sessão do navegador — use "⬇ Baixar HTML editado" para salvar um arquivo com todas as edições antes de fechar a página. Os gráficos e dados quantitativos não são editáveis por aqui (edite a planilha base).</div>
 
     <!-- ===== 1. CAPA ===== -->
     <section class="pane active" id="capa">
@@ -969,51 +967,8 @@ document.getElementById('fmtHl').addEventListener('click', fmtCmd(function(){
 }));
 document.getElementById('fmtClear').addEventListener('click', fmtCmd(function(){ document.execCommand('removeFormat'); }));
 
-/* ================= AUTOSAVE (edições de texto) + EXPORTAR HTML ================= */
+/* ================= EXPORTAR HTML ================= */
 (function(){
-  var LS_KEY = 'valuation-fromtherm-edits-v2';
-  var EDITABLE_SEL = '#app p, #app li, #app td, #app .v, #app h3, #app h4, #app .lab, #app .cap, #app .big, #app .kv .k, #app .lead, #app .note';
-  var editableEls = [];
-  [].forEach.call(document.querySelectorAll(EDITABLE_SEL), function(el, idx){
-    el.setAttribute('data-ed-id', 'e'+idx);
-    editableEls.push(el);
-  });
-
-  function loadSaved(){
-    try{ var raw = localStorage.getItem(LS_KEY); return raw ? JSON.parse(raw) : null; }catch(e){ return null; }
-  }
-  function restoreSaved(){
-    var saved = loadSaved();
-    if(!saved) return;
-    editableEls.forEach(function(el){
-      var id = el.getAttribute('data-ed-id');
-      if(saved[id]!==undefined) el.innerHTML = saved[id];
-    });
-  }
-  var saveTimer=null, statusTimer=null;
-  function scheduleSave(){
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(function(){
-      var map = {};
-      editableEls.forEach(function(el){ map[el.getAttribute('data-ed-id')] = el.innerHTML; });
-      try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
-      var st=document.getElementById('autosaveStatus');
-      if(st){
-        var now=new Date();
-        st.textContent = '💾 salvo neste navegador às '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
-        clearTimeout(statusTimer);
-        statusTimer = setTimeout(function(){ st.textContent=''; }, 5000);
-      }
-    }, 500);
-  }
-  document.addEventListener('input', function(e){
-    var t=e.target;
-    if(t && t.closest && t.closest('#app') && t.getAttribute && t.getAttribute('contenteditable')==='true'){
-      scheduleSave();
-    }
-  });
-  restoreSaved();
-
   function pad(n){ return String(n).padStart(2,'0'); }
   function exportHTML(){
     var clone = document.documentElement.cloneNode(true);
@@ -1024,7 +979,6 @@ document.getElementById('fmtClear').addEventListener('click', fmtCmd(function(){
     [].forEach.call(clone.querySelectorAll('[contenteditable]'), function(el){ el.removeAttribute('contenteditable'); });
     var etC = clone.querySelector('#editToggle');
     if(etC){ etC.classList.remove('on'); etC.textContent='✎ Modo de edição'; }
-    var stC = clone.querySelector('#autosaveStatus'); if(stC) stC.textContent='';
     var chartsC = clone.querySelector('#charts'); if(chartsC) chartsC.innerHTML='';
 
     var html = '<!DOCTYPE html>\n' + clone.outerHTML;
