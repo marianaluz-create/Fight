@@ -94,6 +94,14 @@
   }
   .btn-next:hover{background:#57d854}
   .btn-next:disabled{background:var(--cinza-cl);color:var(--proj);cursor:default}
+  .btn-prev{
+    border:1px solid var(--linha);background:#fff;color:var(--preto);
+    padding:8px 16px;border-radius:9px;font-size:13px;cursor:pointer;font-weight:700;
+    transition:.15s;
+  }
+  .btn-prev:hover{border-color:var(--verde)}
+  .btn-prev:disabled{color:var(--proj);cursor:default}
+  .btn-prev:disabled:hover{border-color:var(--linha)}
 
   nav.tabs{
     max-width:1320px;margin:0 auto;padding:0 12px;
@@ -318,6 +326,7 @@
           <span id="progressText">Seção 1 de 11 <b>· 9% concluído</b></span>
           <span class="bar"><i id="progressBar" style="width:9%"></i></span>
         </div>
+        <button class="btn-prev" id="prevTabBtn">← Voltar</button>
         <button class="btn-next" id="nextTabBtn">Próximo →</button>
       </div>
     </div>
@@ -644,7 +653,7 @@
         </div>
         <h4 style="margin:20px 0 8px;font-size:14px;font-weight:800">O que este quadro mostra</h4>
         <p style="margin:0 0 10px;font-size:13.5px;color:#3a3f43;line-height:1.55">É uma <b>análise de sensibilidade</b>, padrão em avaliações por Fluxo de Caixa Descontado: mostra como o Enterprise Value mudaria se o WACC (linhas) ou a taxa de crescimento na perpetuidade g (colunas) fossem diferentes das usadas no cenário Base.</p>
-        <p class="note">A linha destacada em azul (23,8%) é a mais próxima do WACC efetivo do cenário Base (23,61%) — a tabela usa incrementos fixos de 2,5 p.p. em torno de um valor de referência, não necessariamente o WACC exato do modelo. A coluna destacada em azul (5,57%) é o g efetivamente usado no cenário Base. O valor no canto superior esquerdo (R$ 34.083 mil) é o Enterprise Value do cenário Base. Fonte: aba "Fluxo de Caixa Descontado FCDF" da planilha base (quadro "Apoio").</p>
+        <p class="note">A linha destacada em azul (23,8%) é a mais próxima do WACC efetivo do cenário Base (23,61%) — a tabela usa incrementos fixos de 2,5 p.p. em torno de um valor de referência, não necessariamente o WACC exato do modelo. A coluna destacada em azul (5,57%) é o g efetivamente usado no cenário Base. O valor no canto superior esquerdo (R$ 34.083 mil) é o Enterprise Value do cenário Base.</p>
       </div>
     </section>
 
@@ -835,6 +844,7 @@ var tabs = document.getElementById('tabs');
 var tabButtons = [].slice.call(tabs.querySelectorAll('button'));
 
 var nextTabBtn = document.getElementById('nextTabBtn');
+var prevTabBtn = document.getElementById('prevTabBtn');
 
 function updateProgress(activeBtn){
   var idx = tabButtons.indexOf(activeBtn) + 1;
@@ -845,6 +855,7 @@ function updateProgress(activeBtn){
   if(txt) txt.innerHTML = 'Seção ' + idx + ' de ' + total + ' <b>· ' + pct + '% concluído</b>';
   if(bar) bar.style.width = pct + '%';
   if(nextTabBtn) nextTabBtn.disabled = (idx >= total);
+  if(prevTabBtn) prevTabBtn.disabled = (idx <= 1);
 }
 
 function activateTab(b){
@@ -867,6 +878,12 @@ if(nextTabBtn){
   nextTabBtn.addEventListener('click', function(){
     var cur = tabButtons.indexOf(tabs.querySelector('button.active'));
     if(cur > -1 && cur < tabButtons.length - 1) activateTab(tabButtons[cur + 1]);
+  });
+}
+if(prevTabBtn){
+  prevTabBtn.addEventListener('click', function(){
+    var cur = tabButtons.indexOf(tabs.querySelector('button.active'));
+    if(cur > 0) activateTab(tabButtons[cur - 1]);
   });
 }
 
