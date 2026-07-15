@@ -186,7 +186,6 @@
   .pill{background:var(--cinza-cl);color:var(--verde-esc);padding:6px 12px;border-radius:20px;font-size:12.5px;font-weight:600}
   p.body{font-size:14.5px;color:#2b3138}
   footer{max-width:1320px;margin:0 auto;padding:22px 24px;color:var(--cinza);font-size:11px;letter-spacing:.14em;text-transform:uppercase;border-top:1px solid var(--linha)}
-
   /* ---------- Abas financeiras (7 a 12) ---------- */
   .split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(340px,1fr);gap:22px;align-items:start}
   @media(max-width:980px){.split{grid-template-columns:1fr}}
@@ -316,8 +315,8 @@
       </div>
       <div class="top-actions">
         <div class="progress-badge" title="Sua posição no documento — avança conforme você navega pelas abas">
-          <span id="progressText">Seção 1 de 13 <b>· 8% concluído</b></span>
-          <span class="bar"><i id="progressBar" style="width:8%"></i></span>
+          <span id="progressText">Seção 1 de 11 <b>· 9% concluído</b></span>
+          <span class="bar"><i id="progressBar" style="width:9%"></i></span>
         </div>
         <button class="btn-next" id="nextTabBtn">Próximo →</button>
       </div>
@@ -332,10 +331,8 @@
       <button data-t="setor"><span class="n">7</span>Análise de Setor</button>
       <button data-t="fcdf"><span class="n">8</span>Fluxo de Caixa Descontado FCDF</button>
       <button data-t="opco"><span class="n">9</span>FCDF (OpCo)</button>
-      <button data-t="executivo"><span class="n">10</span>Sumário Executivo</button>
-      <button data-t="resultados"><span class="n">11</span>Resultados Obtidos</button>
-      <button data-t="anexos"><span class="n">12</span>Anexos</button>
-      <button data-t="avaliacaotrabalho"><span class="n">13</span>Avaliação</button>
+      <button data-t="executivo"><span class="n">10</span>Resultados Obtidos</button>
+      <button data-t="avaliacaotrabalho"><span class="n">11</span>Avaliação</button>
     </nav>
   </header>
 
@@ -471,7 +468,7 @@
             </tbody>
           </table>
         </div>
-        <p style="margin:18px 0 0;font-size:13.5px;color:#3a3f43;line-height:1.55">A receita cresceu de forma consistente, mas a margem caiu com a virada para revenda de produtos importados (o custo da mercadoria vendida, próximo de zero em 2023, passou a representar parcela relevante do custo em 2025). A companhia está investindo em uma nova fábrica para produzir internamente e recuperar margem. Essa recuperação já está parcialmente refletida na projeção Base (ver Sumário Executivo e Avaliação).</p>
+        <p style="margin:18px 0 0;font-size:13.5px;color:#3a3f43;line-height:1.55">A receita cresceu de forma consistente, mas a margem caiu com a virada para revenda de produtos importados (o custo da mercadoria vendida, próximo de zero em 2023, passou a representar parcela relevante do custo em 2025). A companhia está investindo em uma nova fábrica para produzir internamente e recuperar margem. Essa recuperação já está parcialmente refletida na projeção Base (ver Resultados Obtidos e Avaliação).</p>
         <p class="note">Fonte: Balancetes Fromtherm 2023–2025 e site institucional <a class="site-link" href="https://fromtherm.com.br/" target="_blank" rel="noopener">fromtherm.com.br</a>.</p>
       </div>
     </section>
@@ -752,10 +749,10 @@
       </div>
     </section>
 
-    <!-- ===== 10. SUMÁRIO EXECUTIVO ===== -->
+    <!-- ===== 10. RESULTADOS OBTIDOS ===== -->
     <section class="pane" id="executivo">
       <h2 class="section-title">Conclusão</h2>
-      <h3 class="section-h">Sumário Executivo</h3>
+      <h3 class="section-h">Resultados Obtidos</h3>
       <p class="lead">Metodologia de Fluxo de Caixa Descontado (FCDF), cenário Base. A faixa completa (Otimista/Base/Pessimista) ainda não está disponível — ver nota ao final desta seção.</p>
       <div class="grid g2" style="margin:18px 0 12px">
         <div class="card accent"><div class="stat"><span class="cap">Enterprise Value · Fluxo de Caixa Descontado FCDF</span><span class="big">R$ 34,1 MM</span><span class="cap">R$ 34.083 mil · com imóveis</span></div></div>
@@ -802,79 +799,7 @@
       <p class="note">Este sumário reflete apenas o cenário Base — o único com FCFF, WACC e EV recalculados ao vivo na aba "Fluxo de Caixa Descontado FCDF" desta planilha (Fromtherm_valuation_v9.xlsx). Os cenários Otimista e Pessimista existem no seletor do modelo (célula C7), mas não foram recongelados nesta versão do arquivo.</p>
     </section>
 
-    <!-- ===== 11. RESULTADOS OBTIDOS ===== -->
-    <section class="pane" id="resultados">
-      <h2 class="section-title">Conclusão</h2>
-      <h3 class="section-h">Resultados Obtidos</h3>
-      <p class="lead">Duas visões, mesma metodologia (FCDF a WACC ≈ 23,6–23,7% e g 5,57%): mantendo os imóveis na operação, ou segregando-os para venda separada (carve-out PropCo).</p>
-      <div class="card" style="margin-top:18px">
-        <div class="tbl-wrap">
-          <table class="fin">
-            <thead><tr><th>Cenário Base (R$ mil)</th><th>Fluxo de Caixa Descontado FCDF</th><th>FCDF (OpCo)</th></tr></thead>
-            <tbody>
-              <tr><td>WACC</td><td>23,61%</td><td>23,71%</td></tr>
-              <tr><td>g (perpetuidade)</td><td>5,57%</td><td>5,57%</td></tr>
-              <tr class="subtotal"><td>Enterprise Value</td><td>34.083</td><td>27.801</td></tr>
-              <tr><td>Dívida Líquida</td><td>11.777</td><td>10.677</td></tr>
-              <tr class="keyrow"><td>Equity Value (Valor p/ Acionista)</td><td>22.306</td><td>17.124</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="grid g2" style="margin-top:18px">
-        <div class="card">
-          <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Como ler</h4>
-          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">As duas colunas não são cenários econômicos diferentes — são a mesma operação sob duas premissas de estrutura patrimonial: manter os imóveis (FCDF) ou vendê-los separadamente à PropCo, com a operação (OpCo) pagando aluguel de mercado (atualizado em 14/07/2026 para R$ 64,5 mil/mês). A diferença de Equity Value (R$ 22,3 mi vs. R$ 17,1 mi) reflete o valor retido pelos imóveis fora da operação.</p>
-        </div>
-        <div class="card">
-          <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Limitações desta faixa</h4>
-          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">Estes números refletem apenas o cenário Base. Os cenários Otimista e Pessimista existem no seletor do modelo, mas não foram recalculados/congelados nesta versão da planilha (Fromtherm_valuation_v9.xlsx) — não há, portanto, uma faixa Otimista–Pessimista para apresentar nesta etapa.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== 12. ANEXOS ===== -->
-    <section class="pane" id="anexos">
-      <h2 class="section-title">Anexos</h2>
-      <h3 class="section-h">Bibliografia e Fontes</h3>
-      <div class="grid g2" style="margin-top:18px">
-        <div class="card">
-          <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Metodologia e custo de capital</h4>
-          <ul class="biblist">
-            <li>Assaf Neto, A. — <i>Finanças Corporativas e Valor</i> (metodologia do Ke).</li>
-            <li>Damodaran, A. — beta setorial desalavancado (Machinery/Electrical, mercados emergentes): <a class="site-link" href="https://pages.stern.nyu.edu/~adamodar/pc/datasets/betaemerg.xls" target="_blank" rel="noopener">pages.stern.nyu.edu/~adamodar</a></li>
-            <li>Damodaran — Country Risk Premium (Brasil): <a class="site-link" href="https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/ctryprem.html" target="_blank" rel="noopener">pages.stern.nyu.edu/~adamodar</a></li>
-            <li>Kroll — Cost of Capital / Equity Risk Premium: <a class="site-link" href="https://www.kroll.com/en/insights/cost-of-capital" target="_blank" rel="noopener">kroll.com</a></li>
-            <li>U.S. Department of the Treasury — T-bonds 10 anos (taxa livre de risco): <a class="site-link" href="https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value=2026" target="_blank" rel="noopener">home.treasury.gov</a></li>
-            <li>FRED (St. Louis Fed) — T10YIE, inflação implícita EUA: <a class="site-link" href="https://fred.stlouisfed.org/series/T10YIE" target="_blank" rel="noopener">fred.stlouisfed.org</a></li>
-            <li>Valuation Handbook 2023 (CFA Institute) — prêmio de tamanho: <a class="site-link" href="https://rpc.cfainstitute.org/research/foundation/2024/valuation-handbook-2023" target="_blank" rel="noopener">rpc.cfainstitute.org</a></li>
-          </ul>
-        </div>
-        <div class="card">
-          <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Dados de mercado e setor</h4>
-          <ul class="biblist">
-            <li>Banco Central do Brasil — Boletim Focus (Selic, IPCA, PIB, câmbio).</li>
-            <li>IBGE — Contas Nacionais Trimestrais (PIB) e PNAD Contínua (desemprego).</li>
-            <li>FGV–IBRE — Índice de Confiança do Consumidor (ICC).</li>
-            <li>Grand View Research — Shell &amp; Tube Heat Exchanger Market, Brazil: <a class="site-link" href="https://www.grandviewresearch.com/horizon/outlook/shell-and-tube-heat-exchanger-market/brazil" target="_blank" rel="noopener">grandviewresearch.com</a></li>
-            <li>Grand View Research — Plate &amp; Frame Heat Exchangers Market, Brazil: <a class="site-link" href="https://www.grandviewresearch.com/horizon/outlook/plate-frame-heat-exchangers-market/brazil" target="_blank" rel="noopener">grandviewresearch.com</a></li>
-            <li>Fromtherm — site institucional: <a class="site-link" href="https://fromtherm.com.br/" target="_blank" rel="noopener">fromtherm.com.br</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="card" style="margin-top:18px">
-        <h4 style="margin:0 0 12px;font-size:15px;font-weight:800">Documentos de apoio</h4>
-        <ul class="biblist">
-          <li>Modelo de valuation: Fromtherm_valuation_v9.xlsx (abas: Inputs, Modelo, CAPEX&amp;Dep., Dist. de lucros, Ke_&amp;_g, mercado, ERP, US_T-bonds, T10YIE, beta).</li>
-          <li>Modelo de valuation (FCDF OpCo, atualizado 14/07/2026): Fromtherm_valuation_v10.xlsx (aba "FCDF (OpCo)" e "BaseApoioALuguel" — aluguel de mercado revisado para R$ 64,5 mil/mês).</li>
-          <li>Demonstrações contábeis utilizadas: Balancetes 2023, 2024, 2025 e 1º trimestre de 2026.</li>
-          <li>Memória de cálculo do WACC (Ke) e da taxa de crescimento perpétuo (g) — aba "Ke_&amp;_g" da planilha base.</li>
-        </ul>
-        <p class="note">As tabelas de sensibilidade WACC × g e as memórias de cálculo detalhadas ficam na planilha base — não foram reproduzidas nesta primeira leva do relatório.</p>
-      </div>
-    </section>
-
-    <!-- ===== 13. AVALIAÇÃO (pesquisa de satisfação) ===== -->
+    <!-- ===== 11. AVALIAÇÃO (pesquisa de satisfação) ===== -->
     <section class="pane" id="avaliacaotrabalho">
       <h2 class="section-title">Sua Opinião</h2>
       <h3 class="section-h">Avaliação</h3>
