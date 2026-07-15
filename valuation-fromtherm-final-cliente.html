@@ -624,8 +624,6 @@
           <div class="kv"><span class="k">Equity Value (Valor p/ Acionista) = EV − Dívida Líquida</span><span class="v"><b>R$ 22.306 mil</b></span></div>
         </div>
       </div>
-      <p class="note">Fonte: aba "Fluxo de Caixa Descontado FCDF" da planilha base, cenário Base (célula C7). Os cenários Otimista e Pessimista existem no modelo (seletor de cenário) mas não foram congelados nesta leva.</p>
-
       <h2 class="section-title" style="margin-top:34px">Sensibilidade — Enterprise Value (WACC × g)</h2>
       <div class="card">
         <div class="hm-wrap">
@@ -645,7 +643,7 @@
           </table>
         </div>
         <h4 style="margin:20px 0 8px;font-size:14px;font-weight:800">O que este quadro mostra</h4>
-        <p style="margin:0 0 10px;font-size:13.5px;color:#3a3f43;line-height:1.55">É uma <b>análise de sensibilidade</b>, padrão em avaliações por Fluxo de Caixa Descontado: mostra como o Enterprise Value mudaria se o WACC (linhas) ou a taxa de crescimento na perpetuidade g (colunas) fossem diferentes das usadas no cenário Base. As cores seguem o mesmo padrão de escala de cores usado na planilha (vermelho = valores mais baixos da faixa, verde = valores mais altos). Como o valor presente dos fluxos futuros depende diretamente dessas duas premissas, pequenas variações nelas mudam bastante o valor final — por isso a O2 trata o valuation como uma <b>faixa</b>, não um número único.</p>
+        <p style="margin:0 0 10px;font-size:13.5px;color:#3a3f43;line-height:1.55">É uma <b>análise de sensibilidade</b>, padrão em avaliações por Fluxo de Caixa Descontado: mostra como o Enterprise Value mudaria se o WACC (linhas) ou a taxa de crescimento na perpetuidade g (colunas) fossem diferentes das usadas no cenário Base.</p>
         <p class="note">A linha destacada em azul (23,8%) é a mais próxima do WACC efetivo do cenário Base (23,61%) — a tabela usa incrementos fixos de 2,5 p.p. em torno de um valor de referência, não necessariamente o WACC exato do modelo. A coluna destacada em azul (5,57%) é o g efetivamente usado no cenário Base. O valor no canto superior esquerdo (R$ 34.083 mil) é o Enterprise Value do cenário Base. Fonte: aba "Fluxo de Caixa Descontado FCDF" da planilha base (quadro "Apoio").</p>
       </div>
     </section>
@@ -743,7 +741,6 @@
         <p style="margin:0 0 14px;font-size:13.5px;color:#3a3f43;line-height:1.55">O custo do capital próprio (Ke, 25,62% nominal) e o custo da dívida pós-impostos (Kd, 20,5%) são <b>idênticos</b> nas duas visões — não mudam com o ajuste OpCo, porque o beta usado no releverage é o das comparáveis setoriais, não a estrutura de capital da própria Fromtherm. O que muda é só o <b>peso</b> de cada fonte de capital: como a OpCo tem menos dívida líquida (exclui a dívida imobiliária), sua fatia de capital próprio na estrutura é maior (62,8% vs. 60,7% na FCDF). Como o Ke é maior que o Kd, uma fatia maior de capital próprio puxa o WACC médio ponderado um pouco para cima — daí o WACC da OpCo ser 0,10 p.p. mais alto, mesmo tendo menos dívida.</p>
         <h4 style="margin:0 0 8px;font-size:14px;font-weight:800">Por que o Enterprise Value e o Equity Value mudam</h4>
         <p style="margin:0 0 14px;font-size:13.5px;color:#3a3f43;line-height:1.55">A diferença de <b>R$ 5.182 mil no Equity Value</b> (R$ 22.306 mil vs. R$ 17.124 mil) reflete o valor que os imóveis representam quando ficam fora da operação: a OpCo deixa de ter a despesa de depreciação predial mas passa a pagar aluguel de mercado (o que reduz o FCFF projetado), e sua dívida líquida cai R$ 1.100 mil (a dívida imobiliária vai para a PropCo). A soma desses efeitos nos fluxos de caixa — descontada a valor presente pelo WACC (ligeiramente maior) de cada estrutura — explica o Enterprise Value R$ 6.282 mil menor da OpCo.</p>
-        <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">Nota (14/07/2026): o aluguel de mercado foi atualizado de R$ 20 mil/mês para <b>R$ 64,5 mil/mês</b> (R$ 21,50/m² sobre ~3.000 m² de área construída, valor médio de mercado para a região), o que ampliou a diferença de valor entre as duas visões frente à versão anterior do modelo (v9).</p>
         <p class="note">Os imóveis (e a dívida/valor da PropCo) não são avaliados nesta análise — o valor da FCDF OpCo representa só a operação, não o valor combinado OpCo + PropCo.</p>
       </div>
     </section>
@@ -752,7 +749,7 @@
     <section class="pane" id="executivo">
       <h2 class="section-title">Conclusão</h2>
       <h3 class="section-h">Resultados Obtidos</h3>
-      <p class="lead">Metodologia de Fluxo de Caixa Descontado (FCDF), cenário Base. A faixa completa (Otimista/Base/Pessimista) ainda não está disponível — ver nota ao final desta seção.</p>
+      <p class="lead">Metodologia de Fluxo de Caixa Descontado (FCDF), cenário Base.</p>
       <div class="grid g2" style="margin:18px 0 12px">
         <div class="card accent"><div class="stat"><span class="cap">Enterprise Value · Fluxo de Caixa Descontado FCDF</span><span class="big">R$ 34,1 MM</span><span class="cap">R$ 34.083 mil · com imóveis</span></div></div>
         <div class="card accent"><div class="stat"><span class="cap">Enterprise Value · FCDF (OpCo)</span><span class="big">R$ 27,8 MM</span><span class="cap">R$ 27.801 mil · sem imóveis (carve-out PropCo)</span></div></div>
@@ -784,7 +781,7 @@
       <div class="grid g3">
         <div class="card">
           <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Por que esse valor</h4>
-          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">DCF (FCFF) a WACC 23,61% e g 5,57%, horizonte 2026F–2031F + perpetuidade. Fonte: aba "Fluxo de Caixa Descontado FCDF" da planilha base.</p>
+          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">DCF (FCFF) a WACC 23,61% e g 5,57%, horizonte 2026F–2031F + perpetuidade.</p>
         </div>
         <div class="card">
           <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Principal driver</h4>
@@ -792,10 +789,9 @@
         </div>
         <div class="card">
           <h4 style="margin:0 0 10px;font-size:14px;font-weight:800">Principal risco</h4>
-          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">Empresa alavancada (Dívida Líquida R$ 11,78 mi em 2025) — o Equity Value é sensível a essa dívida. Conforme nota da planilha base, o 1º trimestre de 2026 fechou em prejuízo (~R$ 318 mil): a recuperação de margem projetada ainda não apareceu nos números realizados.</p>
+          <p style="margin:0;font-size:13.5px;color:#3a3f43;line-height:1.55">Empresa alavancada (Dívida Líquida R$ 11,78 mi em 2025) — o Equity Value é sensível a essa dívida.</p>
         </div>
       </div>
-      <p class="note">Este sumário reflete apenas o cenário Base — o único com FCFF, WACC e EV recalculados ao vivo na aba "Fluxo de Caixa Descontado FCDF" desta planilha (Fromtherm_valuation_v9.xlsx). Os cenários Otimista e Pessimista existem no seletor do modelo (célula C7), mas não foram recongelados nesta versão do arquivo.</p>
     </section>
 
     <!-- ===== 11. AVALIAÇÃO (pesquisa de satisfação) ===== -->
