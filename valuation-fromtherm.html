@@ -74,8 +74,8 @@
   /* ---------- App layout ---------- */
   #app{display:none}
   header.top{
-    position:sticky;top:0;z-index:50;background:var(--branco);
-    border-bottom:1px solid var(--linha);
+    position:sticky;top:0;z-index:50;background:#1c1c1c;
+    border-bottom:1px solid rgba(255,255,255,.10);
   }
   .top-inner{
     max-width:1320px;margin:0 auto;padding:14px 24px;
@@ -83,9 +83,9 @@
   }
   .brand{display:flex;align-items:center;gap:14px}
   .brand .o2-mark{height:38px;width:auto;display:block}
-  .brand .divider{width:1px;height:34px;background:var(--linha)}
-  .brand .t1{font-weight:700;font-size:15px;line-height:1.1}
-  .brand .t2{font-size:12px;color:var(--cinza)}
+  .brand .divider{width:1px;height:34px;background:rgba(255,255,255,.18)}
+  .brand .t1{font-weight:700;font-size:15px;line-height:1.1;color:#fff}
+  .brand .t2{font-size:12px;color:#9aa0a3}
   .top-actions{margin-left:auto;display:flex;gap:10px;align-items:center}
   .btn-ghost{
     border:1px solid var(--linha);background:#fff;color:var(--preto);
@@ -113,17 +113,19 @@
   nav.tabs{
     max-width:1320px;margin:0 auto;padding:0 12px;
     display:flex;gap:2px;overflow-x:auto;
+    scrollbar-width:none;-ms-overflow-style:none;
   }
+  nav.tabs::-webkit-scrollbar{display:none}
   nav.tabs button{
-    border:0;background:transparent;color:var(--cinza);
+    border:0;background:transparent;color:#9aa0a3;
     padding:14px 16px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;
     border-bottom:3px solid transparent;transition:.15s;
   }
-  nav.tabs button:hover{color:var(--preto)}
-  nav.tabs button.active{color:var(--preto);border-bottom-color:var(--verde)}
+  nav.tabs button:hover{color:#fff}
+  nav.tabs button.active{color:#fff;border-bottom-color:var(--verde)}
   nav.tabs button .n{
     display:inline-flex;width:20px;height:20px;border-radius:6px;margin-right:7px;
-    background:#eef0ee;color:var(--cinza);font-size:11px;font-weight:800;
+    background:rgba(255,255,255,.14);color:#c7cbc8;font-size:11px;font-weight:800;
     align-items:center;justify-content:center;vertical-align:middle;
   }
   nav.tabs button.active .n{background:var(--verde);color:#2f4a2c}
@@ -308,10 +310,10 @@
   ul.biblist li{position:relative;padding-left:16px;font-size:13.5px;color:#3a3f43;line-height:1.55}
   ul.biblist li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--verde)}
 
-  .progress-badge{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--cinza);white-space:nowrap}
-  .progress-badge .bar{width:74px;height:6px;border-radius:4px;background:var(--linha);overflow:hidden}
+  .progress-badge{display:flex;align-items:center;gap:8px;font-size:12px;color:#c7cbc8;white-space:nowrap}
+  .progress-badge .bar{width:74px;height:6px;border-radius:4px;background:rgba(255,255,255,.18);overflow:hidden}
   .progress-badge .bar i{display:block;height:100%;background:var(--verde)}
-  .progress-badge b{color:var(--preto)}
+  .progress-badge b{color:#fff}
 </style>
 </head>
 <body>
